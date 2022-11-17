@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.Contracts.Common
 {
-    public class ApiSuccessResult<T> : ApiResult<T>
+    public class SuccessResponseResult<T> : DefaultResponseResult<T>
     {
-        public ApiSuccessResult(T resultObj)
+        public SuccessResponseResult(T result)
         {
             IsSuccessed = true;
-            ResultObj = resultObj;
+            Result = result;
         }
 
-        public ApiSuccessResult()
+        public SuccessResponseResult()
         {
             IsSuccessed = true;
         }

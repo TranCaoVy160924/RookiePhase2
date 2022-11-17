@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssetManagement.Data.Entities
+namespace AssetManagement.Domain.Models
 {
     public class AppUser : IdentityUser<Guid>
     {
@@ -28,6 +28,8 @@ namespace AssetManagement.Data.Entities
         public DateTime CreatedDate { get; set; }
 
         public DateTime ModifiedDate { get; set; }
+
+        public bool IsLoginFirstTime { get; set; }
 
         [ForeignKey("AppRole")]
         public Guid RoleId { get; set; }

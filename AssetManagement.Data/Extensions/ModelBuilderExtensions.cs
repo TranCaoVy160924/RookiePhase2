@@ -1,4 +1,4 @@
-﻿using AssetManagement.Data.Entities;
+﻿using AssetManagement.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -48,6 +48,7 @@ namespace AssetManagement.Data.Extensions
                 FirstName = "Toan",
                 LastName = "Bach",
                 Dob = new DateTime(2020, 01, 31),
+                IsLoginFirstTime = true,
                 CreatedDate = DateTime.Now,
                 Gender = "Male",
                 Location = "HCM",

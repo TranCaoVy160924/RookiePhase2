@@ -1,8 +1,8 @@
-﻿using AssetManagement.Data.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AssetManagement.Data.Extensions;
+using AssetManagement.Domain.Models;
 
 namespace AssetManagement.Data.EF
 {

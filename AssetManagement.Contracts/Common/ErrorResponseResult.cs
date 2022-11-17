@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.Contracts.Common
 {
-    public class ApiErrorResult<T>: ApiResult<T>
+    public class ErrorResponseResult<T>: DefaultResponseResult<T>
     {
-        public ApiErrorResult()
+        public ErrorResponseResult()
         {
         }
 
-        public ApiErrorResult(string message)
+        public ErrorResponseResult(string message)
         {
             IsSuccessed = false;
             Message = message;

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AssetManagement.Data.Migrations
+namespace AssetManagement.Application.Migrations
 {
     public partial class Initial : Migration
     {
@@ -106,6 +106,7 @@ namespace AssetManagement.Data.Migrations
                     Location = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsLoginFirstTime = table.Column<bool>(type: "bit", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -136,12 +137,12 @@ namespace AssetManagement.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AppRole",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
-                values: new object[] { new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"), "0dac32e1-8f9e-4e2b-8188-133f34dee15e", "Staff role", "Staff", "staff" });
+                values: new object[] { new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"), "05392849-704a-46e1-a33f-a2bfb1556214", "Staff role", "Staff", "staff" });
 
             migrationBuilder.InsertData(
                 table: "AppRole",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
-                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "a8a0bbca-d2e7-4f5d-b0fc-d4bfd67ee052", "Administrator role", "Admin", "admin" });
+                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "4832a5d0-5d75-49dd-a053-fb5be85269c4", "Administrator role", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AppUserRoles",
@@ -150,8 +151,8 @@ namespace AssetManagement.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "AppUser",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedDate", "Dob", "Email", "EmailConfirmed", "FirstName", "Gender", "LastName", "Location", "LockoutEnabled", "LockoutEnd", "ModifiedDate", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "986bff55-758d-4a93-8bb7-42580d29140e", new DateTime(2022, 11, 17, 9, 21, 15, 780, DateTimeKind.Local).AddTicks(5895), new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Toan", "Male", "Bach", "HCM", false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", "admin", "AQAAAAEAACcQAAAAEHbZggmzuIB8mNQYHn01RTcZfC99G0u5P6J+1BlL015GL95aCo0e6EVicAoAlSu7+g==", null, false, new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "", false, "admin" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedDate", "Dob", "Email", "EmailConfirmed", "FirstName", "Gender", "IsLoginFirstTime", "LastName", "Location", "LockoutEnabled", "LockoutEnd", "ModifiedDate", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "5b2b6c7e-50fd-4d0f-8d43-68fb4cd90fec", new DateTime(2022, 11, 21, 13, 55, 15, 319, DateTimeKind.Local).AddTicks(3327), new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Toan", "Male", true, "Bach", "HCM", false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", "admin", "AQAAAAEAACcQAAAAEIdhqHmRIp8vyJbvr1a7QLQ48IpKKOeWHJa60mf1+IPWwrC6xixAjazzoU3tii13tA==", null, false, new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "", false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppUser_RoleId",
