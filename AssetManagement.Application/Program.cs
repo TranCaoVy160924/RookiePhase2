@@ -1,3 +1,4 @@
+using AssetManagement.Contracts.AutoMapper;
 using AssetManagement.Data.EF;
 using AssetManagement.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,21 @@ builder.Services.AddIdentity<AppUser, AppRole>()
                .AddEntityFrameworkStores<AssetManagementDbContext>()
                .AddDefaultTokenProviders();
 
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile))); 
+
 builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+
+//password policy configuration
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default Password settings.
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+});
 
 //JWT configuration 
 string issuer = builder.Configuration.GetValue<string>("JwtSettings:validIssuer");

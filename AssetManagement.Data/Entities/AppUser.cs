@@ -29,6 +29,8 @@ namespace AssetManagement.Data.Entities
 
         public DateTime ModifiedDate { get; set; }
 
+        public bool IsLoginFirstTime { get; set; }
+
         [ForeignKey("AppRole")]
         public Guid RoleId { get; set; }
         public AppRole AppRole { get; set; }
