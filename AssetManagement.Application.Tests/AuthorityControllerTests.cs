@@ -1,6 +1,6 @@
 namespace AssetManagement.Application.Tests
 {
-    public class UnitTest1
+    public class AuthorityControllerTests
     {
         [Fact]
         public void Test1()
