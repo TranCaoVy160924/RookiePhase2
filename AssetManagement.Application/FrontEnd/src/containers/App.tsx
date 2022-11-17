@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Admin from './containers/admin';
+import Admin from './admin';
 
 function App() {
   return (
