@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.Contracts.Common
 {
-    public class ApiResult<T>
+    public class DefaultResponseResult<T>
     {
         public bool IsSuccessed { get; set; }
 
         public string Message { get; set; }
 
-        public T ResultObj { get; set; }
+        public T Result { get; set; }
     }
 }
