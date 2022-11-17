@@ -1,10 +1,12 @@
 ﻿using AssetManagement.Contracts.AuthorityDtos;
 using AssetManagement.Contracts.Common;
+using AssetManagement.Data.EF;
 using AssetManagement.Data.Entities;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -17,11 +19,13 @@ namespace AssetManagement.Application.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _config;
+        private readonly AssetManagementDbContext _dbContext;
 
-        public AuthorityController(UserManager<AppUser> userManager, IConfiguration config)
+        public AuthorityController(UserManager<AppUser> userManager, IConfiguration config, AssetManagementDbContext dbContext)
         {
             _userManager = userManager;
             _config = config;
+            _dbContext = dbContext;
         }
 
         [HttpPost("auth/token/")]
@@ -44,34 +48,51 @@ namespace AssetManagement.Application.Controllers
                 return BadRequest(new ApiErrorResult<string>("No match for username and/or password."));
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
+            var role = await _dbContext.AppRoles.FindAsync(user.RoleId);
 
-            return Ok(new ApiSuccessResult<string>(CreateToken(user, request.Username, roles)));
+            return Ok(new ApiSuccessResult<string>(CreateToken(user, request.Username, role.Name)));
+        }
+
+        [HttpPost("auth/change-password/")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok(new ApiSuccessResult<string>("Change password success!"));
         }
 
 
-        private string CreateToken(AppUser user, string username, IList<string> roles)
+        private string CreateToken(AppUser user, string username, string role)
         {
             var signingCredentials = GetSigningCredentials();
-            var claims = GetClaims(user, username, roles);
+            var claims = GetClaims(user, username, role);
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
-        private IList<Claim> GetClaims(AppUser user, string username, IList<string> roles)
+        private IList<Claim> GetClaims(AppUser user, string username, string role)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.GivenName,user.FirstName),
+                new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Role, role)
             };
-
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
 
             return claims;
         }

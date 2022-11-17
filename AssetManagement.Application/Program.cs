@@ -23,6 +23,18 @@ builder.Services.AddIdentity<AppUser, AppRole>()
 
 builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
 
+//password policy configuration
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default Password settings.
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+});
+
 //JWT configuration 
 string issuer = builder.Configuration.GetValue<string>("JwtSettings:validIssuer");
 string signingKey = builder.Configuration.GetValue<string>("JwtSettings:Key");
