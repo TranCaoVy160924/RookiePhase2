@@ -7,6 +7,10 @@ const Index = (props) => (
         sx={{
             "& .RaAppBar-title": {
                 flex: 1,
+                display: "flex",
+                justifyContent: "space-between",
+                // Cant add these props (Ctrl+Click to see more which props this component get)
+                // backgroundColor: "black",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
