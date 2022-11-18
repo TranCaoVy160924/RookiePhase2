@@ -43,4 +43,6 @@
 	<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
 	<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/2.0.schema.json" /></VisualStudio></ProjectExtensions>
 </Project>

@@ -11,8 +11,6 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 
-const authURL = 'https://localhost:7173'
-
 // Setup AuthProvider
 function AuthProvider(authURL){
     const dataPorvider = simpleRestProvider(authURL, httpClient);
@@ -21,7 +19,7 @@ function AuthProvider(authURL){
         ...dataPorvider,
         // send username and password to the auth server and get back credentials
         login: ({ username, password }) =>  {
-            const request = new Request(`${authURL}/Auth/Login_`, {
+            const request = new Request(`${authURL}/api/auth/token`, {
                 method: 'POST',
                 body: JSON.stringify({ userName:username, password:password }),
                 headers: new Headers({ 'Content-Type': 'application/json' }),

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssetManagement.Contracts.AuthorityDtos
+namespace AssetManagement.Contracts.Authority.Request
 {
     public class ChangePasswordRequest
     {

@@ -1,3 +1,4 @@
+using AssetManagement.Contracts.AutoMapper;
 using AssetManagement.Data.EF;
 using AssetManagement.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<AssetManagementDbContext>(options =>
 builder.Services.AddIdentity<AppUser, AppRole>()
                .AddEntityFrameworkStores<AssetManagementDbContext>()
                .AddDefaultTokenProviders();
+
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile))); 
 
 builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
 
@@ -103,10 +107,10 @@ builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
 
-builder.Services.AddSpaStaticFiles(configuration =>
-{
-    configuration.RootPath = "Frontend/build";
-});
+//builder.Services.AddSpaStaticFiles(configuration =>
+//{
+//    configuration.RootPath = "Frontend/build";
+//});
 
 var app = builder.Build();
 
@@ -122,7 +126,7 @@ app.UseCors("corsapp");
 
 app.UseHttpsRedirection();
 
-app.UseSpaStaticFiles();
+//app.UseSpaStaticFiles();
 
 app.UseRouting();
 
@@ -136,15 +140,15 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-app.UseSpa(spa =>
-{
-    spa.Options.SourcePath = "Frontend";
+//app.UseSpa(spa =>
+//{
+//    spa.Options.SourcePath = "Frontend";
 
-    if (app.Environment.IsDevelopment())
-    {
-        spa.UseReactDevelopmentServer(npmScript: "start");
-    }
-});
+//    if (app.Environment.IsDevelopment())
+//    {
+//        spa.UseReactDevelopmentServer(npmScript: "start");
+//    }
+//});
 
 
 app.Run();

@@ -16,7 +16,7 @@ const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
 // const dataProvider = simpleRestProvider('https://localhost:5001 ');
 
 // You will fix this API-URL
-const authProvider = AuthProvider('https://localhost:7173')
+const authProvider = AuthProvider('https://localhost:57118')
 
 const App = () => (
     <Admin 

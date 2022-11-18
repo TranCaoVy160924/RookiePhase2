@@ -50,7 +50,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "a8a0bbca-d2e7-4f5d-b0fc-d4bfd67ee052",
+                            ConcurrencyStamp = "c0130a46-9281-4ccb-89ac-dcef9fe52d6f",
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -58,7 +58,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            ConcurrencyStamp = "0dac32e1-8f9e-4e2b-8188-133f34dee15e",
+                            ConcurrencyStamp = "cc48c800-888b-4015-964e-70eaa62525fa",
                             Description = "Staff role",
                             Name = "Staff",
                             NormalizedName = "staff"
@@ -98,6 +98,9 @@ namespace AssetManagement.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsLoginFirstTime")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -157,20 +160,21 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "986bff55-758d-4a93-8bb7-42580d29140e",
-                            CreatedDate = new DateTime(2022, 11, 17, 9, 21, 15, 780, DateTimeKind.Local).AddTicks(5895),
+                            ConcurrencyStamp = "5f062d55-a1eb-4be2-a96a-3b3f561ecc25",
+                            CreatedDate = new DateTime(2022, 11, 18, 11, 51, 54, 397, DateTimeKind.Local).AddTicks(6456),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Toan",
                             Gender = "Male",
+                            IsLoginFirstTime = true,
                             LastName = "Bach",
                             Location = "HCM",
                             LockoutEnabled = false,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHbZggmzuIB8mNQYHn01RTcZfC99G0u5P6J+1BlL015GL95aCo0e6EVicAoAlSu7+g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF1mlJT9sSvEI5EOasJQup7lTgo0ihVv+JHIKFvxZtAvLm1nHC2TUubdkg69XwTX/Q==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                             SecurityStamp = "",

@@ -1,7 +1,9 @@
-﻿using AssetManagement.Contracts.AuthorityDtos;
+﻿using AssetManagement.Contracts.Authority.Request;
+using AssetManagement.Contracts.Authority.Response;
 using AssetManagement.Contracts.Common;
 using AssetManagement.Data.EF;
 using AssetManagement.Data.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +22,17 @@ namespace AssetManagement.Application.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _config;
         private readonly AssetManagementDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public AuthorityController(UserManager<AppUser> userManager, IConfiguration config, AssetManagementDbContext dbContext)
+        public AuthorityController(UserManager<AppUser> userManager,
+            IConfiguration config, 
+            AssetManagementDbContext dbContext,
+            IMapper mapper)
         {
             _userManager = userManager;
             _config = config;
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         [HttpPost("auth/token/")]
@@ -39,18 +46,28 @@ namespace AssetManagement.Application.Controllers
             var user = await _userManager.FindByNameAsync(request.Username);
             if (user == null)
             {
-                return BadRequest(new ApiErrorResult<string>("Account does not exist."));
+                return BadRequest(new ErrorResponseResult<string>("Account does not exist."));
             }
 
             var result = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!result)
             {
-                return BadRequest(new ApiErrorResult<string>("No match for username and/or password."));
+                return BadRequest(new ErrorResponseResult<string>("No match for username and/or password."));
             }
 
             var role = await _dbContext.AppRoles.FindAsync(user.RoleId);
 
-            return Ok(new ApiSuccessResult<string>(CreateToken(user, request.Username, role.Name)));
+            return Ok(new SuccessResponseResult<string>(CreateToken(user, request.Username, role.Name)));
+        }
+
+        [HttpGet("auth/user-profile/")]
+        [Authorize]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            var result = await _userManager.FindByNameAsync(User.Identity.Name);
+            var data = _mapper.Map<UserResponse>(result);
+
+            return Ok(data);
         }
 
         [HttpPost("auth/change-password/")]
@@ -71,9 +88,12 @@ namespace AssetManagement.Application.Controllers
                 return BadRequest(result.Errors);
             }
 
-            return Ok(new ApiSuccessResult<string>("Change password success!"));
-        }
+            user.IsLoginFirstTime = false;
 
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new SuccessResponseResult<string>("Change password success!"));
+        }
 
         private string CreateToken(AppUser user, string username, string role)
         {
