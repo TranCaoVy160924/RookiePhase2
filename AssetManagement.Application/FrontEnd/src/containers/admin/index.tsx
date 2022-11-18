@@ -9,7 +9,7 @@ import {
     ShowGuesser 
 } from "react-admin";
 import { theme } from '../../theme';
-import { AuthProvider } from '../../pages/login';
+import { AuthProvider, LoginPage } from '../../pages/login';
 import Layout from '../Layout';
 
 const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
@@ -26,7 +26,7 @@ const App = () => (
         theme={theme} 
         layout={Layout}
         catchAll={NotFound}
-        // loginPage={MyLoginPage}
+        loginPage={LoginPage}
         // requireAuth={true}
     >
         <Resource name="users" list={ListGuesser} show={ShowGuesser} />

@@ -35,7 +35,7 @@ function AuthProvider(authURL){
                     localStorage.setItem('auth', JSON.stringify(auth.value));
                 })
                 .catch(() => {
-                    throw new Error('Network error')
+                    throw new Error('Username or password is incorrect. Please try again')
                 });
         },
 
