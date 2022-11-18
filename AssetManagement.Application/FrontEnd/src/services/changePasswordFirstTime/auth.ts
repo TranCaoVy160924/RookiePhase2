@@ -1,17 +1,17 @@
-import authAxios from "./authAxios";
+import axiosInstance from "../../connectionConfigs/axiosInstance";
 
 const baseUrl = "https://localhost:57118/api/auth/";
 
 const getUserProfile = async () => {
     let url = baseUrl + "user-profile";
-    const response = await authAxios.get(url);
+    const response = await axiosInstance.get(url);
 
     return response.data;
 }
 
 const changePassword = async (changePasswordRequest) => {
     let url = baseUrl + "change-password";
-    const response = await authAxios.post(url, changePasswordRequest);
+    const response = await axiosInstance.post(url, changePasswordRequest);
 
     return response.data;
 }

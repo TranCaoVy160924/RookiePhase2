@@ -1,14 +1,14 @@
 import simpleRestProvider from 'ra-data-simple-rest';
-import axios from 'axios';
 import { fetchUtils } from 'react-admin';
-import authService from '../../services/auth';
+import authService from '../../services/changePasswordFirstTime/auth';
+import axiosInstance from '../../connectionConfigs/axiosInstance';
 
 // Customize Request header
-const httpClient = (url, options = {}) => {
+const httpClient = (url, options) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
-    const { token } = JSON.parse(localStorage.getItem('auth'));
+    const { token } = JSON.parse(localStorage.getItem('auth') as string);
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 };
@@ -21,11 +21,12 @@ function AuthProvider(authURL) {
         ...dataPorvider,
         // send username and password to the auth server and get back credentials
         login: ({ username, password }) => {
-            return axios.post(`${authURL}/api/auth/token`, { username, password }, {
+            return axiosInstance.post(`${authURL}/api/auth/token`, { username, password }, {
                 headers: {
-                    'Accept' : 'application/json',
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                }} )
+                }
+            })
                 .then(response => {
                     if (response.status < 200 || response.status >= 300) {
                         throw new Error(authService.loginFailError);
@@ -36,7 +37,7 @@ function AuthProvider(authURL) {
                     localStorage.setItem('auth', auth.result);
                     return authService.getUserProfile()
                         .then(data => {
-                            if(data.isLoginFirstTime) {
+                            if (data.isLoginFirstTime) {
                                 throw new Error(authService.loginFirstTimeError);
                             }
                         })
@@ -51,7 +52,7 @@ function AuthProvider(authURL) {
                 localStorage.removeItem('auth');
                 return Promise.reject();
             }
-            
+
             // other error code (404, 500, etc): no need to log out
             return Promise.resolve();
         },
@@ -71,7 +72,7 @@ function AuthProvider(authURL) {
         // get the user's profile
         getIdentity: () => {
             try {
-                const { id, fullName, avatar } = JSON.parse(localStorage.getItem('auth'));
+                const { id, fullName, avatar } = JSON.parse(localStorage.getItem('auth') as string);
                 return Promise.resolve({ id, fullName, avatar });
             } catch (error) {
                 return Promise.reject(error);

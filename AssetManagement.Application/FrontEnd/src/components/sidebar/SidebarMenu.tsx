@@ -1,14 +1,14 @@
-import { Menu, Labeled } from 'react-admin';
+import { Menu } from 'react-admin';
 import React from 'react';
-import { Typography, Badge } from '@mui/material';
+import { Typography } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import LabelIcon from '@mui/icons-material/Label';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import RedoIcon from '@mui/icons-material/Redo';
 import PieChartIcon from '@mui/icons-material/PieChart';
-import logo from '../../images/logo-transparent.png';
+import logo from '../../assets/images/logo-transparent.png';
 import HomeIcon from '@mui/icons-material/Home';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme();
 
@@ -20,7 +20,7 @@ const theme = createTheme();
 //     },
 // };
 
-const Index = () => (
+const SidebarMenu = () => (
     <Menu>
         <img src={logo} alt="logo" className="logo" />
         <Typography textAlign="center" variant="h3" component="h2" color="#cf2338" fontSize='1rem' fontWeight="bold" mb={3}>Online Asset Management</Typography>
@@ -33,4 +33,4 @@ const Index = () => (
     </Menu >
 );
 
-export default Index;
+export default SidebarMenu;

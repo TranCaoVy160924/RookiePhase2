@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-const authAxios: AxiosInstance = axios.create({});
+const axiosInstance: AxiosInstance = axios.create({});
 
 const getToken = () => {
     const token = localStorage.getItem("auth");
@@ -32,7 +32,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
     return Promise.reject(error);
 }
 
-authAxios.interceptors.request.use(onRequest, onRequestError);
-authAxios.interceptors.response.use(onResponse, onResponseError);
+axiosInstance.interceptors.request.use(onRequest, onRequestError);
+axiosInstance.interceptors.response.use(onResponse, onResponseError);
 
-export default authAxios;
+export default axiosInstance;

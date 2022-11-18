@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import { Form, PasswordInput, SaveButton, useNotify } from 'react-admin';
-import authService from "../../services/auth";
+import authService from "../../../services/changePasswordFirstTime/auth";
 // import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 // import DialogActions from '@mui/material/DialogActions';

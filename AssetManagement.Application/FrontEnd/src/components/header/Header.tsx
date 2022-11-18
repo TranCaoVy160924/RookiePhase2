@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AppBar } from 'react-admin';
 import Typography from '@mui/material/Typography';
 
-const Index = (props) => (
+const Header = (props) => (
     <AppBar
         sx={{
             "& .RaAppBar-title": {
@@ -28,4 +28,4 @@ const Index = (props) => (
     </AppBar>
 );
 
-export default Index;
+export default Header;

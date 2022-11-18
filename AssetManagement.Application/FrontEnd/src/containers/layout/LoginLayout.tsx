@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import authService from '../../services/auth';
+import authService from '../../services/changePasswordFirstTime/auth';
 import { Form, TextInput, useLogin, useNotify } from 'react-admin';
 import { Avatar, Button, Box, CssBaseline, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import ChangePasswordModal from "./ChangePasswordModal";
+import ChangePasswordModal from "../../components/modal/changePasswordModal/ChangePasswordModal";
 
 const LoginPage = () => {
     const [logingIn, setLogingIn] = useState(false);
@@ -17,7 +17,7 @@ const LoginPage = () => {
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
 
-    const handleFormSubmit = ({ userName, password }) => {
+    const handleFormSubmit = ({ userName, password }: any) => {
         // e.preventDefault();
         setLogingIn(true);
         login({ username: userName, password: password })
@@ -38,7 +38,10 @@ const LoginPage = () => {
     };
 
     const requiredInput = (values) => {
-        const errors = {};
+        const errors = {
+            userName: "",
+            password: "",
+        };
         if (!values.userName) {
             errors.userName = "This is required";
             setIsValid(true);
@@ -47,6 +50,7 @@ const LoginPage = () => {
             setIsValid(true);
         } else {
             setIsValid(false);
+            return {};
         }
         return errors;
     }
