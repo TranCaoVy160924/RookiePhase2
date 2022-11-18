@@ -1,5 +1,6 @@
 import simpleRestProvider from 'ra-data-simple-rest';
-import { fetchUtils, Admin, Resource } from 'react-admin';
+import axios from 'axios';
+import { fetchUtils } from 'react-admin';
 import authService from '../../services/auth';
 
 // Customize Request header
@@ -20,17 +21,16 @@ function AuthProvider(authURL) {
         ...dataPorvider,
         // send username and password to the auth server and get back credentials
         login: ({ username, password }) => {
-            const request = new Request(`${authURL}/api/auth/token`, {
-                method: 'POST',
-                body: JSON.stringify({ userName: username, password: password }),
-                headers: new Headers({ 'Content-Type': 'application/json' }),
-            });
-            return fetch(request)
+            return axios.post(`${authURL}/api/auth/token`, { username, password }, {
+                headers: {
+                    'Accept' : 'application/json',
+                    'Content-Type': 'application/json'
+                }} )
                 .then(response => {
                     if (response.status < 200 || response.status >= 300) {
                         throw new Error(authService.loginFailError);
                     }
-                    return response.json()
+                    return response.data
                 })
                 .then(auth => {
                     localStorage.setItem('auth', auth.result);
@@ -40,7 +40,7 @@ function AuthProvider(authURL) {
                                 throw new Error(authService.loginFirstTimeError);
                             }
                         })
-                })
+                });
         },
 
         // when the dataProvider returns an error, check if this is an authentication error

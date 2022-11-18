@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import authService from '../../services/auth';
-import { Form, TextInput, useLogin, useNotify, required } from 'react-admin';
-import { Avatar, Button, Box, TextField, CssBaseline, Typography, Container } from '@mui/material';
-import { createTheme, ThemeProvider, responsiveFontSizes, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
-import { Formik } from "formik"
-import * as Yup from 'yup';
+import { Form, TextInput, useLogin, useNotify } from 'react-admin';
+import { Avatar, Button, Box, CssBaseline, Typography, Container } from '@mui/material';
+import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ChangePasswordModal from "./ChangePasswordModal";
 
@@ -19,7 +17,7 @@ const LoginPage = () => {
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
 
-    const handleFormSubmit = (data) => {
+    const handleFormSubmit = ({ userName, password }) => {
         // e.preventDefault();
         setLogingIn(true);
         login({ username: userName, password: password })

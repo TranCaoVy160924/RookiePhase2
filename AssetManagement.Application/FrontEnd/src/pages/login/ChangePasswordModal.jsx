@@ -1,11 +1,10 @@
 import React from 'react';
-import { Modal, Grid, Box } from '@mui/material';
-import { Create, Form, PasswordInput, SaveButton, useNotify } from 'react-admin';
+import { Grid } from '@mui/material';
+import { Form, PasswordInput, SaveButton, useNotify } from 'react-admin';
 import authService from "../../services/auth";
-import authAxios from '../../services/authAxios';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
+// import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -42,8 +41,8 @@ const ChangePasswordModal = ({
     }
 
     const style = {
-        bgcolor: 'red',
-        color: "black"
+        bgcolor: '#cf2338',
+        color: "#fff"
     }
 
     return (
@@ -63,13 +62,13 @@ const ChangePasswordModal = ({
                     </DialogContentText>
                     <Form onSubmit={handleChangePassword} id="change_password_first_login_form">
                         <Grid container>
-                            <Grid itm xs={12}>
+                            <Grid item xs={12}>
                                 <PasswordInput source="newPassword" fullWidth />
                             </Grid>
-                            <Grid itm xs={12}>
+                            <Grid item xs={12}>
                                 <PasswordInput source="confirmPassword" fullWidth />
                             </Grid>
-                            <Grid itm xs={12}>
+                            <Grid item xs={12}>
                                 <SaveButton sx={style} type="submit" />
                             </Grid>
                         </Grid>
