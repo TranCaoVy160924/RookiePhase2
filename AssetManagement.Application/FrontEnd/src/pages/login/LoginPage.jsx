@@ -1,31 +1,49 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import authService from '../../services/auth';
 import { useLogin, useNotify } from 'react-admin';
 import { Avatar, Button, Box, TextField, CssBaseline, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider, responsiveFontSizes, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import { Formik } from "formik"
 import * as Yup from 'yup';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import ChangePasswordModal from "./ChangePasswordModal";
 
 const LoginPage = () => {
+    const [logingIn, setLogingIn] = useState(false);
+    const [loginFirstTime, setLoginFirstTime] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState("");
     const login = useLogin();
     const notify = useNotify();
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
 
     const initialValues = {
-        userName : "",
-        password : ""
+        userName: "",
+        password: ""
     }
     const loginSchema = Yup.object().shape({
-        userName : Yup.string().required("required"),
-        password : Yup.string().required("required"),
+        userName: Yup.string().required("required"),
+        password: Yup.string().required("required"),
     })
 
     const handleFormSubmit = ({ userName, password }) => {
         // e.preventDefault();
-        login({ username: userName, password: password }).catch(() =>
-            notify('Invalid email or password')
-        );
+        setLogingIn(true);
+        login({ username: userName, password: password })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                setLogingIn(false);
+                let errorMessage = error.message;
+                if (errorMessage === authService.loginFirstTimeError) {
+                    setLoginFirstTime(true);
+                    setCurrentPassword(password);
+                }
+                if (errorMessage === authService.loginFailError) {
+                    notify('Invalid email or password');
+                }
+            });
     };
 
     return (
@@ -71,8 +89,8 @@ const LoginPage = () => {
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             defaultValue={values.userName}
-                                            error={ !!touched.userName && !!errors.userName }
-                                            helperText={ touched.userName && errors.userName }
+                                            error={!!touched.userName && !!errors.userName}
+                                            helperText={touched.userName && errors.userName}
                                             sx={{ gridColumn: "span 5" }}
                                         />
                                         <TextField
@@ -87,13 +105,13 @@ const LoginPage = () => {
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             defaultValue={values.password}
-                                            error={ !!touched.password && !!errors.password }
-                                            helperText={ touched.password && errors.password }
+                                            error={!!touched.password && !!errors.password}
+                                            helperText={touched.password && errors.password}
                                             sx={{ gridColumn: "span 5" }}
                                         />
                                     </Box>
                                     <Box display="flex" justifyContent="end" mt="20px">
-                                        <Button type="submit" color="secondary" variant="contained">
+                                        <Button disabled={logingIn} type="submit" color="secondary" variant="contained">
                                             Log in
                                         </Button>
                                     </Box>
@@ -102,6 +120,12 @@ const LoginPage = () => {
                         </Formik>
                     </Box>
                 </Box>
+
+                <ChangePasswordModal
+                    loginFirstTime={loginFirstTime}
+                    setLoginFirstTime={setLoginFirstTime}
+                    currentPassword={currentPassword}
+                />
             </Container>
         </ThemeProvider>
     );

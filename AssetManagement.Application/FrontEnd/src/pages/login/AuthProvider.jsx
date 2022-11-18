@@ -1,5 +1,6 @@
 import simpleRestProvider from 'ra-data-simple-rest';
 import { fetchUtils, Admin, Resource } from 'react-admin';
+import authService from '../../services/auth';
 
 // Customize Request header
 const httpClient = (url, options = {}) => {
@@ -12,49 +13,54 @@ const httpClient = (url, options = {}) => {
 };
 
 // Setup AuthProvider
-function AuthProvider(authURL){
+function AuthProvider(authURL) {
     const dataPorvider = simpleRestProvider(authURL, httpClient);
-    
+
     return ({
         ...dataPorvider,
         // send username and password to the auth server and get back credentials
-        login: ({ username, password }) =>  {
+        login: ({ username, password }) => {
             const request = new Request(`${authURL}/api/auth/token`, {
                 method: 'POST',
-                body: JSON.stringify({ userName:username, password:password }),
+                body: JSON.stringify({ userName: username, password: password }),
                 headers: new Headers({ 'Content-Type': 'application/json' }),
             });
             return fetch(request)
                 .then(response => {
                     if (response.status < 200 || response.status >= 300) {
-                        throw new Error(response.statusText);
+                        throw new Error(authService.loginFailError);
                     }
                     return response.json()
                 })
                 .then(auth => {
-                    localStorage.setItem('auth', JSON.stringify(auth.value));
+                    localStorage.setItem('auth', auth.result);
+                    return authService.getUserProfile()
+                        .then(data => {
+                            if(data.isLoginFirstTime) {
+                                throw new Error(authService.loginFirstTimeError);
+                            }
+                        })
                 })
-                .catch(() => {
-                    throw new Error('Username or password is incorrect. Please try again')
-                });
         },
 
         // when the dataProvider returns an error, check if this is an authentication error
         checkError: (error) => {
             const status = error.status;
+            console.log("error", error)
             if (status === 401 || status === 403) {
                 localStorage.removeItem('auth');
                 return Promise.reject();
             }
+            
             // other error code (404, 500, etc): no need to log out
             return Promise.resolve();
         },
 
         // when the user navigates, make sure that their credentials are still valid
         checkAuth: () => localStorage.getItem('auth')
-        ? Promise.resolve()
-        // react-admin passes the error message to the translation layer
-        : Promise.reject({ message: 'login.required' }), 
+            ? Promise.resolve()
+            // react-admin passes the error message to the translation layer
+            : Promise.reject({ message: 'login.required' }),
 
         // remove local credentials and notify the auth server that the user logged out
         logout: () => {
