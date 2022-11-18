@@ -1,12 +1,19 @@
 using AssetManagement.Application.Controllers;
 using AssetManagement.Application.Tests.Mocks;
+using AssetManagement.Contracts.Authority.Response;
 using AssetManagement.Contracts.AutoMapper;
 using AssetManagement.Data.EF;
 using AssetManagement.Data.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Moq;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace AssetManagement.Application.Tests
 {
@@ -15,7 +22,6 @@ namespace AssetManagement.Application.Tests
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
         private readonly IMapper _mapper;
-        private readonly UserManagerMoq _userManager;
         private readonly IConfiguration _config;
 
         public AuthorityControllerTests()
@@ -26,8 +32,6 @@ namespace AssetManagement.Application.Tests
             _context = new AssetManagementDbContext(_options);
             //Create mapper using UserProfile
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new UserProfile())).CreateMapper();
-            //Create fake userManager
-            _userManager = new UserManagerMoq();
             //Create fake config with fake jwt settings
             Dictionary<string, string> inMemorySettings = new()  {
                 {"JwtSettings:validIssuer", "bruh"},
@@ -41,12 +45,35 @@ namespace AssetManagement.Application.Tests
         }
 
         [Fact]
-        public void GetUserProfile_Unauthorized()
+        public void GetUserProfile_SuccessAsync()
         {
-            AuthorityController controller = new AuthorityController(_userManager, _config, _context, _mapper);
-            Thread.CurrentPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>() { new Claim("name", "John Doe") }));
-            var result = controller.GetUserProfile();
+            //ARRANGE
+            //Create fake user
+            AppUser user = new AppUser() { UserName="John" };
+            //Create UserStore mock
+            Mock<IUserStore<AppUser>> userStoreMoq = new();
+            //Create UserManager mock using userStoreMoq
+            Mock<UserManager<AppUser>> userManagerMoq = new(userStoreMoq.Object, null, null, null, null, null, null, null, null);
+            //Set up
+            userManagerMoq.Setup(um => um.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
+            //Create controller
+            AuthorityController controller = new AuthorityController(userManagerMoq.Object, _config, _context, _mapper);
+            //Create context for controller with fake login
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new GenericPrincipal(new GenericIdentity("John"), null)
+                }
+            };
+
+            //ACT
+            IActionResult result = controller.GetUserProfile().Result;
+
+            //ASSERT
             Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equivalent(_mapper.Map<UserResponse>(user) , ((OkObjectResult)result).Value);
         }
 
         //Create InMemory Data
@@ -55,8 +82,6 @@ namespace AssetManagement.Application.Tests
             //Make sure InMemory data is deleted before creating new data
             //To avoid duplicated keys error
             _context.Database.EnsureDeleted();
-            AppUser user = new AppUser() { UserName = "username"};
-            _userManager.CreateAsync(user).Wait();
         }
 
         //Clean up after tests
