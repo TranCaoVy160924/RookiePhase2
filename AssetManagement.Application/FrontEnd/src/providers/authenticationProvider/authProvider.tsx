@@ -14,27 +14,25 @@ const httpClient = (url, options) => {
 
 // Setup AuthProvider
 function AuthProvider(authURL) {
-    const dataPorvider = simpleRestProvider(authURL, httpClient);
+    const dataPorvider = simpleRestProvider(authURL);
 
     return ({
         ...dataPorvider,
         // send username and password to the auth server and get back credentials
         login: ({ username, password }) => {
-            return axiosInstance.post(`${authURL}/api/auth/token`, { username, password }, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
+            return axiosInstance.post(`${authURL}/api/auth/token`, { Username: username, Password: password }, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
                 .then(response => {
                     if (response.status < 200 || response.status >= 300) {
                         throw new Error("Username or password is incorrect. Please try again");
                     }
-                    return response.data
+                    localStorage.setItem('auth', response.data.result.token);
+                    localStorage.setItem('role', response.data.result.role);
                 })
-                .then(auth => {
-                    localStorage.setItem('auth', auth.result);
-                });
         },
 
         // when the dataProvider returns an error, check if this is an authentication error

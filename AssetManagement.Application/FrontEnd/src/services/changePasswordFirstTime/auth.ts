@@ -1,7 +1,6 @@
 import axiosInstance from "../../connectionConfigs/axiosInstance";
 
-// const baseUrl = "https://localhost:57118/api/auth/";
-const baseUrl = "https://localhost:54338/api/auth/";
+const baseUrl = "https://localhost:57118/api/auth/";
 
 const getUserProfile = async () => {
     let url = baseUrl + "user-profile";

@@ -107,10 +107,10 @@ builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
 
-//builder.Services.AddSpaStaticFiles(configuration =>
-//{
-//    configuration.RootPath = "Frontend/build";
-//});
+builder.Services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = "Frontend/build";
+});
 
 var app = builder.Build();
 
@@ -126,7 +126,7 @@ app.UseCors("corsapp");
 
 app.UseHttpsRedirection();
 
-//app.UseSpaStaticFiles();
+app.UseSpaStaticFiles();
 
 app.UseRouting();
 
@@ -140,14 +140,14 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-//app.UseSpa(spa =>
-//{
-//    spa.Options.SourcePath = "Frontend";
+app.UseSpa(spa =>
+{
+    spa.Options.SourcePath = "Frontend";
 
-//    if (app.Environment.IsDevelopment())
-//    {
-//        spa.UseReactDevelopmentServer(npmScript: "start");
-//    }
-//});
+    if (app.Environment.IsDevelopment())
+    {
+        spa.UseReactDevelopmentServer(npmScript: "start");
+    }
+});
 
 app.Run();

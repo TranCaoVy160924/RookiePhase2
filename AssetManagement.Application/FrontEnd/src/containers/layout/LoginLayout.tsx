@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import authService from '../../services/changePasswordFirstTime/auth';
 import { Form, TextInput, useLogin, useNotify } from 'react-admin';
 import { Avatar, Button, Box, CssBaseline, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
@@ -15,12 +14,9 @@ const LoginPage = ({ logingIn, setLogingIn }) => {
     theme = unstable_createMuiStrictModeTheme(theme);
 
     const handleFormSubmit = ({ userName, password }: any) => {
-        // e.preventDefault();
-        setLogingIn(true);
         login({ username: userName, password: password })
-            .then(data => {
-                console.log(data);
-                setLogingIn(false);
+            .then(data => { 
+                setLogingIn(true);
             })
             .catch(error => {
                 setLogingIn(false);
