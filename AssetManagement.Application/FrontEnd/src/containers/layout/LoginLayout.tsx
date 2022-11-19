@@ -3,6 +3,8 @@ import { Form, TextInput, useLogin, useNotify } from 'react-admin';
 import { Avatar, Button, Box, CssBaseline, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { theme } from '../../theme';
+import logo from '../../assets/images/logo-transparent.png';
 
 const LoginPage = ({ logingIn, setLogingIn }) => {
 
@@ -10,8 +12,8 @@ const LoginPage = ({ logingIn, setLogingIn }) => {
 
     const login = useLogin();
     const notify = useNotify();
-    let theme = createTheme();
-    theme = unstable_createMuiStrictModeTheme(theme);
+    // let theme = createTheme();
+    // theme = unstable_createMuiStrictModeTheme(theme);
 
     const handleFormSubmit = ({ userName, password }: any) => {
         login({ username: userName, password: password })
@@ -25,10 +27,8 @@ const LoginPage = ({ logingIn, setLogingIn }) => {
     };
 
     const requiredInput = (values) => {
-        const errors = {
-            userName: "",
-            password: "",
-        };
+        const errors: Record<string, any> = {};
+        console.log(values, errors);
         if (!values.userName) {
             errors.userName = "This is required";
             setIsValid(true);
@@ -54,9 +54,8 @@ const LoginPage = ({ logingIn, setLogingIn }) => {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
+                        {/* <LockOutlinedIcon /> */}
+                        <img src={logo} alt="logo" className="logo" width='20%'/>
                     <Typography component="h1" variant="h5">
                         Log in
                     </Typography>

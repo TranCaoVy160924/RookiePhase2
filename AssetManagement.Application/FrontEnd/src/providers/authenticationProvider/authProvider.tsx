@@ -1,6 +1,7 @@
 import simpleRestProvider from 'ra-data-simple-rest';
 import { fetchUtils } from 'react-admin';
 import axiosInstance from '../../connectionConfigs/axiosInstance';
+import decodeJwt from 'jwt-decode';
 
 // Customize Request header
 const httpClient = (url, options) => {
@@ -32,6 +33,9 @@ function AuthProvider(authURL) {
                     }
                     localStorage.setItem('auth', response.data.result.token);
                     localStorage.setItem('role', response.data.result.role);
+                    // const decodedToken = decodeJwt(response.data.result.token);
+                    // localStorage.setItem('token', response.data.result.token);
+                    localStorage.setItem('permissions', response.data.result.role);
                 })
         },
 
@@ -71,7 +75,10 @@ function AuthProvider(authURL) {
         },
 
         // get the user permissions (optional)
-        getPermissions: () => Promise.resolve(),
+        getPermissions: () => {
+            const role = localStorage.getItem('permissions');
+            return role ? Promise.resolve(role) : Promise.reject();
+        }
     })
 };
 

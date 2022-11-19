@@ -4,6 +4,7 @@ using AssetManagement.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagement.Data.Migrations
 {
     [DbContext(typeof(AssetManagementDbContext))]
-    partial class AssetManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221119051843_initialSetup")]
+    partial class initialSetup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +46,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppRole", (string)null);
+                    b.ToTable("AppRole");
 
                     b.HasData(
                         new
@@ -153,7 +155,7 @@ namespace AssetManagement.Data.Migrations
                     b.HasIndex("RoleId")
                         .IsUnique();
 
-                    b.ToTable("AppUser", (string)null);
+                    b.ToTable("AppUser");
 
                     b.HasData(
                         new
