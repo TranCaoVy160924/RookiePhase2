@@ -1,10 +1,10 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import { Form, PasswordInput, SaveButton, useNotify } from 'react-admin';
+import { Form, PasswordInput, SaveButton, TextInput, useNotify } from 'react-admin';
 import authService from "../../../services/changePasswordFirstTime/auth";
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
+import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -12,32 +12,49 @@ import DialogTitle from '@mui/material/DialogTitle';
 const ChangePasswordModal = ({
     loginFirstTime,
     setLoginFirstTime,
-    currentPassword
 }) => {
     const notify = useNotify();
+
+    const requiredInput = (values) => {
+        let errors = {
+            currentPassword: "",
+            newPassword: "",
+            confirmPassword: "",
+        };
+        if (!values.currentPassword) {
+            errors.currentPassword = "This is required";
+        } else if (!values.newPassword) {
+            errors.newPassword = "This is required";
+        } else if (!values.confirmPassword) {
+            errors.confirmPassword = "This is required";
+        } else if (values.confirmPassword !== values.newPassword) {
+            errors.confirmPassword = "Confirm password not match";
+        } else {
+            return {};
+        }
+        return errors;
+    }
 
     const handleChangePassword = data => {
         const newPassword = data.newPassword;
         const confirmPassword = data.confirmPassword;
+        const currentPassword = data.currentPassword;
 
-        if (newPassword === confirmPassword) {
-            const changePasswordRequest = {
-                newPassword: data.newPassword,
-                confirmPassword: data.confirmPassword,
-                currentPassword
-            }
+        console.log(newPassword, confirmPassword, currentPassword)
 
-            authService.changePassword(changePasswordRequest)
-                .then(() => {
-                    setLoginFirstTime(false);
-                })
-                .catch(() => {
-                    notify("All field is required");
-                })
+        const changePasswordRequest = {
+            newPassword: data.newPassword,
+            confirmPassword: data.confirmPassword,
+            currentPassword: data.currentPassword
         }
-        else {
-            notify("Confirm password must similar to new password");
-        }
+
+        authService.changePassword(changePasswordRequest)
+            .then(() => {
+                setLoginFirstTime(false);
+            })
+            .catch(() => {
+                notify('Invalid password');
+            })
     }
 
     const style = {
@@ -60,16 +77,20 @@ const ChangePasswordModal = ({
                         This is the first time you login. <br />
                         You have to change the password to continue
                     </DialogContentText>
-                    <Form onSubmit={handleChangePassword} id="change_password_first_login_form">
+
+                    <Form onSubmit={handleChangePassword} validate={requiredInput}>
                         <Grid container>
                             <Grid item xs={12}>
-                                <PasswordInput source="newPassword" fullWidth />
+                                <TextInput type="password" source="currentPassword" fullWidth />
                             </Grid>
                             <Grid item xs={12}>
-                                <PasswordInput source="confirmPassword" fullWidth />
+                                <TextInput type="password" source="newPassword" fullWidth />
                             </Grid>
                             <Grid item xs={12}>
-                                <SaveButton sx={style} type="submit" />
+                                <TextInput type="password" source="confirmPassword" fullWidth />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <SaveButton label='Change Password' sx={style} type="submit" />
                             </Grid>
                         </Grid>
                     </Form>

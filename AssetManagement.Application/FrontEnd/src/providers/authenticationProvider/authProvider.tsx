@@ -1,6 +1,5 @@
 import simpleRestProvider from 'ra-data-simple-rest';
 import { fetchUtils } from 'react-admin';
-import authService from '../../services/changePasswordFirstTime/auth';
 import axiosInstance from '../../connectionConfigs/axiosInstance';
 
 // Customize Request header
@@ -29,18 +28,12 @@ function AuthProvider(authURL) {
             })
                 .then(response => {
                     if (response.status < 200 || response.status >= 300) {
-                        throw new Error(authService.loginFailError);
+                        throw new Error("Username or password is incorrect. Please try again");
                     }
                     return response.data
                 })
                 .then(auth => {
                     localStorage.setItem('auth', auth.result);
-                    return authService.getUserProfile()
-                        .then(data => {
-                            if (data.isLoginFirstTime) {
-                                throw new Error(authService.loginFirstTimeError);
-                            }
-                        })
                 });
         },
 

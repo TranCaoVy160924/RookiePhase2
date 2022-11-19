@@ -3,9 +3,9 @@ import './App.css';
 import Admin from './layout/AdminLayout';
 
 function App() {
-  return (
-    <Admin />
-  );
+    return (
+        <Admin />
+    );
 }
 
 export default App;

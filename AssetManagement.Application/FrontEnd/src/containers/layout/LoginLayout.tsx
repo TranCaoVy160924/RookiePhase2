@@ -4,12 +4,9 @@ import { Form, TextInput, useLogin, useNotify } from 'react-admin';
 import { Avatar, Button, Box, CssBaseline, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import ChangePasswordModal from "../../components/modal/changePasswordModal/ChangePasswordModal";
 
-const LoginPage = () => {
-    const [logingIn, setLogingIn] = useState(false);
-    const [loginFirstTime, setLoginFirstTime] = useState(false);
-    const [currentPassword, setCurrentPassword] = useState("");
+const LoginPage = ({ logingIn, setLogingIn }) => {
+
     const [isValid, setIsValid] = useState(true);
 
     const login = useLogin();
@@ -23,17 +20,11 @@ const LoginPage = () => {
         login({ username: userName, password: password })
             .then(data => {
                 console.log(data);
+                setLogingIn(false);
             })
             .catch(error => {
                 setLogingIn(false);
-                let errorMessage = error.message;
-                if (errorMessage === authService.loginFirstTimeError) {
-                    setLoginFirstTime(true);
-                    setCurrentPassword(password);
-                }
-                if (errorMessage === authService.loginFailError) {
-                    notify('Invalid email or password');
-                }
+                notify('Invalid email or password');
             });
     };
 
@@ -102,19 +93,13 @@ const LoginPage = () => {
                                 />
                             </Box>
                             <Box display="flex" justifyContent="end" mt="20px">
-                                <Button type="submit" color="secondary" variant="contained" disabled={isValid}>
+                                <Button type="submit" color="secondary" variant="contained" disabled={isValid || logingIn}>
                                     Log in
                                 </Button>
                             </Box>
                         </Form>
                     </Box>
                 </Box>
-
-                <ChangePasswordModal
-                    loginFirstTime={loginFirstTime}
-                    setLoginFirstTime={setLoginFirstTime}
-                    currentPassword={currentPassword}
-                />
             </Container>
         </ThemeProvider>
     );
