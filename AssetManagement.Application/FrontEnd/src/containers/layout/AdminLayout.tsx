@@ -20,15 +20,15 @@ import HomeList from '../../pages/home/HomeList';
 const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
 
 // You will fix this API-URL
-const authProvider = AuthProvider('https://localhost:57194')
+const authProvider = AuthProvider('https://localhost:50569')
 
 const App = () => {
     const [loginFirstTime, setLoginFirstTime] = useState(false);
-    const [logingIn, setLogingIn] = useState(false);
-    const [ permissions, setPermissions] = useState(localStorage.getItem('permissions'));
-    useEffect(() => {
-        if  (localStorage.getItem('auth')){
-            authService.getUserProfile()
+    const { permissions } = usePermissions();
+    // const permissions: string = "Admin";
+
+    const checkIsLoginFirstTime = () => {
+        authService.getUserProfile()
             .then(data => {
                 console.log("User data", data);
                 if (data.isLoginFirstTime) {
@@ -38,8 +38,7 @@ const App = () => {
             .catch(error => {
                 console.log(error)
             })
-        }
-    }, [logingIn])
+    }
     return (
         <>
             <Admin
@@ -49,12 +48,12 @@ const App = () => {
                 theme={theme}
                 layout={Layout}
                 catchAll={NotFound}
-                loginPage={<LoginPage logingIn={logingIn} setLogingIn={setLogingIn} />}
+                loginPage={<LoginPage checkIsLoginFirstTime={checkIsLoginFirstTime} />}
                 requireAuth={true}
             >
-                <Resource name="home" options={{ label: 'Home' }} list={HomeList}/>
-                {permissions === 'Admin'? <Resource name="assets" options={{ label: 'Manage Asset' }}/>: null}
-                {permissions === 'Admin'? <Resource name="users" options={{ label: 'Manage User' }} list={ListGuesser} show={ShowGuesser} />:null}
+                <Resource name="home" options={{ label: 'Home' }} list={HomeList} />
+                {permissions == 'Admin' ? <Resource name="assets" options={{ label: 'Manage Asset' }} /> : null}
+                {permissions == 'Admin' ? <Resource name="users" options={{ label: 'Manage User' }} list={ListGuesser} show={ShowGuesser} /> : null}
             </Admin>
 
             <ChangePasswordModal

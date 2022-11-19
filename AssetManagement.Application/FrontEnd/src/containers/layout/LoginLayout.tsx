@@ -6,10 +6,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { theme } from '../../theme';
 import logo from '../../assets/images/logo-transparent.png';
 
-const LoginPage = ({ logingIn, setLogingIn }) => {
+const LoginPage = ({ checkIsLoginFirstTime }) => {
 
     const [isValid, setIsValid] = useState(true);
-
+    console.log("Login");
     const login = useLogin();
     const notify = useNotify();
     // let theme = createTheme();
@@ -17,18 +17,17 @@ const LoginPage = ({ logingIn, setLogingIn }) => {
 
     const handleFormSubmit = ({ userName, password }: any) => {
         login({ username: userName, password: password })
-            .then(data => { 
-                setLogingIn(true);
+            .then(data => {
+                checkIsLoginFirstTime();
             })
             .catch(error => {
-                setLogingIn(false);
+                console.log(error);
                 notify('Invalid email or password');
             });
     };
 
     const requiredInput = (values) => {
         const errors: Record<string, any> = {};
-        console.log(values, errors);
         if (!values.userName) {
             errors.userName = "This is required";
             setIsValid(true);
@@ -54,8 +53,8 @@ const LoginPage = ({ logingIn, setLogingIn }) => {
                         alignItems: 'center',
                     }}
                 >
-                        {/* <LockOutlinedIcon /> */}
-                        <img src={logo} alt="logo" className="logo" width='20%'/>
+                    {/* <LockOutlinedIcon /> */}
+                    <img src={logo} alt="logo" className="logo" width='20%' />
                     <Typography component="h1" variant="h5">
                         Log in
                     </Typography>
@@ -88,7 +87,7 @@ const LoginPage = ({ logingIn, setLogingIn }) => {
                                 />
                             </Box>
                             <Box display="flex" justifyContent="end" mt="20px">
-                                <Button type="submit" color="secondary" variant="contained" disabled={isValid || logingIn}>
+                                <Button type="submit" color="secondary" variant="contained" disabled={isValid}>
                                     Log in
                                 </Button>
                             </Box>
