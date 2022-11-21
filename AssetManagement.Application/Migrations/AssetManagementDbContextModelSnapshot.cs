@@ -50,7 +50,7 @@ namespace AssetManagement.Application.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "df75a844-0eb4-4774-aed2-70539c0adcb3",
+                            ConcurrencyStamp = "6eaee78c-093a-4ea3-a5e1-8d9245a12a8d",
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -58,7 +58,7 @@ namespace AssetManagement.Application.Migrations
                         new
                         {
                             Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            ConcurrencyStamp = "6e8fa4bc-46aa-471e-90f9-2f0ccf6c0a4c",
+                            ConcurrencyStamp = "ad312867-52f4-48dc-a653-8031bb1efb45",
                             Description = "Staff role",
                             Name = "Staff",
                             NormalizedName = "staff"
@@ -160,8 +160,8 @@ namespace AssetManagement.Application.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7adbd983-d62c-43cd-b7d5-47b2c8ab4024",
-                            CreatedDate = new DateTime(2022, 11, 21, 15, 35, 17, 855, DateTimeKind.Local).AddTicks(3110),
+                            ConcurrencyStamp = "bdfbdcdf-a68c-47bd-84e0-370489341671",
+                            CreatedDate = new DateTime(2022, 11, 21, 15, 59, 20, 17, DateTimeKind.Local).AddTicks(8813),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -174,12 +174,37 @@ namespace AssetManagement.Application.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK1KwoZoQ1JJ3yzdqpLJk3Q6Sbvo3CELeby1svAdltwsERbE2QaryMsRkBi8rzytNw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDkLkSGku3kri69pqxPJUAoYO9xi8S+3MB2zLqvUJO9cOJJoCTER128qfJl2NuWGpg==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("0ce6ae9c-55ab-408d-b37e-b88acec37bbb"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "02622f58-6ca9-4c49-a934-2b3ee21baca5",
+                            CreatedDate = new DateTime(2022, 11, 21, 15, 59, 20, 24, DateTimeKind.Local).AddTicks(1093),
+                            Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "staff@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Toan",
+                            Gender = "Male",
+                            IsLoginFirstTime = true,
+                            LastName = "Bach",
+                            Location = "HCM",
+                            LockoutEnabled = false,
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NormalizedEmail = "staff@gmail.com",
+                            NormalizedUserName = "staff",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDS8zgwRISVAJ14CFqvJ/m398fhVHfunH0al66aS4jqdi5Aq1rs6XB6CsXXtcXXGkA==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "staff"
                         });
                 });
 
