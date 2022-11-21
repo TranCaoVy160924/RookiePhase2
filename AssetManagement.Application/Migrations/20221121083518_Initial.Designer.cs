@@ -4,25 +4,27 @@ using AssetManagement.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AssetManagement.Data.Migrations
+namespace AssetManagement.Application.Migrations
 {
     [DbContext(typeof(AssetManagementDbContext))]
-    partial class AssetManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221121083518_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.11")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AssetManagement.Data.Entities.AppRole", b =>
+            modelBuilder.Entity("AssetManagement.Domain.Models.AppRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +52,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "496a62b3-7276-40a3-ab88-e4a7d815054b",
+                            ConcurrencyStamp = "df75a844-0eb4-4774-aed2-70539c0adcb3",
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -58,14 +60,14 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            ConcurrencyStamp = "084d42b1-742b-4190-b8a3-d245fffa8daf",
+                            ConcurrencyStamp = "6e8fa4bc-46aa-471e-90f9-2f0ccf6c0a4c",
                             Description = "Staff role",
                             Name = "Staff",
                             NormalizedName = "staff"
                         });
                 });
 
-            modelBuilder.Entity("AssetManagement.Data.Entities.AppUser", b =>
+            modelBuilder.Entity("AssetManagement.Domain.Models.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,8 +162,8 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8db1423e-7daa-4a9c-af92-3ac42e1caa07",
-                            CreatedDate = new DateTime(2022, 11, 21, 10, 0, 8, 273, DateTimeKind.Local).AddTicks(719),
+                            ConcurrencyStamp = "7adbd983-d62c-43cd-b7d5-47b2c8ab4024",
+                            CreatedDate = new DateTime(2022, 11, 21, 15, 35, 17, 855, DateTimeKind.Local).AddTicks(3110),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -174,7 +176,7 @@ namespace AssetManagement.Data.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMpVJ+AVEtSfL7A8SyJdnlakZnpzq1TtqFTb1PZ+vAs96gWS7t+JIeQdlexns/NHUg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEK1KwoZoQ1JJ3yzdqpLJk3Q6Sbvo3CELeby1svAdltwsERbE2QaryMsRkBi8rzytNw==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                             SecurityStamp = "",
@@ -287,18 +289,18 @@ namespace AssetManagement.Data.Migrations
                     b.ToTable("AppUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AssetManagement.Data.Entities.AppUser", b =>
+            modelBuilder.Entity("AssetManagement.Domain.Models.AppUser", b =>
                 {
-                    b.HasOne("AssetManagement.Data.Entities.AppRole", "AppRole")
+                    b.HasOne("AssetManagement.Domain.Models.AppRole", "AppRole")
                         .WithOne("AppUser")
-                        .HasForeignKey("AssetManagement.Data.Entities.AppUser", "RoleId")
+                        .HasForeignKey("AssetManagement.Domain.Models.AppUser", "RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AppRole");
                 });
 
-            modelBuilder.Entity("AssetManagement.Data.Entities.AppRole", b =>
+            modelBuilder.Entity("AssetManagement.Domain.Models.AppRole", b =>
                 {
                     b.Navigation("AppUser")
                         .IsRequired();
