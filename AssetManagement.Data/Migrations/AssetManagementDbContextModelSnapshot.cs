@@ -50,7 +50,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "05e2de69-4a76-46ea-bc55-9870863ca4d9",
+                            ConcurrencyStamp = "496a62b3-7276-40a3-ab88-e4a7d815054b",
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -58,7 +58,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            ConcurrencyStamp = "0456b983-4a60-4295-9588-2d782bda9b7b",
+                            ConcurrencyStamp = "084d42b1-742b-4190-b8a3-d245fffa8daf",
                             Description = "Staff role",
                             Name = "Staff",
                             NormalizedName = "staff"
@@ -160,8 +160,8 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ef4e00c3-1948-4b58-bf42-786a9b54f167",
-                            CreatedDate = new DateTime(2022, 11, 19, 22, 11, 47, 738, DateTimeKind.Local).AddTicks(6892),
+                            ConcurrencyStamp = "8db1423e-7daa-4a9c-af92-3ac42e1caa07",
+                            CreatedDate = new DateTime(2022, 11, 21, 10, 0, 8, 273, DateTimeKind.Local).AddTicks(719),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -174,7 +174,7 @@ namespace AssetManagement.Data.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJfugJV6w63PDSOgxDYsowqZCcwShSTlNUxFKA2jbO473+gc64J/XcoN5ubXzxkXEA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMpVJ+AVEtSfL7A8SyJdnlakZnpzq1TtqFTb1PZ+vAs96gWS7t+JIeQdlexns/NHUg==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                             SecurityStamp = "",

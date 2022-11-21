@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AssetManagement.Data.Migrations
 {
-    public partial class initialSetup : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -137,12 +137,12 @@ namespace AssetManagement.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AppRole",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
-                values: new object[] { new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"), "6012e620-c7d7-42d3-98e0-51efd078dfde", "Staff role", "Staff", "staff" });
+                values: new object[] { new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"), "084d42b1-742b-4190-b8a3-d245fffa8daf", "Staff role", "Staff", "staff" });
 
             migrationBuilder.InsertData(
                 table: "AppRole",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
-                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "9f268807-8376-4b1d-8b1f-acb0d6c900f3", "Administrator role", "Admin", "admin" });
+                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "496a62b3-7276-40a3-ab88-e4a7d815054b", "Administrator role", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AppUserRoles",
@@ -152,7 +152,7 @@ namespace AssetManagement.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AppUser",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedDate", "Dob", "Email", "EmailConfirmed", "FirstName", "Gender", "IsLoginFirstTime", "LastName", "Location", "LockoutEnabled", "LockoutEnd", "ModifiedDate", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "4f0d5d14-1b99-434a-aa8f-d2ee068b441e", new DateTime(2022, 11, 19, 12, 18, 43, 507, DateTimeKind.Local).AddTicks(4641), new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Toan", "Male", true, "Bach", "HCM", false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", "admin", "AQAAAAEAACcQAAAAELvwVsMwOo8XqJ6Z4jSTO2Bz1lQ9DqyKwvDvBcC12v6D/ImMd7ZW88M8ma1pgXHEyw==", null, false, new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "", false, "admin" });
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "8db1423e-7daa-4a9c-af92-3ac42e1caa07", new DateTime(2022, 11, 21, 10, 0, 8, 273, DateTimeKind.Local).AddTicks(719), new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Toan", "Male", true, "Bach", "HCM", false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", "admin", "AQAAAAEAACcQAAAAEMpVJ+AVEtSfL7A8SyJdnlakZnpzq1TtqFTb1PZ+vAs96gWS7t+JIeQdlexns/NHUg==", null, false, new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "", false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppUser_RoleId",
