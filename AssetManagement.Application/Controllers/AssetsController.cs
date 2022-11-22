@@ -50,7 +50,7 @@ namespace AssetManagement.Application.Controllers
                 return BadRequest(new ErrorResponseResult<string>(ex.Message));
             }
 
-            return StatusCode(StatusCodes.Status200OK);
+            return Ok(_mapper.Map<UpdateAssetResponse>(updatingAsset));
         }
 
 
