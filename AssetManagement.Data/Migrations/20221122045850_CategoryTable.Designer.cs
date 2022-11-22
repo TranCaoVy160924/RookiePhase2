@@ -4,6 +4,7 @@ using AssetManagement.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagement.Data.Migrations
 {
     [DbContext(typeof(AssetManagementDbContext))]
-    partial class AssetManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221122045850_CategoryTable")]
+    partial class CategoryTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,9 +226,6 @@ namespace AssetManagement.Data.Migrations
                     b.Property<DateTime>("InstalledDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -243,108 +242,6 @@ namespace AssetManagement.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Assets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AssetCode = "1",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4809),
-                            IsDeleted = false,
-                            Name = "Asset 1",
-                            Specification = "1",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AssetCode = "2",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4899),
-                            IsDeleted = true,
-                            Name = "Asset 2",
-                            Specification = "2",
-                            State = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AssetCode = "3",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4912),
-                            IsDeleted = false,
-                            Name = "Asset 3",
-                            Specification = "3",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AssetCode = "4",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4920),
-                            IsDeleted = true,
-                            Name = "Asset 4",
-                            Specification = "4",
-                            State = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AssetCode = "5",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4927),
-                            IsDeleted = false,
-                            Name = "Asset 5",
-                            Specification = "5",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AssetCode = "6",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4941),
-                            IsDeleted = true,
-                            Name = "Asset 6",
-                            Specification = "6",
-                            State = 0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AssetCode = "7",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4949),
-                            IsDeleted = false,
-                            Name = "Asset 7",
-                            Specification = "7",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AssetCode = "8",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4957),
-                            IsDeleted = true,
-                            Name = "Asset 8",
-                            Specification = "8",
-                            State = 0
-                        },
-                        new
-                        {
-                            Id = 9,
-                            AssetCode = "9",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4964),
-                            IsDeleted = false,
-                            Name = "Asset 9",
-                            Specification = "9",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 10,
-                            AssetCode = "10",
-                            InstalledDate = new DateTime(2022, 11, 22, 12, 21, 37, 610, DateTimeKind.Local).AddTicks(4974),
-                            IsDeleted = true,
-                            Name = "Asset 10",
-                            Specification = "10",
-                            State = 0
-                        });
                 });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Category", b =>
