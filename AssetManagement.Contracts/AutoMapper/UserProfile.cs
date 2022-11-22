@@ -1,5 +1,6 @@
 ﻿using AssetManagement.Contracts.Authority.Response;
 using AssetManagement.Domain.Models;
+using AssetManagement.Contracts.Asset.Request;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace AssetManagement.Contracts.AutoMapper
         public UserProfile()
         {
             CreateMap<AppUser, UserResponse>();
+            CreateMap<UpdateAssetRequest, AssetManagement.Domain.Models.Asset>();
         }
     }
 }

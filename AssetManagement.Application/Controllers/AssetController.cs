@@ -25,6 +25,36 @@ namespace AssetManagement.Application.Controllers
             //_mapper = mapper;
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromForm] UpdateAssetRequest request)
+        {
+            Asset updatingAsset = await _dbContext.Assets
+                .Where(a => a.Id == id)
+                .FirstOrDefaultAsync();
+
+            try
+            {
+                if (updatingAsset != null)
+                {
+                    updatingAsset.Name = request.Name; 
+                    updatingAsset.Specification = request.Specification; 
+                    updatingAsset.InstalledDate = request.InstalledDate ;
+                    updatingAsset.State = request.State; 
+                    await _dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception($"Cannot find a asset with id: {id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponseResult<string>(ex.Message));
+            }
+
+            return StatusCode(StatusCodes.Status200OK);
+        }
+
         [HttpDelete("asset/delete")]
         [Authorize]
         public async Task<IActionResult> DeleteAsset(DeleteAssetRequest deleteAssetRequest)
