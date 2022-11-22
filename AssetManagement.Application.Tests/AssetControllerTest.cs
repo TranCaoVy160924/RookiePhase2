@@ -1,5 +1,7 @@
 ﻿using AssetManagement.Application.Controllers;
 using AssetManagement.Contracts.Asset.Request;
+using AssetManagement.Contracts.Asset.Response;
+using AssetManagement.Contracts.AutoMapper;
 using AssetManagement.Data.EF;
 using AssetManagement.Domain.Enums.Asset;
 using AssetManagement.Domain.Models;
@@ -9,11 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static AssetManagement.Application.Tests.TestHelper.ConverterFromIActionResult;
 using Xunit;
 
 namespace AssetManagement.Application.Tests
@@ -32,6 +36,8 @@ namespace AssetManagement.Application.Tests
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
                 .UseInMemoryDatabase(databaseName: "AssetTestDb").Options;
 
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new UserProfile())).CreateMapper();
+
             // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
             _context.Database.EnsureDeleted();
@@ -43,32 +49,31 @@ namespace AssetManagement.Application.Tests
         public async Task DeleteAsset_Success_ReturnDeletedAsset()
         {
             // Arrange 
-            DeleteAssetRequest request = new DeleteAssetRequest
-            {
-                Id = 1
-            };
-            AssetController assetController = new AssetController(_context);
+            AssetController assetController = new AssetController(_context, _mapper);
+            var deletedAsset = _mapper
+                .Map<DeleteAssetReponse>(await _context.Assets
+                    .Where(a => a.Id == 1)
+                    .FirstOrDefaultAsync());
+            deletedAsset.IsDeleted = true;
 
             // Act 
-            StatusCodeResult result = (StatusCodeResult)await assetController.DeleteAsset(request);
-            int expectedResult = 200;
+            var result = await assetController.DeleteAsset(1);
+
+            string resultObject = ConvertOkObject<DeleteAssetReponse>(result);
+            string expectedObject = JsonConvert.SerializeObject(deletedAsset);
 
             // Assert
-            Assert.Equal(expectedResult, result.StatusCode);
+            Assert.Equal(resultObject, expectedObject);
         }
 
         [Fact]
         public async Task DeleteAsset_Invalid_ReturnBadRequest()
         {
             // Arrange 
-            DeleteAssetRequest request = new DeleteAssetRequest
-            {
-                Id = 2,
-            };
-            AssetController assetController = new AssetController(_context);
+            AssetController assetController = new AssetController(_context, _mapper);
 
             // Act 
-            var result = await assetController.DeleteAsset(request);
+            var result = await assetController.DeleteAsset(2);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
