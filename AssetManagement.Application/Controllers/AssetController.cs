@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AssetManagement.Application.Controllers
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AssetController : ControllerBase
     {
