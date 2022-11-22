@@ -8,7 +8,9 @@ namespace AssetManagement.Domain.Enums.Asset
 {
     public enum State
     {
-        State1,
-        State2,
+        Available,
+        NotAvailable,
+        WaitingForRecycling,
+        Recycled
     }
 }
