@@ -17,6 +17,7 @@ namespace AssetManagement.Contracts.AutoMapper
         {
             CreateMap<AppUser, UserResponse>();
             CreateMap<AssetManagement.Domain.Models.Asset, ViewListAssets_AssetResponse>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<AssetManagement.Domain.Models.Asset, DeleteAssetReponse>();
         }
     }
 }

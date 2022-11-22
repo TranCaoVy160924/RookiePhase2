@@ -89,11 +89,11 @@ namespace AssetManagement.Data.Extensions
                 modelBuilder.Entity<Asset>().HasData(new Asset
                 {
                     Id = i,
-                    Name = "Asset " + i,
-                    AssetCode = i.ToString(),
-                    Specification = i.ToString(),
+                    Name = "Laptop " + i,
+                    AssetCode = "LA10000" + i,
+                    Specification = $"Core i{i}, {i}GB RAM, {i}50 GB HDD, Window {i}",
                     InstalledDate = DateTime.Now,
-                    State = i%2 == 0 ? State.State1 : State.State2,
+                    State = i%2 == 0 ? State.Available : State.NotAvailable,
                     IsDeleted = i%2 == 0 ? true : false,
                 });
             }

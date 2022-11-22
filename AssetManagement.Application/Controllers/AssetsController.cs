@@ -34,10 +34,10 @@ namespace AssetManagement.Application.Controllers
             {
                 if (updatingAsset != null)
                 {
-                    updatingAsset.Name = request.Name; 
-                    updatingAsset.Specification = request.Specification; 
-                    updatingAsset.InstalledDate = request.InstalledDate ;
-                    updatingAsset.State = request.State; 
+                    updatingAsset.Name = request.Name;
+                    updatingAsset.Specification = request.Specification;
+                    updatingAsset.InstalledDate = request.InstalledDate;
+                    updatingAsset.State = request.State;
                     await _dbContext.SaveChangesAsync();
                 }
                 else
@@ -56,12 +56,12 @@ namespace AssetManagement.Application.Controllers
 
 
 
-        [HttpDelete("asset/delete")]
+        [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteAsset(DeleteAssetRequest deleteAssetRequest)
+        public async Task<IActionResult> DeleteAsset(int id)
         {
             Asset deletingAsset = await _dbContext.Assets
-                .Where(a => !a.IsDeleted && a.Id == deleteAssetRequest.Id)
+                .Where(a => !a.IsDeleted && a.Id == id)
                 .FirstOrDefaultAsync();
 
             try
@@ -81,21 +81,21 @@ namespace AssetManagement.Application.Controllers
                 return BadRequest(new ErrorResponseResult<string>(ex.Message));
             }
 
-            return Ok();
+            return Ok(_mapper.Map<DeleteAssetReponse>(deletingAsset));
         }
 
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int end, [FromQuery]int start, [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="Name", [FromQuery]string? order="ASC")
+        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery] int end, [FromQuery] int start, [FromQuery] string? categoryFilter = "", [FromQuery] string? stateFilter = "", [FromQuery] string? sort = "Name", [FromQuery] string? order = "ASC")
         {
-            var list = _dbContext.Assets.Include(x=>x.Category).AsQueryable();
-            if(categoryFilter != "")
+            var list = _dbContext.Assets.Include(x => x.Category).AsQueryable();
+            if (categoryFilter != "")
             {
                 list = list.Where(x => x.CategoryId == int.Parse(categoryFilter));
             }
-            if(stateFilter != "")
+            if (stateFilter != "")
             {
-                list = list.Where(x=>(int)x.State == int.Parse(stateFilter));
+                list = list.Where(x => (int)x.State == int.Parse(stateFilter));
             }
             switch (sort)
             {
@@ -126,15 +126,16 @@ namespace AssetManagement.Application.Controllers
                     }
             }
 
-            if(order == "DESC")
+            if (order == "DESC")
             {
                 list = list.Reverse();
             }
-            var result = StaticFunctions<Asset>.Paging(list, start, end);
-            
-            var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(result);
+            //var result = StaticFunctions<Asset>.Sort(list, sort, order);
+            var sortedResult = StaticFunctions<Asset>.Paging(list, start, end);
 
-            return Ok(new ViewListAssets_ListResponse { Assets = mappedResult, Total=list.Count()});
+            var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(sortedResult);
+
+            return Ok(new ViewListAssets_ListResponse { Assets = mappedResult, Total = list.Count() });
         }
     }
 }
