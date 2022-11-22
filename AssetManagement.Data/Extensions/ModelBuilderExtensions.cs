@@ -94,7 +94,7 @@ namespace AssetManagement.Data.Extensions
                     Specification = i.ToString(),
                     InstalledDate = DateTime.Now,
                     State = i%2 == 0 ? State.State1 : State.State2,
-                    //IsActive = i%2 == 0 ? true : false,
+                    IsDeleted = i%2 == 0 ? true : false,
                 });
             }
         }
