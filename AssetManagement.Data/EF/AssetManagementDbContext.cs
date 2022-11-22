@@ -38,5 +38,7 @@ namespace AssetManagement.Data.EF
         public DbSet<AppRole> AppRoles { get; set; }
 
         public DbSet<Asset> Assets { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
     }
 }
