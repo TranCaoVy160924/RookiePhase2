@@ -23,12 +23,12 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
 
-        [HttpDelete("asset/delete")]
+        [HttpDelete("delete/:id")]
         [Authorize]
-        public async Task<IActionResult> DeleteAsset(DeleteAssetRequest deleteAssetRequest)
+        public async Task<IActionResult> DeleteAsset(int id)
         {
             Asset deletingAsset = await _dbContext.Assets
-                .Where(a => !a.IsDeleted && a.Id == deleteAssetRequest.Id)
+                .Where(a => !a.IsDeleted && a.Id == id)
                 .FirstOrDefaultAsync();
 
             try
@@ -48,7 +48,7 @@ namespace AssetManagement.Application.Controllers
                 return BadRequest(new ErrorResponseResult<string>(ex.Message));
             }
 
-            return Ok();
+            return Ok(_mapper.Map<DeleteAssetReponse>(deletingAsset));
         }
 
         [HttpGet]
@@ -93,13 +93,14 @@ namespace AssetManagement.Application.Controllers
                     }
             }
 
-            if(order == "DESC")
+            if (order == "DESC")
             {
                 list = list.Reverse();
             }
-            var result = StaticFunctions<Asset>.Paging(list, start, end);
+            //var result = StaticFunctions<Asset>.Sort(list, sort, order);
+            var sortedResult = StaticFunctions<Asset>.Paging(list, start, end);
             
-            var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(result);
+            var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(sortedResult);
 
             return Ok(new ViewListAssets_ListResponse { Assets = mappedResult, Total=list.Count()});
         }

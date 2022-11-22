@@ -22,15 +22,15 @@ using Xunit;
 
 namespace AssetManagement.Application.Tests
 {
-    public class AssetControllerTest
+    public class AssetsControllerTest
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
-        private readonly Mock<IMapper> _mapper;
+        private readonly IMapper _mapper;
         private readonly IConfiguration _config;
         private List<Asset> _assets;
 
-        public AssetControllerTest()
+        public AssetsControllerTest()
         {
             // Create InMemory dbcontext options
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
@@ -42,9 +42,6 @@ namespace AssetManagement.Application.Tests
             _context = new AssetManagementDbContext(_options);
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
-
-            //Mock Mapper 
-            _mapper = new Mock<IMapper>();
         }
 
         #region DeleteAsset
@@ -52,7 +49,7 @@ namespace AssetManagement.Application.Tests
         public async Task DeleteAsset_Success_ReturnDeletedAsset()
         {
             // Arrange 
-            AssetController assetController = new AssetController(_context, _mapper);
+            AssetsController assetController = new AssetsController(_context, _mapper);
             var deletedAsset = _mapper
                 .Map<DeleteAssetReponse>(await _context.Assets
                     .Where(a => a.Id == 1)
@@ -73,7 +70,7 @@ namespace AssetManagement.Application.Tests
         public async Task DeleteAsset_Invalid_ReturnBadRequest()
         {
             // Arrange 
-            AssetsController assetController = new AssetsController(_context, _mapper.Object, _mapper);
+            AssetsController assetController = new AssetsController(_context, _mapper);
 
             // Act 
             var result = await assetController.DeleteAsset(2);
