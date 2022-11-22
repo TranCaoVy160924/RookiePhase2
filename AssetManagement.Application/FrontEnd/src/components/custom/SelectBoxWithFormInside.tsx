@@ -1,17 +1,39 @@
-﻿import React, { useState } from 'react'
+﻿import React, { useState, useEffect } from 'react'
 import { useInput } from 'react-admin';
 import { Box, MenuItem, Select, Typography } from '@mui/material';
+import * as categoryService from '../../services/category'
+import SimpleForm from './SimpleForm'
 
-function SelectBoxWithFormInside({ data, source, format, parse }) {
-    const [addingData, setAddingData] = useState(false)
+function SelectBoxWithFormInside({ source, format, parse }) {
+    const [addingData, setAddingData] = useState({ status:false, data:Array })
+    // const format = (formValue) => (Array.prototype.filter.bind(addingData.data)(item => item.id===formValue))["name"];
+    // const parse = (inputValue) => (Array.prototype.filter.bind(addingData.data)(item => item.id===inputValue))["id"];
     const {
         field,
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted }
     } = useInput({ source, format, parse })
 
+    useEffect(() => {
+        categoryService.getCategory()
+            .then(responseData => setAddingData({ status:false, data:responseData }) )
+            .catch(error => console.log(error))
+    }, [])
+
+    // Handle Click to generate a form for creating new Category
     const handleClick = (e) => {
-        setAddingData(true)
+        setAddingData({ status:true, data:addingData.data })
+    }
+    // Handle Submit to create new Category
+    const handleSubmit = (formData) => {
+        categoryService.createCategory(formData)
+            .then(response => categoryService.getCategory())
+            .then(responseData => setAddingData({ status:false, data:responseData }) )
+            .catch(error => console.log(error))
+    }
+    // Handle Close to close form for createing new Category
+    const handleClose = (e) => {
+        setAddingData({ status:false, data:addingData.data })
     }
 
     return (
@@ -19,7 +41,7 @@ function SelectBoxWithFormInside({ data, source, format, parse }) {
             label=""
             {...field}
             sx={{ 
-                width:"200px", 
+                width:"300px", 
                 height:"40px",
                 padding:"0px",
                 boxSizing:"border-box",
@@ -28,10 +50,12 @@ function SelectBoxWithFormInside({ data, source, format, parse }) {
                 },
             }}
         >
-            {data.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
+            {Array.prototype.map.bind(addingData.data)(
+                (item, index) => <MenuItem key={index} value={item.id}>{item.name}</MenuItem>)
+            }
             <hr style={{ color:"gray" }} />
             <Box>
-                {addingData==false && <Typography 
+                {addingData.status==false && <Typography 
                     color="red" 
                     variant="h6" 
                     sx={{ 
@@ -44,7 +68,7 @@ function SelectBoxWithFormInside({ data, source, format, parse }) {
                 >
                     Add new category
                 </Typography>}
-                {addingData==true && <button>ABCXYZ</button>}
+                {addingData.status==true && <SimpleForm handleSubmit={handleSubmit} handleClose={handleClose} /> }
             </Box>
         </Select>
     )
