@@ -11,13 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 #nullable disable
 namespace AssetManagement.Application.Controllers.Tests
 {
-
     public class CategoryControllerTests : IDisposable
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
         private readonly IMapper _mapper;
-        private List<Category>? _categories;
+        private List<Category> _categories;
         public CategoryControllerTests()
         {
             //Create InMemory dbcontext
@@ -54,14 +53,14 @@ namespace AssetManagement.Application.Controllers.Tests
 
             //ACT
             var result = await controller.CreateAsync(request);
-            Category? newCat = _context.Categories.LastOrDefault();
+            Category data = (Category)((ObjectResult)result).Value;
+            Category newCat = _context.Categories.LastOrDefault();
 
             //ASSERT
             Assert.NotNull(result);
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<OkObjectResult>(result);
             Assert.NotNull(newCat);
-            Assert.Equal(newCat.Name.ToLower(), request.Name.ToLower());
-            Assert.Equal(newCat.Prefix.ToLower(), request.Prefix.ToLower());
+            Assert.Equivalent(newCat, data);
         }
 
         [Theory]

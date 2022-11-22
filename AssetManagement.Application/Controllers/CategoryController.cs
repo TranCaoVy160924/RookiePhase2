@@ -49,9 +49,10 @@ namespace AssetManagement.Application.Controllers
                 try
                 {
                     request.Prefix = request.Prefix.ToUpper();
-                    await _dbContext.Categories.AddAsync(_mapper.Map<Category>(request));
+                    Category newCategory = _mapper.Map<Category>(request);
+                    await _dbContext.Categories.AddAsync(newCategory);
                     await _dbContext.SaveChangesAsync();
-                    return Ok();
+                    return Ok(newCategory);
                 }
                 catch (Exception error) { return BadRequest(error.Message); }
             }
