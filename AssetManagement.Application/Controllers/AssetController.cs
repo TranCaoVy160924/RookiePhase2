@@ -14,16 +14,34 @@ namespace AssetManagement.Application.Controllers
     public class AssetController : ControllerBase
     {
         private readonly AssetManagementDbContext _dbContext;
-        //private readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
-        public AssetController(
-            AssetManagementDbContext dbContext
-            //IMapper mapper
-            )
+        public AssetController(AssetManagementDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
-            //_mapper = mapper;
+            _mapper = mapper;
         }
+
+        [HttpPost("asset/create")]
+        [Authorize]
+        public async Task<IActionResult> CreateAsset(CreateAssetRequest createAssetRequest)
+        {
+            Category category = await _dbContext.Categories.FindAsync(createAssetRequest.CategoryId);
+            if (category == null)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Invalid Category"));
+            }
+            Asset asset = _mapper.Map<Asset>(createAssetRequest);
+
+            int countAsset = await _dbContext.Assets.Where(_ => _.AssetCode.StartsWith(category.Prefix)).CountAsync();
+            asset.AssetCode = category.Prefix + Convert.ToDecimal((countAsset + 1) / 1000000.0).ToString().Split('.')[1];
+            asset.Category = category;
+
+            await _dbContext.Assets.AddAsync(asset);
+            await _dbContext.SaveChangesAsync();
+            return Ok(new SuccessResponseResult<string>("Create Asset sucessfully"));
+        }
+
 
         [HttpDelete("asset/delete")]
         [Authorize]

@@ -47,7 +47,7 @@ namespace AssetManagement.Application.Tests
             {
                 Id = 1
             };
-            AssetController assetController = new AssetController(_context);
+            AssetController assetController = new AssetController(_context, _mapper);
 
             // Act 
             StatusCodeResult result = (StatusCodeResult)await assetController.DeleteAsset(request);
@@ -65,7 +65,7 @@ namespace AssetManagement.Application.Tests
             {
                 Id = 2,
             };
-            AssetController assetController = new AssetController(_context);
+            AssetController assetController = new AssetController(_context, _mapper);
 
             // Act 
             var result = await assetController.DeleteAsset(request);
