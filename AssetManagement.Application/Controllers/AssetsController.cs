@@ -130,7 +130,9 @@ namespace AssetManagement.Application.Controllers
             {
                 list = list.Reverse();
             }
+
             //var result = StaticFunctions<Asset>.Sort(list, sort, order);
+
             var sortedResult = StaticFunctions<Asset>.Paging(list, start, end);
 
             var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(sortedResult);
