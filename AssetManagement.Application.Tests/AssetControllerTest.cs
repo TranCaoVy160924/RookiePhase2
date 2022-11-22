@@ -46,6 +46,7 @@ namespace AssetManagement.Application.Tests
             Asset deletingAsset = await _context.Assets
                 .Where(a => a.Id == 1)
                 .FirstOrDefaultAsync();
+            DeleteAssetRequest request = SingleDeleteAssetRequest();
             AssetController assetController = new AssetController(_context);
 
         }
@@ -63,6 +64,7 @@ namespace AssetManagement.Application.Tests
                     Specification = i.ToString(),
                     InstalledDate = DateTime.Now,
                     State = i % 2 == 0 ? State.State1 : State.State2,
+                    IsDeleted = i % 2 == 0 ? false : true,
                 });
             }
 

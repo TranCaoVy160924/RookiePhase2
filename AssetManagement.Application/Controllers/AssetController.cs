@@ -30,16 +30,16 @@ namespace AssetManagement.Application.Controllers
         public async Task<IActionResult> DeleteAsset(DeleteAssetRequest deleteAssetRequest)
         {
             Asset deletingAsset = await _dbContext.Assets
-                //.Where(a => a.IsActive && a.Id == deleteAssetRequest.Id)
-                .Where(a => a.Id == deleteAssetRequest.Id)
+                .Where(a => !a.IsDeleted && a.Id == deleteAssetRequest.Id)
+                //.Where(a => a.Id == deleteAssetRequest.Id)
                 .FirstOrDefaultAsync();
 
             try
             {
                 if (deletingAsset != null)
                 {
-                    //deletingAsset.IsActive = false;
-                    _dbContext.Assets.Remove(deletingAsset);
+                    deletingAsset.IsDeleted = true;
+                    //_dbContext.Assets.Remove(deletingAsset);
                     await _dbContext.SaveChangesAsync();
                 }
                 else
