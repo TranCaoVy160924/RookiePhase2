@@ -53,16 +53,30 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int end, [FromQuery]int start, [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="Name", [FromQuery]string? order="ASC")
+        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int end, [FromQuery]int start, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="Name", [FromQuery]string? order="ASC")
         {
             var list = _dbContext.Assets.Include(x=>x.Category).AsQueryable();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(x => x.Name.Contains(searchString) || x.AssetCode.Contains(searchString));
+            }
             if(categoryFilter != "")
             {
                 list = list.Where(x => x.CategoryId == int.Parse(categoryFilter));
             }
-            if(stateFilter != "")
+            if(!string.IsNullOrEmpty(stateFilter))
             {
-                list = list.Where(x=>(int)x.State == int.Parse(stateFilter));
+                var arrayChar = stateFilter.Split("&");
+                var arrNumberChar = new List<int>();
+                for (int i = 0; i < arrayChar.Length; i++)
+                {
+                    var temp = 0;
+                    if (int.TryParse(arrayChar[i], out temp))
+                    {
+                        arrNumberChar.Add(int.Parse(arrayChar[i]));
+                    }
+                }
+                list = list.Where(x=> arrNumberChar.Contains((int)x.State));
             }
             switch (sort)
             {

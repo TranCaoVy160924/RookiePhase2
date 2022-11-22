@@ -5,14 +5,24 @@ import config from "../../connectionConfigs/config.json";
 
 export const assetProvider: DataProvider = {
    getList: (resource, params) => {
-      const { page, perPage } = params.pagination;
       console.log(params);
+      const { page, perPage } = params.pagination;
+      const { states, searchString } = params.filter;
       const { field, order } = params.sort;
+      let tmp = "";
+      for (const key in states) {
+         if (Object.prototype.hasOwnProperty.call(states, key)) {
+            const element = states[key];
+            tmp += element + "&";
+         }
+      }
       const query = {
          end: JSON.stringify((page) * perPage),
          start: JSON.stringify((page - 1) * perPage),
          sort: field,
-         order: order
+         order: order,
+         stateFilter: tmp ? tmp : null,
+         searchString: searchString
       };
       const url = `${config.api.base}/api/${resource}?${stringify(query)}`;
       console.log(url);
