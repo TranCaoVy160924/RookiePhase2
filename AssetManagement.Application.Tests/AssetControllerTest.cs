@@ -1,4 +1,6 @@
-﻿using AssetManagement.Data.EF;
+﻿using AssetManagement.Application.Controllers;
+using AssetManagement.Contracts.Asset.Request;
+using AssetManagement.Data.EF;
 using AssetManagement.Domain.Enums.Asset;
 using AssetManagement.Domain.Models;
 using AutoMapper;
@@ -23,17 +25,31 @@ namespace AssetManagement.Application.Tests
 
         public AssetControllerTest()
         {
-            //Create InMemory dbcontext options
+            // Create InMemory dbcontext options
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
                 .UseInMemoryDatabase(databaseName: "AssetTestDb").Options;
-            //Create InMemory dbcontext with options
+
+            // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
-            //Create fake data
+            // Create fake data
             SeedData();
         }
+
+        #region DeleteAsset
+        [Fact]
+        public async Task DeleteAsset_Success_ReturnDeletedAsset()
+        {
+            // Arrange 
+            Asset deletingAsset = await _context.Assets
+                .Where(a => a.Id == 1)
+                .FirstOrDefaultAsync();
+            AssetController assetController = new AssetController(_context);
+
+        }
+        #endregion
 
         private void SeedData()
         {
@@ -47,11 +63,18 @@ namespace AssetManagement.Application.Tests
                     Specification = i.ToString(),
                     InstalledDate = DateTime.Now,
                     State = i % 2 == 0 ? State.State1 : State.State2,
-                    IsActive = i % 2 == 0 ? true : false,
                 });
             }
 
             _context.SaveChanges();
+        }
+
+        private DeleteAssetRequest SingleDeleteAssetRequest()
+        {
+            return new DeleteAssetRequest
+            {
+                Id = 1,
+            };
         }
     }
 }

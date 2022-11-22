@@ -1,4 +1,5 @@
-﻿using AssetManagement.Domain.Models;
+﻿using AssetManagement.Domain.Enums.Asset;
+using AssetManagement.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -81,6 +82,21 @@ namespace AssetManagement.Data.Extensions
                 RoleId = adminRoleId,
                 UserId = adminId
             });
+
+
+            for(int i = 1; i <= 10; i++)
+            {
+                modelBuilder.Entity<Asset>().HasData(new Asset
+                {
+                    Id = i,
+                    Name = "Asset " + i,
+                    AssetCode = i.ToString(),
+                    Specification = i.ToString(),
+                    InstalledDate = DateTime.Now,
+                    State = i%2 == 0 ? State.State1 : State.State2,
+                    //IsActive = i%2 == 0 ? true : false,
+                });
+            }
         }
     }
 }
