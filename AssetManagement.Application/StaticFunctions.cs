@@ -14,42 +14,29 @@ namespace AssetManagement.Application
             {
                 end = records.Count();
             }
-            return records.Skip(start).Take(end - start + 1).ToList();
+            return records.Skip(start).Take(end - start).ToList();
         }
 
-        public static IQueryable<Asset> Sort(IQueryable<T> dataList, string sort, string order)
-        {
-            sort = ConvertCamelToTitle(sort);
-            System.Reflection.PropertyInfo prop = typeof(Asset).GetProperty(sort);
-            //if (order == "ASC")
-            //{
-            //    return dataList
-            //        .OrderBy(data => prop.GetValue(data) ?? string.Empty);
-            //}
-            //else
-            //{
-            //    return dataList
-            //        .OrderByDescending(data => prop.GetValue(data) ?? string.Empty);
-            //}
+        //public static IQueryable<T> Sort(IQueryable<T> dataList, string sort, string order)
+        //{
+        //    sort = ConvertCamelToTitle(sort);
+        //    var prop = typeof(Asset).GetProperty(sort);
+        //    if (order == "ASC")
+        //    {
+        //        return dataList
+        //            .OrderBy(data => prop.GetValue(data, null));
+        //    }
+        //    else
+        //    {
+        //        return dataList
+        //            .OrderByDescending(data => prop.GetValue(data, null));
+        //    }
+        //}
 
-            if (order.Equals("ASC"))
-            {
-                return (IQueryable<Asset>)dataList
-                    .OrderBy(data => prop.GetValue(data) ?? string.Empty)
-                    .AsQueryable();
-            }
-            else
-            {
-                return (IQueryable<Asset>)dataList
-                    .OrderByDescending(data => prop.GetValue(data) ?? string.Empty)
-                    .AsQueryable();
-            }
-        }
-
-        public static string ConvertCamelToTitle(string camelString)
-        {
-            string titleString = camelString.Substring(0, 1).ToUpper() + camelString.Substring(1);
-            return titleString;
-        }
+        //public static string ConvertCamelToTitle(string camelString)
+        //{
+        //    string titleString = camelString.Substring(0, 1).ToUpper() + camelString.Substring(1);
+        //    return titleString;
+        //}
     }
 }
