@@ -93,7 +93,7 @@ namespace AssetManagement.Data.Extensions
                     AssetCode = i.ToString(),
                     Specification = i.ToString(),
                     InstalledDate = DateTime.Now,
-                    State = i%2 == 0 ? State.Available : State.NotAvailable,
+                    State = i%2 == 0 ? State.State1 : State.State2,
                     IsDeleted = i%2 == 0 ? true : false,
                 });
             }

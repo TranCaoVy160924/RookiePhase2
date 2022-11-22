@@ -1,4 +1,5 @@
-﻿using AssetManagement.Contracts.Authority.Response;
+﻿using AssetManagement.Contracts.Asset.Response;
+using AssetManagement.Contracts.Authority.Response;
 using AssetManagement.Domain.Models;
 using AssetManagement.Contracts.Asset.Request;
 using AutoMapper;
@@ -15,7 +16,7 @@ namespace AssetManagement.Contracts.AutoMapper
         public UserProfile()
         {
             CreateMap<AppUser, UserResponse>();
-            CreateMap<UpdateAssetRequest, AssetManagement.Domain.Models.Asset>();
+            CreateMap<AssetManagement.Domain.Models.Asset, ViewListAssets_AssetResponse>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
         }
     }
 }
