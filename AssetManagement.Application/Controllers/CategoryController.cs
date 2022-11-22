@@ -25,7 +25,7 @@ namespace AssetManagement.Application.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<List<GetCategoryResponse>> GetAsync()
         {
             List<Category> categories = await _dbContext.Categories.Where(c => !c.IsDeleted).ToListAsync();
@@ -33,7 +33,7 @@ namespace AssetManagement.Application.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateCategoryRequest request)
         {
             if (ModelState.IsValid)
