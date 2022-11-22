@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagement.Data.Migrations
 {
     [DbContext(typeof(AssetManagementDbContext))]
-    [Migration("20221121101344_Initial")]
+    [Migration("20221122031518_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "3dd51b6c-a535-4693-a21c-5ff3509a8474",
+                            ConcurrencyStamp = "acfb6c92-c938-4485-ae2c-32addb60154a",
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -60,7 +60,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            ConcurrencyStamp = "86a0073b-f39f-4722-b85b-f6d67c2b16d4",
+                            ConcurrencyStamp = "7027a446-e8c2-4b00-bc09-2aefc892ba57",
                             Description = "Staff role",
                             Name = "Staff",
                             NormalizedName = "staff"
@@ -160,8 +160,8 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d640663f-9128-4a96-b305-691cc8b4dd0f",
-                            CreatedDate = new DateTime(2022, 11, 21, 17, 13, 44, 166, DateTimeKind.Local).AddTicks(3670),
+                            ConcurrencyStamp = "1f5d5de4-0a8f-4e38-aad2-629dc6548e1f",
+                            CreatedDate = new DateTime(2022, 11, 22, 10, 15, 18, 550, DateTimeKind.Local).AddTicks(6959),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -174,7 +174,7 @@ namespace AssetManagement.Data.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHMrQZKXmh3eULJbo9hLRm2bhn9NNCd3WWxh7nE4AkEMc4XNX91Rk1Rgdt31l2YrTw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJa907HNcTamMkcpMbHn3vH53c5Ppq4K14JUMo393SmcCtzM/ar4u0XN1lH2g2OWFQ==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                             SecurityStamp = "",
@@ -183,10 +183,10 @@ namespace AssetManagement.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fda3982b-dd10-4fca-a42e-590d8eedbb28"),
+                            Id = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "88214f8d-4b07-41e9-a98f-2f3484931726",
-                            CreatedDate = new DateTime(2022, 11, 21, 17, 13, 44, 173, DateTimeKind.Local).AddTicks(1664),
+                            ConcurrencyStamp = "134fc0d3-2394-4738-bc9c-43acef5271d4",
+                            CreatedDate = new DateTime(2022, 11, 22, 10, 15, 18, 557, DateTimeKind.Local).AddTicks(3674),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "staff@gmail.com",
                             EmailConfirmed = true,
@@ -199,7 +199,7 @@ namespace AssetManagement.Data.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "staff@gmail.com",
                             NormalizedUserName = "staff",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGhFzgdOggZJflYdr66fIxQ3LtS/zYuDS01hHCzSa4pfio+ooh1nqx04PLC3bBwq9A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJFjyQiaZQe3BwtkxgGbZEJ4ZqZT+swVAzTdM1KdC1aNTALr7Oy5OpYkHBMsS4hH/Q==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
                             SecurityStamp = "",
