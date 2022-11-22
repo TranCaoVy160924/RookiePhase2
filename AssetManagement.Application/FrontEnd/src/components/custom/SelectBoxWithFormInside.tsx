@@ -29,12 +29,11 @@ function SelectBoxWithFormInside({ data, source, format, parse }) {
             }}
         >
             {data.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
-            {/* <span style={{ backgroundColor:"gray", width:"200px", height:"2px" }}></span> */}
             <hr style={{ color:"gray" }} />
             <Box>
-                <Typography 
+                {addingData==false && <Typography 
                     color="red" 
-                    varient="p" 
+                    variant="h6" 
                     sx={{ 
                         cursor:"pointer", 
                         fontStyle:"italic", 
@@ -44,7 +43,8 @@ function SelectBoxWithFormInside({ data, source, format, parse }) {
                     onClick={handleClick}
                 >
                     Add new category
-                </Typography>
+                </Typography>}
+                {addingData==true && <button>ABCXYZ</button>}
             </Box>
         </Select>
     )

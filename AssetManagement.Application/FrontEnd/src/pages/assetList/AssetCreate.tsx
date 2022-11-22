@@ -10,8 +10,7 @@ var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 var yyyy = today.getFullYear();
-
-today = yyyy + '-' + mm + '-' + dd;
+today = new Date(yyyy + '-' + mm + '-' + dd);
 
 function NewCategoryCreate() {
     const [category, setCategory] = useState([])
@@ -58,7 +57,7 @@ function NewCategoryCreate() {
 
     useEffect(() => {
         // You need to customize this Calling-API method
-        axios.get('https://localhost:7173/api/Category')
+        axios.get('https://localhost:61631/api/Category/Get')
         .then(response => setCategory(response.data))
         .catch(error => console.log(error))
     }, [])
@@ -87,33 +86,58 @@ function NewCategoryCreate() {
                                 <Box 
                                     sx={{ display:"flex", flexDirection:"row", width:"550px" }}
                                 >
-                                    <Typography varient="h6" width="120px" m="0" p="0" alignSelf="center">Name</Typography>
+                                    <Typography 
+                                        variant="h6"
+                                        style={{
+                                            width:"120px",
+                                            margin:"0",
+                                            padding:"0",
+                                            alignSelf:"center"
+                                        }}
+                                    >Name</Typography>
                                     <TextInput
                                         fullWidth
                                         label="Name"
                                         name="name"
                                         source="name"
-                                        style={{ width:"430px" }}
-                                        m="0" p="0"
+                                        style={{ width:"430px", margin:"0", padding:"0" }}
                                         helperText={false}
                                     />
                                 </Box>
                                 
                                 <Box 
-                                    sx={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    style={{ display:"flex", flexDirection:"row", width:"550px" }}
                                 >
-                                    <Typography varient="h6" width="120px" m="0" p="0" alignSelf="center">Category</Typography>
+                                    <Typography 
+                                        variant="h6"
+                                        style={{
+                                            width:"120px", 
+                                            margin:"0", 
+                                            padding:"0", 
+                                            alignSelf:"center"
+                                        }}
+                                    >Category</Typography>
                                     {/* Custom Dropdown Selection (Category) */}
                                     <SelectBoxWithFormInside
                                         data={category}
                                         source="category"
+                                        format=""
+                                        parse=""
                                     />
                                 </Box>
 
                                 <Box 
-                                    sx={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    style={{ display:"flex", flexDirection:"row", width:"550px" }}
                                 >
-                                    <Typography varient="h6" width="120px" m="0" p="0" alignSelf="center">Specification</Typography>
+                                    <Typography 
+                                        variant="h6"
+                                        style={{
+                                            width:"120px", 
+                                            margin:"0", 
+                                            padding:"0", 
+                                            alignSelf:"center"
+                                        }}
+                                    >Specification</Typography>
                                     <TextInput
                                         fullWidth
                                         multiline
@@ -127,9 +151,17 @@ function NewCategoryCreate() {
                                 </Box>
 
                                 <Box 
-                                    sx={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    style={{ display:"flex", flexDirection:"row", width:"550px" }}
                                 >
-                                    <Typography varient="h6" width="120px" m="0" p="0" alignSelf="center">Specification</Typography>
+                                    <Typography 
+                                        variant="h6"
+                                        style={{
+                                            width:"120px", 
+                                            margin:"0", 
+                                            padding:"0", 
+                                            alignSelf:"center"
+                                        }}
+                                    >Specification</Typography>
                                     <DateInput 
                                         fullWidth
                                         label="Installed Date"
@@ -145,9 +177,17 @@ function NewCategoryCreate() {
                                 </Box>
 
                                 <Box 
-                                    sx={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    style={{ display:"flex", flexDirection:"row", width:"550px" }}
                                 >
-                                    <Typography varient="h6" width="120px" m="0" p="0" alignSelf="center">Specification</Typography>
+                                    <Typography 
+                                        variant="h6"
+                                        style={{
+                                            width:"120px", 
+                                            margin:"0", 
+                                            padding:"0", 
+                                            alignSelf:"center"
+                                        }}
+                                    >Specification</Typography>
                                     <RadioButtonGroupInput 
                                         // fullwidth="true"
                                         source="state"
@@ -166,14 +206,14 @@ function NewCategoryCreate() {
                                     type="submit"
                                     variant="contained" 
                                     disabled={isValid}
-                                    sx={{ m:"10px", backgroundColor:"#cf2338" }}
+                                    style={{ margin:"10px", backgroundColor:"#cf2338" }}
                                 >
                                     Save
                                 </Button>
                                 <Button
                                     variant="outlined" 
                                     onClick={(e) => navigate("/api/Category")}
-                                    sx={{ m:"10px", color:"gray" }}
+                                    style={{ margin:"10px", color:"gray" }}
                                 >
                                     Cancel
                                 </Button>
