@@ -4,11 +4,8 @@ using AssetManagement.Data.EF;
 using AssetManagement.Domain.Enums.Asset;
 using AssetManagement.Domain.Models;
 using AutoMapper;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -36,45 +33,50 @@ namespace AssetManagement.Application.Tests
             _context = new AssetManagementDbContext(_options);
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
+
+            // Create fake data
+            SeedData();
         }
 
         #region DeleteAsset
         [Fact]
-        public async Task DeleteAsset_Success_ReturnOkResult()
+        public async Task DeleteAsset_Success_ReturnDeletedAsset()
         {
             // Arrange 
-            DeleteAssetRequest request = new DeleteAssetRequest
-            {
-                Id = 1,
-            };
+            Asset deletingAsset = await _context.Assets
+                .Where(a => a.Id == 1)
+                .FirstOrDefaultAsync();
+            DeleteAssetRequest request = SingleDeleteAssetRequest();
             AssetController assetController = new AssetController(_context);
-
-            // Act 
-            StatusCodeResult result = (StatusCodeResult)await assetController.DeleteAsset(request);
-            int expectedResult = 200;
-
-            // Assert
-            Assert.Equal(expectedResult, result.StatusCode);
-
-        }
-
-        [Fact]
-        public async Task DeleteAsset_Invalid_ReturnBadRequest()
-        {
-            // Arrange 
-            DeleteAssetRequest request = new DeleteAssetRequest
-            {
-                Id = 2,
-            };
-            AssetController assetController = new AssetController(_context);
-
-            // Act 
-            var result = await assetController.DeleteAsset(request);
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
 
         }
         #endregion
+
+        private void SeedData()
+        {
+            for (int i = 1; i <= 10; i++)
+            {
+                _context.Assets.Add(new Asset
+                {
+                    Id = i,
+                    Name = "Asset " + i,
+                    AssetCode = i.ToString(),
+                    Specification = i.ToString(),
+                    InstalledDate = DateTime.Now,
+                    State = i % 2 == 0 ? State.State1 : State.State2,
+                    IsDeleted = i % 2 == 0 ? false : true,
+                });
+            }
+
+            _context.SaveChanges();
+        }
+
+        private DeleteAssetRequest SingleDeleteAssetRequest()
+        {
+            return new DeleteAssetRequest
+            {
+                Id = 1,
+            };
+        }
     }
 }

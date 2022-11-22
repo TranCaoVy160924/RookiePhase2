@@ -31,6 +31,7 @@ namespace AssetManagement.Application.Controllers
         {
             Asset deletingAsset = await _dbContext.Assets
                 .Where(a => !a.IsDeleted && a.Id == deleteAssetRequest.Id)
+                //.Where(a => a.Id == deleteAssetRequest.Id)
                 .FirstOrDefaultAsync();
 
             try
@@ -38,6 +39,7 @@ namespace AssetManagement.Application.Controllers
                 if (deletingAsset != null)
                 {
                     deletingAsset.IsDeleted = true;
+                    //_dbContext.Assets.Remove(deletingAsset);
                     await _dbContext.SaveChangesAsync();
                 }
                 else
@@ -50,7 +52,7 @@ namespace AssetManagement.Application.Controllers
                 return BadRequest(new ErrorResponseResult<string>(ex.Message));
             }
 
-            return StatusCode(StatusCodes.Status200OK);
+            return Ok(deletingAsset);
         }
     }
 }
