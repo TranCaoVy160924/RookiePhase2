@@ -6,14 +6,19 @@ import config from "../../connectionConfigs/config.json";
 export const assetProvider: DataProvider = {
    getList: (resource, params) => {
       const { page, perPage } = params.pagination;
+      console.log(params);
+      const { field, order } = params.sort;
       const query = {
-         pageIndex: JSON.stringify(page),
-         pageSize: JSON.stringify(perPage),
+         end: JSON.stringify((page) * perPage),
+         start: JSON.stringify((page - 1) * perPage),
+         sort: field,
+         order: order
       };
-      const url = `${config.api.base}/${resource}?${stringify(query)}`;
-      console.log(perPage);
+      const url = `${config.api.base}/api/${resource}?${stringify(query)}`;
+      console.log(url);
       return axios(url).then(res => {
-         return res;
+         console.log(res);
+         return Promise.resolve({ data: res.data.assets, total: res.data.total });
       });
    },
    getOne: function <RecordType extends RaRecord = any>(resource: string, params: GetOneParams<any>): Promise<GetOneResult<RecordType>> {

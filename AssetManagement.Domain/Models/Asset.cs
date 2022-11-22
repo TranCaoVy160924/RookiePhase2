@@ -13,7 +13,7 @@ namespace AssetManagement.Domain.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        //public int? CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public string Name { get; set; }
         public string AssetCode { get; set; }
         public string Specification { get; set; }
@@ -22,7 +22,7 @@ namespace AssetManagement.Domain.Models
         public Boolean IsDeleted { get; set; }
 
         //public virtual List<Assignment> Assignments { get; set; }
-        //[ForeignKey("CategoryId")]
-        //public virtual Category? Category { get; set; }
+        [ForeignKey("CategoryId")]
+        public virtual Category? Category { get; set; }
     }
 }

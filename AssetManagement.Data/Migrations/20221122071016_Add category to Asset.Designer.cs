@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagement.Data.Migrations
 {
     [DbContext(typeof(AssetManagementDbContext))]
-    [Migration("20221122045850_CategoryTable")]
-    partial class CategoryTable
+    [Migration("20221122071016_Add category to Asset")]
+    partial class AddcategorytoAsset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "5129220d-f6de-466e-9141-1b3c46240a4b",
+                            ConcurrencyStamp = "5e9df8fa-bebf-4559-b93d-6aa98f79d990",
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -60,7 +60,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            ConcurrencyStamp = "e7bd09d4-3628-411f-b61e-c0440b8d67c2",
+                            ConcurrencyStamp = "f61d3e6d-f181-4ea4-a717-4ebf781b9e68",
                             Description = "Staff role",
                             Name = "Staff",
                             NormalizedName = "staff"
@@ -160,8 +160,8 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5efbd9d2-56e7-4421-80e4-ccfca0669e1c",
-                            CreatedDate = new DateTime(2022, 11, 22, 11, 58, 50, 422, DateTimeKind.Local).AddTicks(2440),
+                            ConcurrencyStamp = "dc712d62-0a31-4c96-a505-1e528058898a",
+                            CreatedDate = new DateTime(2022, 11, 22, 14, 10, 16, 248, DateTimeKind.Local).AddTicks(4834),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -174,7 +174,7 @@ namespace AssetManagement.Data.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFmLaCJgvh6eU3v9sy1duU5ivLYJH2H/At2LKrwi8Q/1UbxTLPXiRk+pj0aJMN8WVg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPRivljmfNM2v0boYOO57NVWQePVOoWZKIdIdfU6sVMl4U3ufIavyWNq4iv28TS4Kg==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                             SecurityStamp = "",
@@ -185,8 +185,8 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d704a54d-3c01-4dfa-968a-bd644314dc10",
-                            CreatedDate = new DateTime(2022, 11, 22, 11, 58, 50, 431, DateTimeKind.Local).AddTicks(9902),
+                            ConcurrencyStamp = "95605815-8ea4-4c63-838c-d8854e481598",
+                            CreatedDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(1896),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "staff@gmail.com",
                             EmailConfirmed = true,
@@ -199,7 +199,7 @@ namespace AssetManagement.Data.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "staff@gmail.com",
                             NormalizedUserName = "staff",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDczVD7WIJdEmga15oFyfh5T4qP9roXBcgWF+T8Q+iKJlMHZq06Je1YJPh4OjMUROw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECNVdlgw4rQEZLz1PMVqfIQM7yVrKGeDb1ZtJwrFn2UQ6ttdXxXNwNEUDmio3al1eQ==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
                             SecurityStamp = "",
@@ -226,6 +226,9 @@ namespace AssetManagement.Data.Migrations
                     b.Property<DateTime>("InstalledDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -242,6 +245,108 @@ namespace AssetManagement.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Assets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AssetCode = "1",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2166),
+                            IsDeleted = false,
+                            Name = "Asset 1",
+                            Specification = "1",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AssetCode = "2",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2177),
+                            IsDeleted = true,
+                            Name = "Asset 2",
+                            Specification = "2",
+                            State = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AssetCode = "3",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2185),
+                            IsDeleted = false,
+                            Name = "Asset 3",
+                            Specification = "3",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AssetCode = "4",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2193),
+                            IsDeleted = true,
+                            Name = "Asset 4",
+                            Specification = "4",
+                            State = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AssetCode = "5",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2287),
+                            IsDeleted = false,
+                            Name = "Asset 5",
+                            Specification = "5",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AssetCode = "6",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2305),
+                            IsDeleted = true,
+                            Name = "Asset 6",
+                            Specification = "6",
+                            State = 0
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AssetCode = "7",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2313),
+                            IsDeleted = false,
+                            Name = "Asset 7",
+                            Specification = "7",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AssetCode = "8",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2321),
+                            IsDeleted = true,
+                            Name = "Asset 8",
+                            Specification = "8",
+                            State = 0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AssetCode = "9",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2329),
+                            IsDeleted = false,
+                            Name = "Asset 9",
+                            Specification = "9",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AssetCode = "10",
+                            InstalledDate = new DateTime(2022, 11, 22, 14, 10, 16, 255, DateTimeKind.Local).AddTicks(2338),
+                            IsDeleted = true,
+                            Name = "Asset 10",
+                            Specification = "10",
+                            State = 0
+                        });
                 });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Category", b =>
@@ -252,13 +357,8 @@ namespace AssetManagement.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Prefix")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -383,20 +483,17 @@ namespace AssetManagement.Data.Migrations
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Asset", b =>
                 {
-                    b.HasOne("AssetManagement.Domain.Models.Category", null)
-                        .WithMany("Assets")
+                    b.HasOne("AssetManagement.Domain.Models.Category", "Category")
+                        .WithMany()
                         .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.AppRole", b =>
                 {
                     b.Navigation("AppUser")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("AssetManagement.Domain.Models.Category", b =>
-                {
-                    b.Navigation("Assets");
                 });
 #pragma warning restore 612, 618
         }
