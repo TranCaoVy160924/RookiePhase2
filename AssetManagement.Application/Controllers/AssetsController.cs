@@ -1,0 +1,107 @@
+﻿using AssetManagement.Contracts.Asset.Request;
+using AssetManagement.Contracts.Asset.Response;
+using AssetManagement.Contracts.Common;
+using AssetManagement.Data.EF;
+using AssetManagement.Domain.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace AssetManagement.Application.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AssetsController : ControllerBase
+    {
+        private readonly AssetManagementDbContext _dbContext;
+        private readonly IMapper _mapper;
+
+        public AssetsController(AssetManagementDbContext dbContext, IMapper mapper)
+        {
+            _dbContext = dbContext;
+            _mapper = mapper;
+        }
+
+        [HttpDelete("asset/delete")]
+        [Authorize]
+        public async Task<IActionResult> DeleteAsset(DeleteAssetRequest deleteAssetRequest)
+        {
+            Asset deletingAsset = await _dbContext.Assets
+                .Where(a => !a.IsDeleted && a.Id == deleteAssetRequest.Id)
+                .FirstOrDefaultAsync();
+
+            try
+            {
+                if (deletingAsset != null)
+                {
+                    deletingAsset.IsDeleted = true;
+                    await _dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("The asset does not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponseResult<string>(ex.Message));
+            }
+
+            return Ok();
+        }
+
+        [HttpGet]
+        //[Authorize]
+        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int end, [FromQuery]int start, [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="Name", [FromQuery]string? order="ASC")
+        {
+            var list = _dbContext.Assets.Include(x=>x.Category).AsQueryable();
+            if(categoryFilter != "")
+            {
+                list = list.Where(x => x.CategoryId == int.Parse(categoryFilter));
+            }
+            if(stateFilter != "")
+            {
+                list = list.Where(x=>(int)x.State == int.Parse(stateFilter));
+            }
+            switch (sort)
+            {
+                case "assetCode":
+                    {
+                        list = list.OrderBy(x => x.AssetCode);
+                        break;
+                    }
+                case "name":
+                    {
+                        list = list.OrderBy(x => x.Name);
+                        break;
+                    }
+                case "category":
+                    {
+                        list = list.OrderBy(x => x.Category.Name);
+                        break;
+                    }
+                case "state":
+                    {
+                        list = list.OrderBy(x => x.State);
+                        break;
+                    }
+                case "id":
+                    {
+                        list = list.OrderBy(x => x.Id);
+                        break;
+                    }
+            }
+
+            if(order == "DESC")
+            {
+                list = list.Reverse();
+            }
+            var result = StaticFunctions<Asset>.Paging(list, start, end);
+            
+            var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(result);
+
+            return Ok(new ViewListAssets_ListResponse { Assets = mappedResult, Total=list.Count()});
+        }
+    }
+}
