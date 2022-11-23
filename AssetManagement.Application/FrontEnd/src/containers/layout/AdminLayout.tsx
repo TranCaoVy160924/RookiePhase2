@@ -20,8 +20,8 @@ import HomeList from '../../pages/home/HomeList';
 
 import config from "../../connectionConfigs/config.json";
 import { assetProvider } from '../../providers/assetProvider/assetProvider';
-import AssetList from '../../pages/assetList/AssetList';
-import AssetCreate from '../../pages/assetList/AssetCreate'
+import AssetList from '../../pages/assets/AssetList';
+import AssetCreate from '../../pages/assets/AssetCreate'
 // import AssetManager from '../../pages/asset/AssetManager';
 
 // You will fix this API-URL
