@@ -2,7 +2,6 @@ import React from "react"
 import { Datagrid, List, SelectArrayInput, TextField, TextInput } from "react-admin"
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import TryRecord from "./TryRecord";
 
 export default () => {
     const assetsFilter = [
