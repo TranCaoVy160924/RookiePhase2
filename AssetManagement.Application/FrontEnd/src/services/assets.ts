@@ -1,7 +1,7 @@
 import axiosInstance from "../connectionConfigs/axiosInstance";
 import config from '../connectionConfigs/config.json';
 // const baseUrl = config.api.asset;
-const baseUrl = 'https://localhost:61631/api/Assets'
+const baseUrl = 'https://localhost:51159/api/Assets'
 
 const getAsset = async() => {
     let url = `${baseUrl}`
