@@ -44,7 +44,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppRole");
+                    b.ToTable("AppRole", (string)null);
 
                     b.HasData(
                         new
@@ -151,7 +151,7 @@ namespace AssetManagement.Data.Migrations
                     b.HasIndex("RoleId")
                         .IsUnique();
 
-                    b.ToTable("AppUser");
+                    b.ToTable("AppUser", (string)null);
 
                     b.HasData(
                         new
@@ -242,7 +242,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Assets");
+                    b.ToTable("Assets", (string)null);
 
                     b.HasData(
                         new
@@ -366,7 +366,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
