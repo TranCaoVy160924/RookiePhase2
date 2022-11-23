@@ -19,8 +19,8 @@ export default () => {
             { id: 'u003', name: 'Reviewer' },
         ]} />
     ];
-    return <List filters={assetsFilter}>
-        <Datagrid>
+    return <List filters={assetsFilter} exporter={false} sort={{ field: 'name', order: 'DESC' }}>
+        <Datagrid bulkActionButtons={false}>
             <TextField source="id" />
             <TextField source="name" />
             <TextField source="assetCode" />
