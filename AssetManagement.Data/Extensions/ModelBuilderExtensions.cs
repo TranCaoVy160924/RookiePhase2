@@ -84,18 +84,17 @@ namespace AssetManagement.Data.Extensions
             });
 
 
-            for(int i = 1; i <= 10; i++)
+            for (int i = 1; i <= 10; i++)
             {
                 modelBuilder.Entity<Asset>().HasData(new Asset
                 {
                     Id = i,
-                    Name = "Laptop " + i.ToString(),
-                    AssetCode = "LA10000" + i.ToString(),
-                    Specification = $"Core i5, 5GB RAM, 650 GB HDD, Window 10",
-                    Location = Domain.Enums.AppUser.AppUserLocation.HoChiMinh,
+                    Name = "Laptop " + i,
+                    AssetCode = "LA10000" + i,
+                    Specification = $"Core i{i}, {i}GB RAM, {i}50 GB HDD, Window {i}",
                     InstalledDate = DateTime.Now,
-                    State = i%2 == 0 ? State.Available : State.NotAvailable,
-                    IsDeleted = i%2 == 0 ? true : false,
+                    State = i % 2 == 0 ? State.Available : State.NotAvailable,
+                    IsDeleted = i % 2 == 0 ? true : false,
                 });
             }
 

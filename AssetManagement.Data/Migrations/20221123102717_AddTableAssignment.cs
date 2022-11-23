@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AssetManagement.Data.Migrations
 {
-    public partial class AddTableAssignments : Migration
+    public partial class AddTableAssignment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,103 +55,103 @@ namespace AssetManagement.Data.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
                 column: "ConcurrencyStamp",
-                value: "938e67a4-54f2-407c-b369-36231393e6b4");
+                value: "6668ad26-c733-48b5-89b6-4fd5406d7d3b");
 
             migrationBuilder.UpdateData(
                 table: "AppRole",
                 keyColumn: "Id",
                 keyValue: new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                 column: "ConcurrencyStamp",
-                value: "014f707d-fc4d-4fb4-b278-b9de07da5be8");
+                value: "617ba2f4-a79d-4698-8da8-4a51243c8fda");
 
             migrationBuilder.UpdateData(
                 table: "AppUser",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "064db62b-19b0-43ff-a213-f32d21098613", new DateTime(2022, 11, 23, 12, 40, 49, 537, DateTimeKind.Local).AddTicks(8576), "AQAAAAEAACcQAAAAEAXcDtIgIl8XxdNXc5Tt02QgKooqaHd6nL7wVVJ7oye73NlaSpQgLmnh/W6fCT0yHQ==" });
+                values: new object[] { "dace1ade-efcc-4b99-ab59-9c2a908e1565", new DateTime(2022, 11, 23, 17, 27, 16, 825, DateTimeKind.Local).AddTicks(804), "AQAAAAEAACcQAAAAEA9u7Ng7I4rT6dX05T1GAxFN7GdJfe9JN6qBrkWpRsOR4GrroKjjJ9CI6GIchMfzVw==" });
 
             migrationBuilder.UpdateData(
                 table: "AppUser",
                 keyColumn: "Id",
                 keyValue: new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "9bafde65-d3e5-4058-996a-94c57e8f5a1d", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(1882), "AQAAAAEAACcQAAAAEIQnNlfQX60Y8c34lGV9kEMFTse/h1hW9uoYP736dM3nH5FjS7pgd/XZV7EcI97h2g==" });
+                values: new object[] { "f84ebdb1-eedf-4d83-867d-e718d78eb115", new DateTime(2022, 11, 23, 17, 27, 16, 831, DateTimeKind.Local).AddTicks(9562), "AQAAAAEAACcQAAAAEKAH7IK7NS+JIIs1PgwK3LI2HRs+CaBPtdpg+8UM1dtPcMHbjGjVw0P9rG8CWSQMdg==" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100001", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2135), "Laptop 1", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100001", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(120), "Laptop 1", "Core i1, 1GB RAM, 150 GB HDD, Window 1" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100002", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2145), "Laptop 2", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100002", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(335), "Laptop 2", "Core i2, 2GB RAM, 250 GB HDD, Window 2" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100003", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2155), "Laptop 3", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100003", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(347), "Laptop 3", "Core i3, 3GB RAM, 350 GB HDD, Window 3" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100004", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2163), "Laptop 4", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100004", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(356), "Laptop 4", "Core i4, 4GB RAM, 450 GB HDD, Window 4" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100005", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2170), "Laptop 5", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100005", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(365), "Laptop 5", "Core i5, 5GB RAM, 550 GB HDD, Window 5" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 6,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100006", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2183), "Laptop 6", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100006", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(381), "Laptop 6", "Core i6, 6GB RAM, 650 GB HDD, Window 6" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 7,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100007", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2191), "Laptop 7", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100007", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(390), "Laptop 7", "Core i7, 7GB RAM, 750 GB HDD, Window 7" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 8,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100008", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2198), "Laptop 8", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100008", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(398), "Laptop 8", "Core i8, 8GB RAM, 850 GB HDD, Window 8" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 9,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA100009", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2205), "Laptop 9", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA100009", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(407), "Laptop 9", "Core i9, 9GB RAM, 950 GB HDD, Window 9" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 10,
                 columns: new[] { "AssetCode", "InstalledDate", "Name", "Specification" },
-                values: new object[] { "LA1000010", new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2214), "Laptop 10", "Core i5, 5GB RAM, 650 GB HDD, Window 10" });
+                values: new object[] { "LA1000010", new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(418), "Laptop 10", "Core i10, 10GB RAM, 1050 GB HDD, Window 10" });
 
             migrationBuilder.InsertData(
                 table: "Assignments",
                 columns: new[] { "Id", "AssetId", "AssignedBy", "AssignedDate", "AssignedTo", "ReturnedDate", "State" },
-                values: new object[] { 1, 1, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2231), new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 11, 23, 12, 40, 49, 544, DateTimeKind.Local).AddTicks(2232), 0 });
+                values: new object[] { 1, 1, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(570), new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(570), 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assignments_AssetId",
