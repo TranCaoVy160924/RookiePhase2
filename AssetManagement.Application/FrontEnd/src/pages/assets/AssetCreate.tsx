@@ -108,6 +108,7 @@ function NewCategoryCreate() {
                                         label=""
                                         name="name"
                                         source="name"
+                                        InputLabelProps={{shrink: false}}
                                         style={{ width:"430px", margin:"0", padding:"0" }}
                                         helperText={false}
                                     />
@@ -151,6 +152,7 @@ function NewCategoryCreate() {
                                         multiline
                                         label=""
                                         rows="3"
+                                        InputLabelProps={{shrink: false}}
                                         style={{ width:"430px" }}
                                         name="specification"
                                         source="specification"
@@ -176,6 +178,7 @@ function NewCategoryCreate() {
                                         name="installedDate"
                                         source="installedDate"
                                         defaultValue={currentDay}
+                                        InputLabelProps={{shrink: false}}
                                         inputProps={{ min: currentDay }}
                                         validate={minValue(currentDay)}
                                         onBlur={(e) => e.stopPropagation()}
@@ -200,8 +203,8 @@ function NewCategoryCreate() {
                                         // fullwidth="true"
                                         label=""
                                         source="state"
-                                        choices={[ {state_id:'1', state:"Available"}, {state_id:'0', state:"Not available"} ]}
                                         row={false}
+                                        choices={[ {state_id:'0', state:"Available"}, {state_id:'1', state:"Not available"} ]}
                                         style={{ width:"430px" }}
                                         optionText="state"
                                         optionValue="state_id"

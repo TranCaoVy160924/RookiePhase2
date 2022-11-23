@@ -13,7 +13,7 @@ function SelectBoxWithFormInside({ source, format, parse }) {
         field,
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted }
-    } = useInput({ source, format, parse })
+    } = useInput({ source, format })
 
     useEffect(() => {
         categoryService.getCategory()

@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AssetManagement.Application.Controllers
 {
@@ -28,6 +29,13 @@ namespace AssetManagement.Application.Controllers
         [Authorize]
         public async Task<IActionResult> CreateAssetAsync(CreateAssetRequest createAssetRequest)
         {
+            string token = Request.Headers.Authorization;
+            string userName = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
+            AppUser user = await _dbContext.AppUsers.FirstAsync(u => u.UserName == userName);
+            if (user == null)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Invalid UserName"));
+            }
             Category? category = await _dbContext.Categories.FindAsync(createAssetRequest.CategoryId);
             if (category == null)
             {
@@ -38,6 +46,7 @@ namespace AssetManagement.Application.Controllers
             int countAsset = await _dbContext.Assets.Where(_ => _.AssetCode.StartsWith(category.Prefix)).CountAsync();
             asset.AssetCode = category.Prefix + (countAsset + 1).ToString().PadLeft(6, '0');
             asset.Category = category;
+            asset.Location = user.Location;
 
             await _dbContext.Assets.AddAsync(asset);
             await _dbContext.SaveChangesAsync();

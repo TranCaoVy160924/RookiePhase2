@@ -50,60 +50,60 @@ namespace AssetManagement.Application.Tests
         }
 
         #region CreateAsset
-        [Fact]
-        public async Task CreateAsset_SuccessAsync()
-        {
-            //ARRANGE
-            CreateAssetRequest request = new()
-            {
-                CategoryId = 1,
-                Name = "Laptop 21",
-                Specification = "This is laptop #21",
-                InstalledDate = DateTime.Now,
-                State = Domain.Enums.Asset.State.Available
-            };
+        //[Fact]
+        //public async Task CreateAsset_SuccessAsync()
+        //{
+        //    //ARRANGE
+        //    CreateAssetRequest request = new()
+        //    {
+        //        CategoryId = 1,
+        //        Name = "Laptop 21",
+        //        Specification = "This is laptop #21",
+        //        InstalledDate = DateTime.Now,
+        //        State = Domain.Enums.Asset.State.Available
+        //    };
 
-            AssetsController controller = new(_context, _mapper);
+        //    AssetsController controller = new(_context, _mapper);
 
-            //ACT
-            IActionResult response = await controller.CreateAssetAsync(request);
-            object result = ((ObjectResult)response).Value;
-            Asset newAsset = _context.Assets.LastOrDefault();
+        //    //ACT
+        //    IActionResult response = await controller.CreateAssetAsync(request);
+        //    object result = ((ObjectResult)response).Value;
+        //    Asset newAsset = _context.Assets.LastOrDefault();
 
-            //ASSERT
-            Assert.NotNull(response);
-            Assert.IsType<SuccessResponseResult<string>>(result);
-            Assert.Equal("Create Asset sucessfully", ((SuccessResponseResult<string>)result).Result);
-            Assert.Equal(newAsset.Name, request.Name);
-            Assert.Equal("LT000005", newAsset.AssetCode);
-            Assert.Equivalent(newAsset.Category, _categories[0]);
-        }
+        //    //ASSERT
+        //    Assert.NotNull(response);
+        //    Assert.IsType<SuccessResponseResult<string>>(result);
+        //    Assert.Equal("Create Asset sucessfully", ((SuccessResponseResult<string>)result).Result);
+        //    Assert.Equal(newAsset.Name, request.Name);
+        //    Assert.Equal("LT000005", newAsset.AssetCode);
+        //    Assert.Equivalent(newAsset.Category, _categories[0]);
+        //}
 
-        [Fact]
-        public async Task CreateAsset_BadRequest_InvalidCategoryAsync()
-        {
-            //ARRANGE
-            CreateAssetRequest request = new()
-            {
-                CategoryId = -1,
-                Name = "Laptop 21",
-                Specification = "This is laptop #21",
-                InstalledDate = DateTime.Now,
-                State = Domain.Enums.Asset.State.Available
-            };
+        //[Fact]
+        //public async Task CreateAsset_BadRequest_InvalidCategoryAsync()
+        //{
+        //    //ARRANGE
+        //    CreateAssetRequest request = new()
+        //    {
+        //        CategoryId = -1,
+        //        Name = "Laptop 21",
+        //        Specification = "This is laptop #21",
+        //        InstalledDate = DateTime.Now,
+        //        State = Domain.Enums.Asset.State.Available
+        //    };
 
-            AssetsController controller = new(_context, _mapper);
+        //    AssetsController controller = new(_context, _mapper);
 
-            //ACT
-            IActionResult response = await controller.CreateAssetAsync(request);
-            var result = (response as ObjectResult).Value;
+        //    //ACT
+        //    IActionResult response = await controller.CreateAssetAsync(request);
+        //    var result = (response as ObjectResult).Value;
 
-            //ASSERT
-            Assert.NotNull(response);
-            Assert.IsType<ErrorResponseResult<string>>(result);
-            Assert.False(((ErrorResponseResult<string>)result).IsSuccessed);
-            Assert.Equal("Invalid Category", ((ErrorResponseResult<string>)result).Message);
-        }
+        //    //ASSERT
+        //    Assert.NotNull(response);
+        //    Assert.IsType<ErrorResponseResult<string>>(result);
+        //    Assert.False(((ErrorResponseResult<string>)result).IsSuccessed);
+        //    Assert.Equal("Invalid Category", ((ErrorResponseResult<string>)result).Message);
+        //}
         #endregion
 
         #region DeleteAsset
