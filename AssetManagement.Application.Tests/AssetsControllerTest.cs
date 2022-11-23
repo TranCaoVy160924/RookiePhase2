@@ -41,7 +41,6 @@ namespace AssetManagement.Application.Tests
             // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
             _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
         }
 
         #region DeleteAsset
@@ -80,5 +79,12 @@ namespace AssetManagement.Application.Tests
 
         }
         #endregion
+
+        #region GetList
+        public async Task GetList_ForDefault()
+        {
+
+        }
+
     }
 }
