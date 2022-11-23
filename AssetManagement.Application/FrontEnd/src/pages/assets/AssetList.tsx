@@ -9,7 +9,7 @@ export default () => {
          <TextField source="assetCode" />
          <TextField source="categoryName" />
          <TextField source="state" />
-         <EditButton size="small"/>
+         <EditButton size="small" label=""/>
       </Datagrid>
    </List>
 }

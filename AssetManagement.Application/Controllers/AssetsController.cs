@@ -22,9 +22,49 @@ namespace AssetManagement.Application.Controllers
             _dbContext = dbContext;
             _mapper = mapper;
         }
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetAssetById(int id)
+        {
+            Asset gettingAsset = await _dbContext.Assets
+                .Where(a => !a.IsDeleted && a.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (gettingAsset != null)
+            {
+                return Ok(_mapper.Map<GetAssetByIdResponse>(gettingAsset));
+            }
+            else
+            {
+                throw new Exception("The asset does not exist");
+            }
+        }
+
+
+
+        [HttpPost()]
+        [Authorize]
+        public async Task<IActionResult> CreateAsset(CreateAssetRequest createAssetRequest)
+        {
+            Category category = await _dbContext.Categories.FindAsync(createAssetRequest.CategoryId);
+            if (category == null)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Invalid Category"));
+            }
+            Asset asset = _mapper.Map<Asset>(createAssetRequest);
+
+            int countAsset = await _dbContext.Assets.Where(_ => _.AssetCode.StartsWith(category.Prefix)).CountAsync();
+            asset.AssetCode = category.Prefix + Convert.ToDecimal((countAsset + 1) / 1000000.0).ToString().Split('.')[1];
+            asset.Category = category;
+
+            await _dbContext.Assets.AddAsync(asset);
+            await _dbContext.SaveChangesAsync();
+            return Ok(new SuccessResponseResult<string>("Create Asset sucessfully"));
+        }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromForm] UpdateAssetRequest request)
+        [Authorize]
+        public async Task<IActionResult> UpdateAsset(int id, UpdateAssetRequest request)
         {
             Asset updatingAsset = await _dbContext.Assets
                 .Where(a => a.Id == id)
@@ -52,9 +92,6 @@ namespace AssetManagement.Application.Controllers
 
             return Ok(_mapper.Map<UpdateAssetResponse>(updatingAsset));
         }
-
-
-
 
         [HttpDelete("{id}")]
         [Authorize]
