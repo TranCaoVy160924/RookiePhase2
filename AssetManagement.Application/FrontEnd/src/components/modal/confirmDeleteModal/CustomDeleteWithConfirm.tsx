@@ -9,7 +9,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import clsx from 'clsx';
-import inflection from 'inflection';
 import { UseMutationOptions } from 'react-query';
 import {
     MutationMode,
@@ -21,9 +20,10 @@ import {
     useTranslate,
     RedirectionSideEffect,
 } from 'ra-core';
-import { Button as MUIButton } from '@mui/material';
+import { Button as MUIButton, ButtonGroup } from '@mui/material';
 import { Confirm, DeleteButton } from 'react-admin';
 import { Button, ButtonProps } from 'react-admin';
+import { Padding } from '@mui/icons-material';
 
 export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     props: DeleteWithConfirmButtonProps<RecordType>
@@ -60,9 +60,24 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
         resource,
     });
 
-    const style = {
-        bgcolor: '#cf2338',
-        color: "#fff"
+    const titleStype = {
+        bgcolor: '#F0EBEB',
+        color: "#E80E0E",
+        border: "1px solid #000",
+        borderRadius: 1
+    }
+
+    const contentStyle = {
+        border: "1px solid #000",
+        borderRadius: 1
+    }
+
+    const buttonStyle = {
+        bgcolor: "#E80E0E",
+        color: "#FFFFFF",
+        border: "1px solid #000",
+        borderRadius: 1,
+        marginRight: 3
     }
 
     return (
@@ -82,21 +97,25 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title" sx={style}>
-                    {"Change Password"}
+                <DialogTitle id="alert-dialog-title" sx={titleStype}>
+                    {confirmTitle}
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent sx={contentStyle}>
                     <DialogContentText component={"div"} id="alert-dialog-description">
-                        <DialogContentText>
-                            This is the first time you login. <br />
-                            You have to change the password to continue
+                        <DialogContentText sx={{
+                            padding: 3
+                        }}>
+                            {confirmContent}
                         </DialogContentText>
                     </DialogContentText>
+                    <DialogActions>
+                        <ButtonGroup >
+                            <MUIButton sx={buttonStyle} onClick={handleDialogClose}>Cancel</MUIButton>
+                            <DeleteButton sx={buttonStyle} />
+                        </ButtonGroup>
+                    </DialogActions>
                 </DialogContent>
-                <DialogActions>
-                    <MUIButton onClick={handleDialogClose}>Cancel</MUIButton>
-                    <DeleteButton />
-                </DialogActions>
+
             </Dialog>
         </Fragment>
     );

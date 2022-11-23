@@ -1,8 +1,5 @@
 import React from "react"
 import { Datagrid, List, SelectArrayInput, TextField, TextInput, DeleteWithConfirmButton, Toolbar } from "react-admin"
-import DeleteIcon from "@mui/icons-material/Delete";
-import ConfirmDeleteModal from "../../components/modal/confirmDeleteModal/ConfirmDeleteModal";
-import ChangePasswordModal from "../../components/modal/changePasswordModal/ChangePasswordModal";
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
 
 export default () => {
@@ -28,7 +25,10 @@ export default () => {
             <TextField source="assetCode" />
             <TextField source="categoryName" />
             <TextField source="state" />
-            <CustomDeleteWithConfirmButton />
+            <CustomDeleteWithConfirmButton
+                confirmTitle="Are you sure?"
+                confirmContent="Do you want to delete this asset?"
+            />
         </Datagrid>
     </List>
 }
