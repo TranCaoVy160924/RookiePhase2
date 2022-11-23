@@ -23,7 +23,7 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
 
-        [HttpDelete("delete/:id")]
+        [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteAsset(int id)
         {
@@ -53,12 +53,15 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int end, [FromQuery]int start, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="Name", [FromQuery]string? order="ASC")
+        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int start, [FromQuery]int end, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="name", [FromQuery]string? order="ASC")
         {
-            var list = _dbContext.Assets.Include(x=>x.Category).AsQueryable();
+            var list = _dbContext.Assets
+                .Include(x=>x.Category)
+                .Where(x=>!x.IsDeleted)
+                .AsQueryable();
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => x.Name.Contains(searchString) || x.AssetCode.Contains(searchString));
+                list = list.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper()) || x.AssetCode.ToUpper().Contains(searchString.ToUpper()));
             }
             if(categoryFilter != "")
             {
@@ -111,8 +114,6 @@ namespace AssetManagement.Application.Controllers
             {
                 list = list.Reverse();
             }
-
-            //var result = StaticFunctions<Asset>.Sort(list, sort, order);
 
             var sortedResult = StaticFunctions<Asset>.Paging(list, start, end);
             

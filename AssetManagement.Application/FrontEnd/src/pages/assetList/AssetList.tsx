@@ -7,6 +7,8 @@ import {
   TextField,
   TextInput,
 } from "react-admin";
+import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 export default () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -52,6 +54,11 @@ export default () => {
           <TextField source="assetCode" />
           <TextField source="categoryName" />
           <TextField source="state" />
+          <CustomDeleteWithConfirmButton
+                icon={<HighlightOffIcon />}
+                confirmTitle="Are you sure?"
+                confirmContent="Do you want to delete this asset?"
+          />
         </Datagrid>
       </List>
       <AssetShow isOpened={isOpened} toggle={toggle} record={record} />

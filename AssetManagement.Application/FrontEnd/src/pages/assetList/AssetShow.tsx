@@ -35,7 +35,6 @@ import { Info } from "@mui/icons-material";
     useEffect(() => {
       if(record) {
         getAssignementByAssetCodeId(record.id).then(response => {
-          console.log(response);
           setAssignments(response);
         }).catch(() => {});
       }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.Contracts.Asset.Response
 {
-    public class ViewListAssets_AssetResponse
+    public class ViewListAssets_AssetResponse : IEquatable<ViewListAssets_AssetResponse>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -16,5 +16,14 @@ namespace AssetManagement.Contracts.Asset.Response
         public string Specification { get; set; }
         public DateTime InstalledDate { get; set; }
         public string Location { get; set; }
+
+        public bool Equals(ViewListAssets_AssetResponse? other)
+        {
+            if(other == null)
+            {
+                return false;
+            }
+            return this.Id == other.Id;
+        }
     }
 }
