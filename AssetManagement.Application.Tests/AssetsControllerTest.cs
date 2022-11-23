@@ -91,7 +91,10 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2);
 
-            var query = _context.Assets.Include(x => x.Category).OrderBy(x => x.Name);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x=>!x.IsDeleted)
+                .OrderBy(x => x.Name);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
@@ -120,21 +123,24 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2, searchString);
 
-            var query = _context.Assets.Include(x => x.Category).Where(x=>x.Name.Contains(searchString) || x.AssetCode.Contains(searchString)).OrderBy(x => x.Name);
+            var query = _context.Assets.Include(x => x.Category)
+                .Where(x=>(x.Name.Contains(searchString) || x.AssetCode.Contains(searchString))
+                    && !x.IsDeleted)
+                .OrderBy(x => x.Name);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
-            var expected = _mapper.Map<List<ViewListAssets_AssetResponse>>(list);
+            var expected = JsonConvert.SerializeObject(_mapper.Map<List<ViewListAssets_AssetResponse>>(list));
 
             var okobjectResult = (OkObjectResult)result.Result;
 
             var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = JsonConvert.SerializeObject(resultValue.Assets);
 
             var isSorted = assetsList.SequenceEqual(expected);
-            // Assert
             Assert.True(isSorted);
+            //Assert.Equal(expected, assetsList);
             Assert.Equal(assetsList.Count(), expected.Count());
         }
 
@@ -149,7 +155,11 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2, searchString);
 
-            var query = _context.Assets.Include(x => x.Category).Where(x => x.Name.Contains(searchString) || x.AssetCode.Contains(searchString)).OrderBy(x => x.Name);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x => (x.Name.Contains(searchString) || x.AssetCode.Contains(searchString))
+                    && !x.IsDeleted)
+                .OrderBy(x => x.Name);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
@@ -176,7 +186,10 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2,"","",state.ToString());
 
-            var query = _context.Assets.Include(x => x.Category).Where(x=>(int)x.State == state).OrderBy(x => x.Name);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x=>(int)x.State == state && !x.IsDeleted)
+                .OrderBy(x => x.Name);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
@@ -204,7 +217,10 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2, "", "", "", sortType);
 
-            var query = _context.Assets.Include(x => x.Category).OrderBy(x => x.Id);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x => !x.IsDeleted)
+                .OrderBy(x => x.Id);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
@@ -232,7 +248,10 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2, "", "", "", sortType);
 
-            var query = _context.Assets.Include(x => x.Category).OrderBy(x => x.AssetCode);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x => !x.IsDeleted)
+                .OrderBy(x => x.AssetCode);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
@@ -260,7 +279,10 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2, "", "", "", sortType);
 
-            var query = _context.Assets.Include(x => x.Category).OrderBy(x => x.State);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x => !x.IsDeleted)
+                .OrderBy(x => x.State);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
@@ -288,7 +310,10 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2, "", "", "", sortType);
 
-            var query = _context.Assets.Include(x => x.Category).OrderBy(x => x.Name);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x => !x.IsDeleted)
+                .OrderBy(x => x.Name);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
@@ -316,7 +341,10 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2, "", "", "", sortType, "DESC");
 
-            var query = _context.Assets.Include(x => x.Category).OrderByDescending(x => x.Id);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x => !x.IsDeleted)
+                .OrderByDescending(x => x.Id);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
@@ -343,7 +371,10 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(-1, 2);
 
-            var query = _context.Assets.Include(x => x.Category).OrderBy(x => x.Name);
+            var query = _context.Assets
+                .Include(x => x.Category)
+                .Where(x => !x.IsDeleted)
+                .OrderBy(x => x.Name);
 
             var list = StaticFunctions<Asset>.Paging(query, -1, 2);
 
