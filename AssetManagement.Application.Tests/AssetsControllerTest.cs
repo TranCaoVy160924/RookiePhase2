@@ -44,6 +44,63 @@ namespace AssetManagement.Application.Tests
             _context.Database.EnsureCreated();
         }
 
+        #region UpdateAsset
+        [Fact]
+        public async Task UpdateAsset_NotFound_ReturnBadRequest()
+        {
+            // Arrange 
+            DateTime now = DateTime.Now;
+            UpdateAssetRequest request = new UpdateAssetRequest
+            {
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable
+            };
+
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var result = await assetController.Update(0, request);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async Task Update_Success_ReturnUpdatedAsset()
+        {
+            // Arrange 
+            DateTime now = DateTime.Now;
+            UpdateAssetRequest request = new UpdateAssetRequest
+            {
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable
+            };
+
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var response = await assetController.Update(1, request);
+            var result = ConvertOkObject<UpdateAssetResponse>(response);
+            var expected = JsonConvert.SerializeObject(new UpdateAssetResponse
+            {
+                Id = 1,
+                AssetCode = "LA10000" + 1,
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable,
+                IsDeleted = false,
+            });
+
+            // Assert
+            Assert.Equal(expected, result);
+        }
+        #endregion
+
         #region DeleteAsset
         [Fact]
         public async Task DeleteAsset_Success_ReturnDeletedAsset()
