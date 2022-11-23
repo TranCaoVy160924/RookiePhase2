@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { Form, TextInput, DateInput, useNotify, minValue, RadioButtonGroupInput, ReferenceInput, SelectInput } from 'react-admin'
-import { Avatar, Box, Button, Typography, Container, CssBaseline } from '@mui/material'
+import { Form, TextInput, DateInput, minValue, RadioButtonGroupInput } from 'react-admin'
+import { Box, Button, Typography, Container, CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import SelectBoxWithFormInside from '../../components/custom/SelectBoxWithFormInside'
@@ -16,7 +16,6 @@ var currentDay = yyyy + '-' + mm + '-' + dd
 function NewCategoryCreate() {
     const [category, setCategory] = useState([])
     const [isValid, setIsValid] = useState(true);
-    const notify = useNotify();
     const navigate = useNavigate();
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
@@ -28,7 +27,6 @@ function NewCategoryCreate() {
     }, [])
 
     const handleFormSubmit = (data) => {
-        // Call API (Catch error, notify error)
         assetService.createAsset(
             { 
                 categoryId:data.category, 
@@ -41,8 +39,6 @@ function NewCategoryCreate() {
             .then(reponseData => navigate("/assets"))
             // Console log error
             .catch(error => console.log(error))
-
-        console.log(data)
     };
 
     const requiredInput = (values) => {
@@ -74,17 +70,19 @@ function NewCategoryCreate() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main">
                 <CssBaseline />
                 <Box
                     sx={{
+                        margin:"auto",
                         marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'left',
+                        // alignItems: 'center',
+                        width: "650px"
                     }}
                 >
-                    <Typography component="h3" variant="h5" color="#cf2338" pb="40px">
+                    <Typography component="h3" variant="h5" color="#cf2338" pb="40px" fontWeight="bold">
                         Create New Asset
                     </Typography>
                     <Box sx={{ mt: 1 }}>
@@ -94,20 +92,20 @@ function NewCategoryCreate() {
                                 gap="30px"
                             >
                                 <Box 
-                                    sx={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    sx={{ display:"flex", flexDirection:"row", width:"650px" }}
                                 >
                                     <Typography 
                                         variant="h6"
                                         style={{
-                                            width:"120px",
+                                            width:"220px",
                                             margin:"0",
                                             padding:"0",
                                             alignSelf:"center"
                                         }}
-                                    >Name</Typography>
+                                    >Name *</Typography>
                                     <TextInput
                                         fullWidth
-                                        label="Name"
+                                        label=""
                                         name="name"
                                         source="name"
                                         style={{ width:"430px", margin:"0", padding:"0" }}
@@ -116,17 +114,17 @@ function NewCategoryCreate() {
                                 </Box>
                                 
                                 <Box 
-                                    style={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    style={{ display:"flex", flexDirection:"row", width:"650px" }}
                                 >
                                     <Typography 
                                         variant="h6"
                                         style={{
-                                            width:"120px", 
+                                            width:"220px", 
                                             margin:"0", 
                                             padding:"0", 
                                             alignSelf:"center"
                                         }}
-                                    >Category</Typography>
+                                    >Category *</Typography>
                                     {/* Custom Dropdown Selection (Category) */}
                                     <SelectBoxWithFormInside
                                         // category={category}
@@ -137,23 +135,23 @@ function NewCategoryCreate() {
                                 </Box>
 
                                 <Box 
-                                    style={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    style={{ display:"flex", flexDirection:"row", width:"650px" }}
                                 >
                                     <Typography 
                                         variant="h6"
                                         style={{
-                                            width:"120px", 
+                                            width:"220px", 
                                             margin:"0", 
                                             padding:"0", 
                                             alignSelf:"center"
                                         }}
-                                    >Specification</Typography>
+                                    >Specification *</Typography>
                                     <TextInput
                                         fullWidth
                                         multiline
+                                        label=""
                                         rows="3"
                                         style={{ width:"430px" }}
-                                        label="Specification"
                                         name="specification"
                                         source="specification"
                                         helperText={false}
@@ -161,20 +159,20 @@ function NewCategoryCreate() {
                                 </Box>
 
                                 <Box 
-                                    style={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    style={{ display:"flex", flexDirection:"row", width:"650px" }}
                                 >
                                     <Typography 
                                         variant="h6"
                                         style={{
-                                            width:"120px", 
+                                            width:"220px", 
                                             margin:"0", 
                                             padding:"0", 
                                             alignSelf:"center"
                                         }}
-                                    >Assigned Date</Typography>
+                                    >Installed Date *</Typography>
                                     <DateInput 
                                         fullWidth
-                                        label="Installed Date"
+                                        label=""
                                         name="installedDate"
                                         source="installedDate"
                                         defaultValue={currentDay}
@@ -187,21 +185,21 @@ function NewCategoryCreate() {
                                 </Box>
 
                                 <Box 
-                                    style={{ display:"flex", flexDirection:"row", width:"550px" }}
+                                    style={{ display:"flex", flexDirection:"row", width:"650px" }}
                                 >
                                     <Typography 
                                         variant="h6"
                                         style={{
-                                            width:"120px", 
+                                            width:"220px", 
                                             margin:"0", 
                                             padding:"0", 
                                             alignSelf:"center"
                                         }}
-                                    >Specification</Typography>
+                                    >State *</Typography>
                                     <RadioButtonGroupInput 
                                         // fullwidth="true"
-                                        source="state"
                                         label=""
+                                        source="state"
                                         choices={[ {state_id:'1', state:"Available"}, {state_id:'0', state:"Not available"} ]}
                                         row={false}
                                         style={{ width:"430px" }}
@@ -216,7 +214,7 @@ function NewCategoryCreate() {
                                     type="submit"
                                     variant="contained" 
                                     disabled={isValid}
-                                    style={{ margin:"10px", backgroundColor:"#cf2338" }}
+                                    style={{ margin:"10px", backgroundColor:"#cf2338", color:"#fff" }}
                                 >
                                     Save
                                 </Button>

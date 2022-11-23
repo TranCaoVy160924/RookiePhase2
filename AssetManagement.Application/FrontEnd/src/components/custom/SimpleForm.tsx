@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Form, TextInput } from 'react-admin';
-import { Box, IconButton } from '@mui/material'
+import { Box, IconButton, ThemeProvider } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import { theme } from '../../theme'
 
 function SimpleForm({ handleSubmit, handleClose }) {
     const [isValid, setIsValid] = useState(true);
@@ -23,7 +24,8 @@ function SimpleForm({ handleSubmit, handleClose }) {
     }
 
     return (
-        <Form validate={requiredInput} onSubmit={handleSubmit}>
+        <ThemeProvider theme={theme}>
+            <Form validate={requiredInput} onSubmit={handleSubmit}>
             <Box
                 display="flex"
                 flexDirection="row"
@@ -33,32 +35,31 @@ function SimpleForm({ handleSubmit, handleClose }) {
             >
                 <TextInput
                     fullWidth
-                    label=""
                     name="name"
                     source="name"
                     sx={{ width:"60%", borderRadius:"unset" }}
-                    onChange={(e) => e.preventDefault()}
+                    onKeyDown={(e) => e.stopPropagation()}
                     helperText={false}
                 />
                 <TextInput
                     fullWidth
-                    label=""
                     name="prefix"
                     source="prefix"
-                    sx={{ width:"15%", borderRadius:"unset" }}
-                    onChange={(e) => e.stopPropagation()}
+                    sx={{ width:"20%", borderRadius:"unset" }}
+                    onKeyDown={(e) => e.stopPropagation()}
                     helperText={false}
                 />
                 <Box display="flex" flexDirection="row" >
-                    <IconButton type="submit" color="secondary" disabled={isValid}>
+                    <IconButton sx={{ color:theme.palette.secondary.main }} type="submit" disabled={isValid}>
                         <CheckIcon fontSize='small' />
                     </IconButton>
-                    <IconButton color="secondary" onClick={handleClose}>
+                    <IconButton onClick={handleClose}>
                         <ClearIcon fontSize='small' />
                     </IconButton>
                 </Box>
             </Box>
         </Form>
+        </ThemeProvider>
     )
 }
 
