@@ -40,5 +40,7 @@ namespace AssetManagement.Data.EF
         public DbSet<Asset> Assets { get; set; }
 
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Assignment> Assignments { get; set; }
     }
 }

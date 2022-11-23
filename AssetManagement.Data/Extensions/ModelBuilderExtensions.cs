@@ -89,14 +89,26 @@ namespace AssetManagement.Data.Extensions
                 modelBuilder.Entity<Asset>().HasData(new Asset
                 {
                     Id = i,
-                    Name = "Laptop " + i,
-                    AssetCode = "LA10000" + i,
-                    Specification = $"Core i{i}, {i}GB RAM, {i}50 GB HDD, Window {i}",
+                    Name = "Laptop " + i.ToString(),
+                    AssetCode = "LA10000" + i.ToString(),
+                    Specification = $"Core i5, 5GB RAM, 650 GB HDD, Window 10",
+                    Location = Domain.Enums.AppUser.AppUserLocation.HoChiMinh,
                     InstalledDate = DateTime.Now,
                     State = i%2 == 0 ? State.Available : State.NotAvailable,
                     IsDeleted = i%2 == 0 ? true : false,
                 });
             }
+
+            modelBuilder.Entity<Assignment>().HasData(new Assignment
+            {
+                Id = 1,
+                AssignedDate = DateTime.Now,
+                ReturnedDate = DateTime.Now,
+                State = Domain.Enums.Assignment.State.Accepted,
+                AssetId = 1,
+                AssignedTo = adminId,
+                AssignedBy = staffId
+            });
         }
     }
 }

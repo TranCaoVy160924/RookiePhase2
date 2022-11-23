@@ -18,11 +18,14 @@ namespace AssetManagement.Domain.Models
         public string AssetCode { get; set; }
         public string Specification { get; set; }
         public DateTime InstalledDate { get; set; }
+        public AssetManagement.Domain.Enums.AppUser.AppUserLocation Location { get; set; }
         public AssetManagement.Domain.Enums.Asset.State State { get; set; }
         public Boolean IsDeleted { get; set; }
 
         //public virtual List<Assignment> Assignments { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category? Category { get; set; }
+
+        public virtual ICollection<Assignment> Assignments { get; set; }
     }
 }

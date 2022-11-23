@@ -2,6 +2,7 @@
    "api":{ 
       "base": ".",
       "auth": "./api/auth",
-      "asset": "./api/asset"
+      "asset": "./api/asset",
+      "assignement": "./api/assignement"
    }
 }
