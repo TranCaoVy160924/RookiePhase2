@@ -202,10 +202,15 @@ function NewCategoryCreate() {
                                         source="state"
                                         choices={[ {state_id:'1', state:"Available"}, {state_id:'0', state:"Not available"} ]}
                                         row={false}
-                                        style={{ width:"430px" }}
+                                        style={{ width:"430px"}}
                                         optionText="state"
                                         optionValue="state_id"
                                         helperText={false}
+                                        sx={{
+                                            ".css-1m9pwf3:checked + .css-hyxlzm":{
+                                                color:"red"
+                                            }
+                                        }}
                                     />
                                 </Box>
                             </Box>

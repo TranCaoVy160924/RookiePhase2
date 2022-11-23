@@ -29,15 +29,19 @@ function SimpleForm({ handleSubmit, handleClose }) {
             <Box
                 display="flex"
                 flexDirection="row"
-                width="300px"
+                width="350px"
                 padding="6px 16px"
                 boxSizing="border-box"
+                sx={{
+                    backgroundColor:"#eff1f5",
+                    marginBlockEnd:"-10px"
+                }}
             >
                 <TextInput
                     fullWidth
                     name="name"
                     source="name"
-                    sx={{ width:"60%", borderRadius:"unset" }}
+                    sx={{ width:"80%", borderRadius:"unset" }}
                     onKeyDown={(e) => e.stopPropagation()}
                     helperText={false}
                 />
@@ -45,16 +49,16 @@ function SimpleForm({ handleSubmit, handleClose }) {
                     fullWidth
                     name="prefix"
                     source="prefix"
-                    sx={{ width:"20%", borderRadius:"unset" }}
+                    sx={{ width:"20%", borderRadius:"unset", marginRight:"1%"}}
                     onKeyDown={(e) => e.stopPropagation()}
                     helperText={false}
                 />
-                <Box display="flex" flexDirection="row" >
+                <Box display="flex" flexDirection="row">
                     <IconButton sx={{ color:theme.palette.secondary.main }} type="submit" disabled={isValid}>
                         <CheckIcon fontSize='small' />
                     </IconButton>
                     <IconButton onClick={handleClose}>
-                        <ClearIcon fontSize='small' />
+                        <ClearIcon fontSize='small' htmlColor='black'/>
                     </IconButton>
                 </Box>
             </Box>

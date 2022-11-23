@@ -51,18 +51,24 @@ function SelectBoxWithFormInside({ source, format, parse }) {
                 },
             }}
         >
-            {Array.prototype.map.bind(addingData.data)(
-                (item, index) => <MenuItem key={index} value={item.id}>{item.name}</MenuItem>)
-            }
-            <hr style={{ color:"gray" }} />
-            <Box>
+            <Box sx={{backgroundColor:"whitesmoke", padding:"0", marginBlockStart:"-10px"}}>
+                {Array.prototype.map.bind(addingData.data)(
+                    (item, index) =>
+                    <MenuItem key={index} value={item.id}>
+                        {item.name}
+                    </MenuItem>)
+                }
+            </Box>
+            <hr style={{ margin:"0", color:"gray", backgroundColor:"whitesmoke" }} />
+            <Box sx={{backgroundColor:"#eff1f5"}}>
                 {addingData.status==false && <Typography 
                     color={theme.palette.secondary.main} 
                     sx={{ 
                         cursor:"pointer", 
                         fontStyle:"italic", 
                         textDecoration:"underline",
-                        padding:"6px 16px" 
+                        padding:"6px 16px",
+                        marginBlockEnd:"-10px"
                     }} 
                     onClick={handleClick}
                 >
