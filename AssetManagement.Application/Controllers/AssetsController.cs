@@ -55,18 +55,14 @@ namespace AssetManagement.Application.Controllers
         //[Authorize]
         public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int end, [FromQuery]int start, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="Name", [FromQuery]string? order="ASC")
         {
-<<<<<<< Updated upstream
-            var list = _dbContext.Assets.Include(x=>x.Category).AsQueryable();
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                list = list.Where(x => x.Name.Contains(searchString) || x.AssetCode.Contains(searchString));
-            }
-=======
             var list = _dbContext.Assets
                 .Include(x=>x.Category)
                 .Where(x=>!x.IsDeleted)
                 .AsQueryable();
->>>>>>> Stashed changes
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(x => x.Name.Contains(searchString) || x.AssetCode.Contains(searchString));
+            }
             if(categoryFilter != "")
             {
                 list = list.Where(x => x.CategoryId == int.Parse(categoryFilter));
