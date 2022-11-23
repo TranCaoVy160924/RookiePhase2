@@ -53,12 +53,12 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int end, [FromQuery]int start, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="Name", [FromQuery]string? order="ASC")
+        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int start, [FromQuery]int end, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="name", [FromQuery]string? order="ASC")
         {
             var list = _dbContext.Assets.Include(x=>x.Category).AsQueryable();
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => x.Name.Contains(searchString) || x.AssetCode.Contains(searchString));
+                list = list.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper()) || x.AssetCode.ToUpper().Contains(searchString.ToUpper()));
             }
             if(categoryFilter != "")
             {
