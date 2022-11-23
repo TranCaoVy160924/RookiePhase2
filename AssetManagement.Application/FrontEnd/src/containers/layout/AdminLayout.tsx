@@ -20,7 +20,8 @@ import HomeList from '../../pages/home/HomeList';
 
 import config from "../../connectionConfigs/config.json";
 import { assetProvider } from '../../providers/assetProvider/assetProvider';
-import AssetList from '../../pages/assetList/AssetList';
+import AssetList from '../../pages/assets/AssetList';
+import AssetEdit  from '../../pages/assets/AssetEdit';
 // import AssetManager from '../../pages/asset/AssetManager';
 
 // You will fix this API-URL
@@ -62,7 +63,7 @@ const App = () => {
                 requireAuth={true}
             >
                 <Resource name="home" options={{ label: 'Home' }} list={HomeList} />
-                {permissions == 'Admin' ? <Resource name="assets" list={AssetList} options={{ label: 'Manage Asset' }} /> : null}
+                {permissions == 'Admin' ? <Resource name="assets" list={AssetList} edit={AssetEdit} options={{ label: 'Manage Asset' }} /> : null}
                 {permissions == 'Admin' ? <Resource name="users" options={{ label: 'Manage User' }} list={ListGuesser} show={ShowGuesser} /> : null}
             </Admin>
 

@@ -1,5 +1,5 @@
 import React from "react"
-import { Datagrid, List, TextField } from "react-admin"
+import { Datagrid, List, TextField, Toolbar, EditButton } from "react-admin"
 
 export default () => {
    return <List>
@@ -9,6 +9,7 @@ export default () => {
          <TextField source="assetCode" />
          <TextField source="categoryName" />
          <TextField source="state" />
+         <EditButton size="small"/>
       </Datagrid>
    </List>
 }

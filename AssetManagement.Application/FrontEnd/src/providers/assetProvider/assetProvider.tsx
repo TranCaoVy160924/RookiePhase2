@@ -1,6 +1,6 @@
 import axios from "axios";
 import { stringify } from "query-string";
-import { CreateParams, CreateResult, DataProvider, DeleteManyParams, DeleteManyResult, DeleteParams, DeleteResult, GetManyParams, GetManyReferenceParams, GetManyReferenceResult, GetManyResult, GetOneParams, GetOneResult, RaRecord, UpdateManyParams, UpdateManyResult, UpdateParams, UpdateResult } from "ra-core";
+import { CreateParams, CreateResult, DataProvider, DeleteManyParams, DeleteManyResult, DeleteParams, DeleteResult, GetManyParams, GetManyReferenceParams, GetManyReferenceResult, GetManyResult, GetOneParams, GetOneResult, RaRecord, UpdateManyParams, UpdateManyResult, UpdateParams, UpdateResult, fetchUtils } from "ra-core";
 import config from "../../connectionConfigs/config.json";
 
 export const assetProvider: DataProvider = {
@@ -30,9 +30,11 @@ export const assetProvider: DataProvider = {
    getManyReference: function <RecordType extends RaRecord = any>(resource: string, params: GetManyReferenceParams): Promise<GetManyReferenceResult<RecordType>> {
       throw new Error("Function not implemented.");
    },
-   update: function <RecordType extends RaRecord = any>(resource: string, params: UpdateParams<any>): Promise<UpdateResult<RecordType>> {
-      throw new Error("Function not implemented.");
-   },
+   update: (resource, params) =>
+      fetchUtils.fetchJson(`${config.api.base}/api/${resource}/${params.id}`, {
+         method: 'PUT',
+         body: JSON.stringify(params.data),
+      }).then(({ json }) => ({ data: json })),
    updateMany: function <RecordType extends RaRecord = any>(resource: string, params: UpdateManyParams<any>): Promise<UpdateManyResult<RecordType>> {
       throw new Error("Function not implemented.");
    },
