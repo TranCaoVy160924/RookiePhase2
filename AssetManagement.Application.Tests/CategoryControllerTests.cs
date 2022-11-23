@@ -20,7 +20,7 @@ namespace AssetManagement.Application.Controllers.Tests
         public CategoryControllerTests()
         {
             //Create InMemory dbcontext
-            _options = new DbContextOptionsBuilder<AssetManagementDbContext>().UseInMemoryDatabase("AuthTestDB").Options;
+            _options = new DbContextOptionsBuilder<AssetManagementDbContext>().UseInMemoryDatabase("CategoryTestDB").Options;
             _context = new AssetManagementDbContext(_options);
             //Create mapper using CategoryProfile
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new CategoryProfile())).CreateMapper();
@@ -28,6 +28,7 @@ namespace AssetManagement.Application.Controllers.Tests
             SeedData();
         }
 
+        #region GetCategory
         [Fact]
         public async Task Get_SuccessAsync()
         {
@@ -42,7 +43,9 @@ namespace AssetManagement.Application.Controllers.Tests
             Assert.NotEmpty(result);
             Assert.Equivalent(_mapper.Map<List<GetCategoryResponse>>(_categories), result);
         }
+        #endregion
 
+        #region CreateCategory
         [Theory]
         [InlineData("Mouse", "Ms")]
         public async Task Create_SuccessAsync(string name, string prefix)
@@ -128,6 +131,9 @@ namespace AssetManagement.Application.Controllers.Tests
             Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Prefix is already existed. Please enter a different prefix", message);
         }
+        #endregion
+
+        #region DataSeed
         private void SeedData()
         {
             _context.Database.EnsureDeleted();
@@ -141,6 +147,7 @@ namespace AssetManagement.Application.Controllers.Tests
             _context.Categories.AddRange(_categories);
             _context.SaveChanges();
         }
+        #endregion
 
         //Clean up after tests
         public void Dispose()

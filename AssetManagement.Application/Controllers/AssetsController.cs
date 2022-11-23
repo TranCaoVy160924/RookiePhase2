@@ -26,9 +26,9 @@ namespace AssetManagement.Application.Controllers
 
         [HttpPost()]
         [Authorize]
-        public async Task<IActionResult> CreateAsset(CreateAssetRequest createAssetRequest)
+        public async Task<IActionResult> CreateAssetAsync(CreateAssetRequest createAssetRequest)
         {
-            Category category = await _dbContext.Categories.FindAsync(createAssetRequest.CategoryId);
+            Category? category = await _dbContext.Categories.FindAsync(createAssetRequest.CategoryId);
             if (category == null)
             {
                 return BadRequest(new ErrorResponseResult<string>("Invalid Category"));
@@ -48,7 +48,7 @@ namespace AssetManagement.Application.Controllers
         [Authorize]
         public async Task<IActionResult> Update(int id, [FromForm] UpdateAssetRequest request)
         {
-            Asset updatingAsset = await _dbContext.Assets
+            Asset? updatingAsset = await _dbContext.Assets
                 .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
 
