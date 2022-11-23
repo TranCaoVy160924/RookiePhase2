@@ -1,6 +1,8 @@
 import React from "react"
-import { Datagrid, List, SelectArrayInput, TextField, TextInput, DeleteWithConfirmButton, Toolbar } from "react-admin"
+import { Datagrid, List, SelectArrayInput, TextField, TextInput } from "react-admin"
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import TryRecord from "./TryRecord";
 
 export default () => {
     const assetsFilter = [
@@ -26,6 +28,7 @@ export default () => {
             <TextField source="categoryName" />
             <TextField source="state" />
             <CustomDeleteWithConfirmButton
+                icon={<HighlightOffIcon />}
                 confirmTitle="Are you sure?"
                 confirmContent="Do you want to delete this asset?"
             />

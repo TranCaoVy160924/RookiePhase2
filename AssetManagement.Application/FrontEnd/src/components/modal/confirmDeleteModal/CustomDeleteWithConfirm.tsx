@@ -33,7 +33,8 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
         confirmTitle = 'ra.message.delete_title',
         confirmContent = 'ra.message.delete_content',
         icon = defaultIcon,
-        label = 'ra.action.delete',
+        // label = 'ra.action.delete',
+        label = "",
         mutationMode = 'pessimistic',
         onClick,
         redirect = 'list',
@@ -64,20 +65,35 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
         bgcolor: '#F0EBEB',
         color: "#E80E0E",
         border: "1px solid #000",
-        borderRadius: 1
+        // borderRadius: "1px 1px 0px 0px"
+        borderTopLeftRadius: "4px",
+        borderTopRightRadius: "4px",
+        fontWeight: "bold"
     }
 
     const contentStyle = {
         border: "1px solid #000",
-        borderRadius: 1
+        borderBottomLeftRadius: '4px',
+        borderBottomRightRadius: '4px',
+        color: "#000"
     }
 
-    const buttonStyle = {
+    const deleteButtonStyle = {
         bgcolor: "#E80E0E",
         color: "#FFFFFF",
         border: "1px solid #000",
         borderRadius: 1,
-        marginRight: 3
+
+        "&:hover": {
+            color: "#000"
+        },
+    }
+
+    const confirmButtonStyle = {
+        bgcolor: "#F0EBEB",
+        color: "#000",
+        border: "1px solid #000",
+        borderRadius: 1,
     }
 
     return (
@@ -88,6 +104,11 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
                 className={clsx('ra-delete-button', className)}
                 key="button"
                 {...rest}
+                sx={{
+                    padding: 0,
+                    margin: 0,
+
+                }}
             >
                 {icon}
             </StyledButton>
@@ -103,19 +124,18 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
                 <DialogContent sx={contentStyle}>
                     <DialogContentText component={"div"} id="alert-dialog-description">
                         <DialogContentText sx={{
-                            padding: 3
+                            padding: 3,
+                            paddingRight: 20
                         }}>
                             {confirmContent}
                         </DialogContentText>
                     </DialogContentText>
                     <DialogActions>
-                        <ButtonGroup >
-                            <MUIButton sx={buttonStyle} onClick={handleDialogClose}>Cancel</MUIButton>
-                            <DeleteButton sx={buttonStyle} />
-                        </ButtonGroup>
+                        <MUIButton onClick={handleDelete} sx={deleteButtonStyle} >Delete</MUIButton>
+                        <MUIButton sx={confirmButtonStyle} onClick={handleDialogClose}>Cancel</MUIButton>
+                        <div style={{ flex: '1 0 0' }} />
                     </DialogActions>
                 </DialogContent>
-
             </Dialog>
         </Fragment>
     );
@@ -168,11 +188,11 @@ const StyledButton = styled(Button, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     color: theme.palette.error.main,
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
-        // Reset on mouse devices
-        '@media (hover: none)': {
-            backgroundColor: 'transparent',
-        },
-    },
+    // '&:hover': {
+    //     backgroundColor: alpha(theme.palette.error.main, 0.12),
+    //     // Reset on mouse devices
+    //     '@media (hover: none)': {
+    //         backgroundColor: 'transparent',
+    //     },
+    // },
 }));
