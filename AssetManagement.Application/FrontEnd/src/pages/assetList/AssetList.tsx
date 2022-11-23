@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React from "react"
 import { Datagrid, List, SelectArrayInput, TextField, TextInput } from "react-admin"
 
@@ -26,4 +27,30 @@ export default () => {
          <TextField source="state" />
       </Datagrid>
    </List>
+=======
+import React from "react";
+import { Datagrid, List, TextField, DeleteWithConfirmButton, Toolbar } from "react-admin";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ConfirmDeleteModal from "../../components/modal/confirmDeleteModal/ConfirmDeleteModal";
+import ChangePasswordModal from "../../components/modal/changePasswordModal/ChangePasswordModal";
+import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
+
+export default () => {
+    return <List>
+        <Datagrid bulkActionButtons={false}>
+            <TextField source="id" />
+            <TextField source="name" />
+            <TextField source="assetCode" />
+            <TextField source="categoryName" />
+            <TextField source="state" />
+            <Toolbar>
+                <CustomDeleteWithConfirmButton />
+                {/* <DeleteWithConfirmButton 
+                    confirmContent={<CustomDeleteWithConfirmButton />}
+                    // confirmContent={<ChangePasswordModal loginFirstTime={true} setLoginFirstTime={() => {}} />}
+                    size="small"/> */}
+            </Toolbar>
+        </Datagrid>
+    </List>
+>>>>>>> Stashed changes
 }
