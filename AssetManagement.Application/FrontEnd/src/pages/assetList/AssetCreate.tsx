@@ -4,13 +4,14 @@ import { Avatar, Box, Button, Typography, Container, CssBaseline } from '@mui/ma
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import SelectBoxWithFormInside from '../../components/custom/SelectBoxWithFormInside'
-import axios from 'axios'
+import * as assetService from '../../services/assets'
+import * as categoryService from '../../services/category'
 
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
-today = new Date(yyyy + '-' + mm + '-' + dd);
+var yyyy = String(today.getFullYear());
+var currentDay = yyyy + '-' + mm + '-' + dd
 
 function NewCategoryCreate() {
     const [category, setCategory] = useState([])
@@ -20,12 +21,28 @@ function NewCategoryCreate() {
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
     
+    useEffect(() => {
+        categoryService.getCategory()
+            .then(responseData => setCategory(responseData) )
+            .catch(error => console.log(error))
+    }, [])
 
     const handleFormSubmit = (data) => {
         // Call API (Catch error, notify error)
+        assetService.createAsset(
+            { 
+                categoryId:data.category, 
+                name:data.name, 
+                specification:data.specification, 
+                installedDate:data.installedDate,
+                state:parseInt(data.state)
+            })
+            // Redirect to CategoryList
+            .then(reponseData => navigate("/assets"))
+            // Console log error
+            .catch(error => console.log(error))
+
         console.log(data)
-        // Redirect to CategoryList
-        // return navigate("/api/Category")
     };
 
     const requiredInput = (values) => {
@@ -54,13 +71,6 @@ function NewCategoryCreate() {
         }
         return errors;
     };
-
-    useEffect(() => {
-        // You need to customize this Calling-API method
-        axios.get('https://localhost:61631/api/Category/Get')
-        .then(response => setCategory(response.data))
-        .catch(error => console.log(error))
-    }, [])
 
     return (
         <ThemeProvider theme={theme}>
@@ -119,9 +129,9 @@ function NewCategoryCreate() {
                                     >Category</Typography>
                                     {/* Custom Dropdown Selection (Category) */}
                                     <SelectBoxWithFormInside
-                                        data={category}
+                                        // category={category}
                                         source="category"
-                                        format=""
+                                        format={(formValue) => (Array.prototype.filter.bind(category)(item => item.id===formValue))["name"]}
                                         parse=""
                                     />
                                 </Box>
@@ -161,15 +171,15 @@ function NewCategoryCreate() {
                                             padding:"0", 
                                             alignSelf:"center"
                                         }}
-                                    >Specification</Typography>
+                                    >Assigned Date</Typography>
                                     <DateInput 
                                         fullWidth
                                         label="Installed Date"
                                         name="installedDate"
                                         source="installedDate"
-                                        defaultValue={today}
-                                        inputProps={{ min: today }}
-                                        validate={minValue(today)}
+                                        defaultValue={currentDay}
+                                        inputProps={{ min: currentDay }}
+                                        validate={minValue(currentDay)}
                                         onBlur={(e) => e.stopPropagation()}
                                         style={{ width:"430px" }}
                                         helperText={false}
