@@ -1,8 +1,9 @@
 {
-   "api":{ 
-      "base": ".",
-      "auth": "./api/auth",
-      "asset": "./api/asset",
-      "assignement": "./api/assignement"
-   }
+  "api": {
+    "base": ".",
+    "auth": "./api/auth",
+    "assignement": "./api/assignement",
+    "asset": "./api/Assets",
+    "category": "./api/Category"
+  }
 }

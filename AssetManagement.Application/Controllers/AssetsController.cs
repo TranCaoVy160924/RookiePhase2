@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AssetManagement.Application.Controllers
 {
@@ -21,6 +22,66 @@ namespace AssetManagement.Application.Controllers
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+
+
+        [HttpPost()]
+        [Authorize]
+        public async Task<IActionResult> CreateAssetAsync(CreateAssetRequest createAssetRequest)
+        {
+            string token = Request.Headers.Authorization;
+            string userName = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
+            AppUser user = await _dbContext.AppUsers.FirstAsync(u => u.UserName == userName);
+            if (user == null)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Invalid UserName"));
+            }
+            Category? category = await _dbContext.Categories.FindAsync(createAssetRequest.CategoryId);
+            if (category == null)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Invalid Category"));
+            }
+            Asset asset = _mapper.Map<Asset>(createAssetRequest);
+
+            int countAsset = await _dbContext.Assets.Where(_ => _.AssetCode.StartsWith(category.Prefix)).CountAsync();
+            asset.AssetCode = category.Prefix + (countAsset + 1).ToString().PadLeft(6, '0');
+            asset.Category = category;
+            asset.Location = user.Location;
+
+            await _dbContext.Assets.AddAsync(asset);
+            await _dbContext.SaveChangesAsync();
+            return Ok(new SuccessResponseResult<string>("Create Asset sucessfully"));
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Update(int id, [FromForm] UpdateAssetRequest request)
+        {
+            Asset? updatingAsset = await _dbContext.Assets
+                .Where(a => a.Id == id)
+                .FirstOrDefaultAsync();
+
+            try
+            {
+                if (updatingAsset != null)
+                {
+                    updatingAsset.Name = request.Name;
+                    updatingAsset.Specification = request.Specification;
+                    updatingAsset.InstalledDate = request.InstalledDate;
+                    updatingAsset.State = request.State;
+                    await _dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception($"Cannot find a asset with id: {id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponseResult<string>(ex.Message));
+            }
+
+            return StatusCode(StatusCodes.Status200OK);
         }
 
         [HttpDelete("{id}")]
@@ -116,10 +177,10 @@ namespace AssetManagement.Application.Controllers
             }
 
             var sortedResult = StaticFunctions<Asset>.Paging(list, start, end);
-            
+
             var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(sortedResult);
 
-            return Ok(new ViewListAssets_ListResponse { Assets = mappedResult, Total=list.Count()});
+            return Ok(new ViewListAssets_ListResponse { Assets = mappedResult, Total = list.Count() });
         }
     }
 }

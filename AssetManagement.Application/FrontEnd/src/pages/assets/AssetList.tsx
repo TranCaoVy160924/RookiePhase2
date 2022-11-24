@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import AssetShow from "./AssetShow";
 import {
   Datagrid,
   List,
+  Pagination,
   SelectArrayInput,
   TextField,
   TextInput,
 } from "react-admin";
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import AssetsPagination from "../../components/pagination/AssetsPagination";
+import StateFilterSelect from "../../components/select/StateFilterSelect";
+import AssetShow from "./AssetShow";
 
 export default () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -26,13 +29,19 @@ export default () => {
 
   const assetsFilter = [
     <TextInput label="Search" source="searchString" alwaysOn />,
-    <SelectArrayInput
+    // <SelectArrayInput source="states" choices={[
+    //     { id: '0', name: 'Available' },
+    //     { id: '1', name: 'Not available' },
+    //     { id: '2', name: 'Waiting for recycling' },
+    //     { id: '3', name: 'Recyled' },
+    // ]} />,
+    <StateFilterSelect
       source="states"
-      choices={[
-        { id: "0", name: "Available" },
-        { id: "1", name: "Not available" },
-        { id: "2", name: "Waiting for recycling" },
-        { id: "3", name: "Recyled" },
+      statesList={[
+        { value: 0, text: "Available" },
+        { value: 1, text: "Not Available" },
+        { value: 2, text: "Waiting for recycling" },
+        { value: 3, text: "Recycled" },
       ]}
     />,
     <SelectArrayInput
@@ -45,19 +54,25 @@ export default () => {
       ]}
     />,
   ];
+
   return (
     <>
-      <List filters={assetsFilter}>
-        <Datagrid rowClick={postRowClick}>
+      <List
+        pagination={<AssetsPagination />}
+        filters={assetsFilter}
+        exporter={false}
+        sort={{ field: "name", order: "DESC" }}
+      >
+        <Datagrid rowClick={postRowClick} bulkActionButtons={false}>
           <TextField source="id" />
           <TextField source="name" />
           <TextField source="assetCode" />
           <TextField source="categoryName" />
           <TextField source="state" />
           <CustomDeleteWithConfirmButton
-                icon={<HighlightOffIcon />}
-                confirmTitle="Are you sure?"
-                confirmContent="Do you want to delete this asset?"
+            icon={<HighlightOffIcon />}
+            confirmTitle="Are you sure?"
+            confirmContent="Do you want to delete this asset?"
           />
         </Datagrid>
       </List>
