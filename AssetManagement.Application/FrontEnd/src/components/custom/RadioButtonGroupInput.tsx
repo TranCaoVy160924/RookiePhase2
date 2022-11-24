@@ -36,4 +36,4 @@ function RadioButtonGroup(props) {
     )
 }
 
-export default RadioButtonGroup
+export default React.memo(RadioButtonGroup);

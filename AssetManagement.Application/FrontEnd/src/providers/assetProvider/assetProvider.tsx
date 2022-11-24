@@ -9,8 +9,13 @@ export const assetProvider: DataProvider = {
 
     // },
     getOne: function <RecordType extends RaRecord = any>(resource: string, params: GetOneParams<any>): Promise<GetOneResult<RecordType>> {
-        throw new Error("Function not implemented.");
+        return axiosInstance.get(`/api/${resource}/${params.id}`).then(res=>{ 
+            return res })
     },
+    // getOne: (resource, params) =>
+    //     httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+    //         data: json,
+    //     })),
     getMany: function <RecordType extends RaRecord = any>(resource: string, params: GetManyParams): Promise<GetManyResult<RecordType>> {
         throw new Error("Function not implemented.");
     },
@@ -18,10 +23,7 @@ export const assetProvider: DataProvider = {
         throw new Error("Function not implemented.");
     },
     update: (resource, params) =>
-      fetchUtils.fetchJson(`${config.api.base}/api/${resource}/${params.id}`, {
-         method: 'PUT',
-         body: JSON.stringify(params.data),
-      }).then(({ json }) => ({ data: json })),
+    axiosInstance.put(`/api/${resource}/${params.id}`, params.data).then(res => res),
     updateMany: function <RecordType extends RaRecord = any>(resource: string, params: UpdateManyParams<any>): Promise<UpdateManyResult<RecordType>> {
         throw new Error("Function not implemented.");
     },
@@ -30,9 +32,7 @@ export const assetProvider: DataProvider = {
     },
     delete: async (resource, params) => {
         const url = `${config.api.base}/api/${resource}/${params.id}`;
-        console.log(url);
         var response = await axiosInstance.delete(url);
-        console.log(response.data);
         return response.data;
     },
     deleteMany: function <RecordType extends RaRecord = any>(resource: string, params: DeleteManyParams<RecordType>): Promise<DeleteManyResult<RecordType>> {

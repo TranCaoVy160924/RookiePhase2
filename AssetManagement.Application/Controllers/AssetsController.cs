@@ -24,7 +24,7 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
         [HttpGet("{id}")]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> GetAssetById(int id)
         {
             Asset gettingAsset = await _dbContext.Assets
@@ -170,7 +170,7 @@ namespace AssetManagement.Application.Controllers
                         list = list.OrderBy(x => x.Name);
                         break;
                     }
-                case "category":
+                case "categoryName":
                     {
                         list = list.OrderBy(x => x.Category.Name);
                         break;
