@@ -139,10 +139,22 @@ namespace AssetManagement.Application.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper()) || x.AssetCode.ToUpper().Contains(searchString.ToUpper()));
+                var tmp = list.ToList();
             }
-            if(categoryFilter != "")
+            if(!string.IsNullOrEmpty(categoryFilter))
             {
-                list = list.Where(x => x.CategoryId == int.Parse(categoryFilter));
+                var arrayChar = categoryFilter.Split("&");
+                var arrNumberChar = new List<int>();
+                for (int i = 0; i < arrayChar.Length; i++)
+                {
+                    var temp = 0;
+                    if (int.TryParse(arrayChar[i], out temp))
+                    {
+                        arrNumberChar.Add(int.Parse(arrayChar[i]));
+                    }
+                }
+                list = list.Where(x => arrNumberChar.Contains(x.CategoryId.Value));
+                var tmp = list.ToList();
             }
             if(!string.IsNullOrEmpty(stateFilter))
             {

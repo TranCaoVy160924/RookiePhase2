@@ -7,7 +7,10 @@ import {
   TextField,
   TextInput,
   useListContext,
-  EditButton
+  EditButton,
+  useListController,
+  useDataProvider,
+  useGetList
 } from "react-admin";
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -15,15 +18,20 @@ import AssetsPagination from "../../components/pagination/AssetsPagination";
 import StateFilterSelect from "../../components/select/StateFilterSelect";
 import AssetShow from "./AssetShow";
 import { ButtonGroup } from "@mui/material";
+import CategoryFilterSelect from "../../components/select/CategoryFilterSelect";
+import axios from "axios";
+import axiosInstance from "../../connectionConfigs/axiosInstance";
 
 export default () => {
   const [isOpened, setIsOpened] = useState(false);
   const [record, setRecord] = useState();
+  // const { data } = useGetList("category/get", { pagination: { page: 1, perPage: 99 } })
+  const dataProvider = useDataProvider();
+  let data = dataProvider.getList("category/get", { pagination: { page: 1, perPage: 99 }, sort: { field: "name", order: "ASC" }, filter: {} }).then(res => res.data)
 
   const toggle = () => {
     setIsOpened(!isOpened);
   };
-
   const postRowClick = (id, resource, record) => {
     setRecord(record);
     toggle();
@@ -47,16 +55,14 @@ export default () => {
         { value: 3, text: "Recycled" },
       ]}
     />,
-    <SelectArrayInput
-      source="types"
-      choices={[
-        { id: "admin", name: "Admin" },
-        { id: "u001", name: "Editor" },
-        { id: "u002", name: "Moderator" },
-        { id: "u003", name: "Reviewer" },
-      ]}
-    />,
+    <CategoryFilterSelect
+      source="categories"
+      statesList={data}
+    />
   ];
+
+
+
 
   return (
     <>
@@ -81,14 +87,14 @@ export default () => {
           <TextField source="assetCode" />
           <TextField source="categoryName" />
           <TextField source="state" />
-          <ButtonGroup sx={{border: null}}>
-                <EditButton variant="text" size="small" label=""/>
-                <CustomDeleteWithConfirmButton
-                    icon={<HighlightOffIcon />}
-                    confirmTitle="Are you sure?"
-                    confirmContent="Do you want to delete this asset?"
-                    />
-                </ButtonGroup>
+          <ButtonGroup sx={{ border: null }}>
+            <EditButton variant="text" size="small" label="" />
+            <CustomDeleteWithConfirmButton
+              icon={<HighlightOffIcon />}
+              confirmTitle="Are you sure?"
+              confirmContent="Do you want to delete this asset?"
+            />
+          </ButtonGroup>
         </Datagrid>
       </List>
       <AssetShow isOpened={isOpened} toggle={toggle} record={record} />
