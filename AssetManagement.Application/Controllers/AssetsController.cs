@@ -37,11 +37,9 @@ namespace AssetManagement.Application.Controllers
             }
             else
             {
-                throw new Exception("The asset does not exist");
+                return BadRequest();
             }
         }
-
-
 
         [HttpPost()]
         [Authorize]

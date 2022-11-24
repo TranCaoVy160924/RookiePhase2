@@ -83,6 +83,21 @@ namespace AssetManagement.Data.Extensions
                 UserId = adminId
             });
 
+            modelBuilder.Entity<Category>().HasData(new Category
+            {
+                Id = 1,
+                Name = "Laptop",
+                Prefix = "LA",
+                IsDeleted = false,
+            });
+
+            modelBuilder.Entity<Category>().HasData(new Category
+            {
+                Id = 2,
+                Name = "Monitor",
+                Prefix = "MO",
+                IsDeleted = false,
+            });
 
             for (int i = 1; i <= 10; i++)
             {
@@ -92,6 +107,7 @@ namespace AssetManagement.Data.Extensions
                     Name = "Laptop " + i,
                     AssetCode = "LA10000" + i,
                     Specification = $"Core i{i}, {i}GB RAM, {i}50 GB HDD, Window {i}",
+                    CategoryId = i % 2 == 0 ? 1 : 2,
                     InstalledDate = DateTime.Now,
                     State = i % 2 == 0 ? State.Available : State.NotAvailable,
                     IsDeleted = i % 2 == 0 ? true : false,
