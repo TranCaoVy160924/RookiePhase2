@@ -487,7 +487,7 @@ namespace AssetManagement.Application.Tests
                 Name = "Laptop Asus Rog Strix",
                 Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
                 InstalledDate = now,
-                State = State.NotAvailable
+                State = (int)State.NotAvailable
             };
 
             AssetsController assetController = new AssetsController(_context, _mapper);
@@ -509,7 +509,7 @@ namespace AssetManagement.Application.Tests
                 Name = "Laptop Asus Rog Strix",
                 Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
                 InstalledDate = now,
-                State = State.NotAvailable
+                State = (int)State.NotAvailable
             };
 
             AssetsController assetController = new AssetsController(_context, _mapper);
