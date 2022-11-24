@@ -24,7 +24,7 @@ function CategorySelectBoxDisabled({ source, format, parse, defaultValue = -1,di
             value= {defaultValue}
             disabled={disabled}
             sx={{ 
-                width:"300px", 
+                width:"430px", 
                 height:"40px",
                 padding:"0px",
                 boxSizing:"border-box",

@@ -8,7 +8,8 @@ import {
     ListGuesser,
     ShowGuesser,
     usePermissions,
-    useAuthProvider
+    useAuthProvider,
+    DateTimeInput
 } from 'react-admin';
 import { theme } from '../../theme';
 import Layout from '../Layout';
@@ -50,6 +51,18 @@ const App = () => {
             setLoginFirstTime(true);
         }
     })
+
+    useEffect(() => {
+        let expTick = localStorage.getItem("expTime");
+        if (expTick) {
+            var exp = new Date(parseInt(expTick) * 1000);
+            var now = new Date();
+            if (now > exp) {
+                localStorage.removeItem("auth");
+                authProvider.logout();
+            }
+        }
+    }, [])
 
     return (
         <>

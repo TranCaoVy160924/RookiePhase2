@@ -12,7 +12,7 @@ export default (props) => {
       formState: { isSubmitted }
    } = useInput(props);
 
-   const { setFilters, displayedFilters } = useListContext();
+   const { setFilters, displayedFilters, setPerPage } = useListContext();
 
    const [states, setStates] = useState<string[]>([]);
 
@@ -39,6 +39,10 @@ export default (props) => {
       setFilters({ states: states }, displayedFilters);
    }, [states])
 
+   useEffect(() => {
+      setPerPage(5)
+   }, [])
+
    const handleSelectAll = () => {
       let arr: Array<string> = [];
       props.statesList.forEach(({ value, text }) => {
@@ -58,12 +62,22 @@ export default (props) => {
             onChange={handleChange}
          >
             <MenuItem value={"all"}>
-               <Checkbox checked={states.length == 4} />
+               <Checkbox sx={{
+                  color: "#cf2338",
+                  '&.Mui-checked': {
+                     color: "#cf2338",
+                  },
+               }} checked={states.length == 4} />
                <ListItemText primary="All" />
             </MenuItem>
             {props.statesList.map((state) => (
                <MenuItem key={state.value} value={state.value}>
-                  <Checkbox checked={states.indexOf(state.value) > -1} />
+                  <Checkbox sx={{
+                     color: "#cf2338",
+                     '&.Mui-checked': {
+                        color: "#cf2338",
+                     },
+                  }} checked={states.indexOf(state.value) > -1} />
                   <ListItemText primary={state.text} />
                </MenuItem>
             ))}

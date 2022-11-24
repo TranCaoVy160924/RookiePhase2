@@ -23,7 +23,8 @@ builder.Services.AddIdentity<AppUser, AppRole>()
                .AddEntityFrameworkStores<AssetManagementDbContext>()
                .AddDefaultTokenProviders();
 
-builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile))); 
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(AssignmentProfile)));
 
 builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
 

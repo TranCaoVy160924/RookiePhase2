@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as assetService from '../../services/assets'
 import * as categoryService from '../../services/category'
 import CategorySelectBoxDisabled from '../../components/custom/CategorySelectBoxDisabled'
+import RadioButtonGroup from '../../components/custom/RadioButtonGroupInput'
 
 
 var today = new Date();
@@ -21,21 +22,23 @@ function EditAssetInformations() {
     const [asset, setAsset] = useState({name: null,
         specification: null,
         installedDate: null,
-        state: 0,
+        state: 2,
         categoryId: 0
     });
     const navigate = useNavigate();
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
+    // console.log(asset)
     useEffect(() => {
         categoryService.getCategory()
             .then(responseData => setCategory(responseData) )
             .catch(error => console.log(error))
         assetService.getAssetById(id)
-                .then(responseData => setAsset(responseData) )
-                .catch(error => console.log(error))
+            .then(responseData => {
+                setAsset(responseData)} )
+            .catch(error => console.log(error))
         }, [])
-    console.log("asset", asset,category);
+    console.log("asset", asset);
     const handleFormSubmit = (data) => {
         assetService.updateAsset(id,
             {
@@ -183,14 +186,12 @@ function EditAssetInformations() {
                                     >Installed Date *</Typography>
                                     <DateInput
                                         fullWidth
-                                        label={false}
+                                        label=""
                                         name="installedDate"
                                         source="installedDate"
-                                        inputProps={{ min: currentDay }}
-                                        // InputLabelProps={{ shrink: false }}
-                                        validate={minValue(currentDay)}
+                                        InputLabelProps={{shrink: false}}
                                         onBlur={(e) => e.stopPropagation()}
-                                        style={{ width: "430px" }}
+                                        style={{ width:"430px" }}
                                         helperText={false}
                                         defaultValue={asset.installedDate}
                                     />
@@ -208,19 +209,19 @@ function EditAssetInformations() {
                                             alignSelf: "center"
                                         }}
                                     >State *</Typography>
-                                    <RadioButtonGroupInput
-                                        // fullwidth="true"
-                                        defaultValue={asset.state}
+                                    <RadioButtonGroup 
                                         label={false}
+                                        defaultValue={asset.state}
+                                        name="state"
                                         source="state"
                                         choices={[
-                                            { state_id: '0', state: "Not available" },
-                                            { state_id: '1', state: "Available" }, 
-                                            { state_id: '2', state: "WaitingForRecycling" }, 
-                                            { state_id: '3', state: "Recycled" }, 
+                                            { state_id: 0, state: "Available" }, 
+                                            { state_id: 1, state: "Not available" },
+                                            { state_id: 2, state: "WaitingForRecycling" }, 
+                                            { state_id: 3, state: "Recycled" }, 
                                         ]}
                                         row={false}
-                                        style={{ width: "430px" }}
+                                        style={{ width:"430px"}}
                                         optionText="state"
                                         optionValue="state_id"
                                         helperText={false}

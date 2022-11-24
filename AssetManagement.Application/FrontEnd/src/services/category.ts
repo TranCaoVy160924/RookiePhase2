@@ -1,7 +1,6 @@
 import axiosInstance from "../connectionConfigs/axiosInstance";
 import config from '../connectionConfigs/config.json';
-// const baseUrl = config.api.category;
-const baseUrl = `https://localhost:57194/api/Category`
+const baseUrl = config.api.category;
 
 const getCategory = async() => {
     let url = `${baseUrl}/Get`
