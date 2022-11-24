@@ -13,6 +13,9 @@ namespace AssetManagement.Contracts.Asset.Response
         public string AssetCode { get; set; }
         public string CategoryName { get; set; }
         public string State { get; set; }
+        public string Specification { get; set; }
+        public DateTime InstalledDate { get; set; }
+        public string Location { get; set; }
 
         public bool Equals(ViewListAssets_AssetResponse? other)
         {
