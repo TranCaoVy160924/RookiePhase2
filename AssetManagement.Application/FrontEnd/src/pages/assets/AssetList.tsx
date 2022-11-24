@@ -1,5 +1,5 @@
-import React from "react"
-import { Datagrid, List, Pagination, SelectArrayInput, TextField, TextInput } from "react-admin"
+import React, { useEffect } from "react"
+import { Datagrid, List, Pagination, SelectArrayInput, TextField, TextInput, useListContext } from "react-admin"
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import AssetsPagination from "../../components/pagination/AssetsPagination";
@@ -22,8 +22,8 @@ export default () => {
             { id: 'u003', name: 'Reviewer' },
         ]} />
     ];
-    return <List pagination={<AssetsPagination />} filters={assetsFilter} exporter={false} sort={{ field: 'name', order: 'DESC' }}>
-        <Datagrid bulkActionButtons={false}>
+    return <List perPage={5} pagination={<AssetsPagination />} filters={assetsFilter} exporter={false} sort={{ field: 'name', order: 'DESC' }}>
+        <Datagrid empty={<p><h2>No Result found</h2></p>} bulkActionButtons={false}>
             <TextField source="id" />
             <TextField source="name" />
             <TextField source="assetCode" />
