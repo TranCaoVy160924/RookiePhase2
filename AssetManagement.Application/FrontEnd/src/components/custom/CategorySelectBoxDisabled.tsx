@@ -13,7 +13,7 @@ function CategorySelectBoxDisabled({ source, format, parse, defaultValue = -1,di
 
     useEffect(() => {
         categoryService.getCategory()
-            .then(responseData => setAddingData({ status:false, data:responseData }) )
+            .then(responseData => setAddingData({ status:false, data:responseData.data }) )
             .catch(error => console.log(error))
     }, [])
 

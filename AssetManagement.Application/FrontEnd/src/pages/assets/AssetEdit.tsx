@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Edit, Form, TextInput, DateInput, minValue, RadioButtonGroupInput, SimpleForm } from 'react-admin'
+import { Edit, Form, TextInput, DateInput, minValue, RadioButtonGroupInput, SimpleForm, EditBase } from 'react-admin'
 import { InputLabel ,MenuItem, Select,Box, Button, Typography, Container, CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,7 +7,7 @@ import * as assetService from '../../services/assets'
 import * as categoryService from '../../services/category'
 import CategorySelectBoxDisabled from '../../components/custom/CategorySelectBoxDisabled'
 import RadioButtonGroup from '../../components/custom/RadioButtonGroupInput'
-import AssetEditToolbar from '../../components/formToolBar/AssetEditToolbar'
+import AssetEditToolbar from '../../components/formToolbar/AssetEditToolbar'
 
 
 var today = new Date();
@@ -32,13 +32,14 @@ function EditAssetInformations() {
     // console.log(asset)
     useEffect(() => {
         categoryService.getCategory()
-            .then(responseData => setCategory(responseData) )
+            .then(responseData => setCategory(responseData.data) )
             .catch(error => console.log(error))
         assetService.getAssetById(id)
             .then(responseData => {
                 setAsset(responseData)} )
             .catch(error => console.log(error))
         }, [])
+    
     console.log("asset", asset);
 
     return (
@@ -57,7 +58,7 @@ function EditAssetInformations() {
                     <Typography component="h3" variant="h5" color="#cf2338" pb="40px" fontWeight="bold">
                         Create New Asset
                     </Typography>
-            <Edit redirect="show" sx={{".RaEdit-card" : {boxShadow:"none"},".RaEdit-main":{width:'750px'}}}>
+            <EditBase redirect="show" sx={{".RaEdit-card" : {boxShadow:"none"},".RaEdit-main":{width:'750px'}}}>
                 <SimpleForm toolbar={<AssetEditToolbar /> } >
                     <Box
                     sx={{ display: "flex", flexDirection: "row", width: "650px", marginTop: "10px"}}
@@ -77,7 +78,7 @@ function EditAssetInformations() {
                             name="name"
                             source="name"
                             style={{ width: "430px", margin: "0", padding: "0" }}
-                             helperText={false}
+                            helperText={false}
                             InputLabelProps={{ shrink: false }}
                         />
                     </Box>
@@ -171,7 +172,7 @@ function EditAssetInformations() {
                         { id: 3, name: "Recycled" }]} />
                         </Box>
                 </SimpleForm>
-            </Edit>
+            </EditBase>
             </Box>
             </Container>
         </ThemeProvider>
