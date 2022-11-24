@@ -57,7 +57,7 @@ function EditAssetInformations() {
                     <Typography component="h3" variant="h5" color="#cf2338" pb="40px" fontWeight="bold">
                         Create New Asset
                     </Typography>
-            <Edit redirect="show" sx={{".RaEdit-card" : {boxShadow:"none"},".RaEdit-main":{width:'750px'}}}>
+            <Edit sx={{".RaEdit-card" : {boxShadow:"none"},".RaEdit-main":{width:'750px'}}} mutationMode="pessimistic">
                 <SimpleForm toolbar={<AssetEditToolbar /> } >
                     <Box
                     sx={{ display: "flex", flexDirection: "row", width: "650px", marginTop: "10px"}}
@@ -165,10 +165,12 @@ function EditAssetInformations() {
                             }}
                         >State *</Typography>
                     <RadioButtonGroup  label="" row={false} style={{ width:"430px"}} source="state" choices={[
-                        { id: 0, name: "Available" },
+                        { id: 0 , name: "Available" },
                         { id: 1, name: "Not available" },
                         { id: 2, name: "WaitingForRecycling" },
-                        { id: 3, name: "Recycled" }]} />
+                        { id: 3, name: "Recycled" }]} 
+                        optionText="name"
+                        optionValue="id"/>
                         </Box>
                 </SimpleForm>
             </Edit>

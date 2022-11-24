@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AssetManagement.Domain.Enums.Asset;
 
 namespace AssetManagement.Application.Controllers
 {
@@ -84,7 +85,7 @@ namespace AssetManagement.Application.Controllers
                     updatingAsset.Name = request.Name;
                     updatingAsset.Specification = request.Specification;
                     updatingAsset.InstalledDate = request.InstalledDate;
-                    updatingAsset.State = request.State;
+                    updatingAsset.State = (State)request.State;
                     await _dbContext.SaveChangesAsync();
                 }
                 else

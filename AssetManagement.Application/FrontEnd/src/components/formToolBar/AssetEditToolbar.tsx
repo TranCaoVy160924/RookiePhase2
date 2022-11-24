@@ -3,6 +3,8 @@ import { SaveButton, Toolbar, useRedirect, useNotify, ThemeProvider } from 'reac
 import {Button} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {theme} from '../../theme';
+import { useUpdate, useRecordContext } from 'react-admin';
+
 
 const AssetEditToolbar = () => {
     const notify = useNotify();
@@ -16,13 +18,13 @@ const AssetEditToolbar = () => {
                 mutationOptions={{
                     onSuccess: () => {
                         notify('Element updated');
-                        navigate("/assets")
                     }}
                 }
-                type="button"
+                // type="button"
                 variant="contained"
                 icon={<></>}
                 color="secondary"
+            
             />
             <Button
             variant="outlined"
