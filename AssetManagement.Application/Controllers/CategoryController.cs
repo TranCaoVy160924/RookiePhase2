@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AssetManagement.Application.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
