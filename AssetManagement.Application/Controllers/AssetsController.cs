@@ -24,7 +24,7 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
         [HttpGet("{id}")]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> GetAssetById(int id)
         {
             Asset gettingAsset = await _dbContext.Assets
