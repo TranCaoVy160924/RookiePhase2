@@ -4,7 +4,7 @@ import { Box, Button, Typography, Container, CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import SelectBoxWithFormInside from '../../components/custom/SelectBoxWithFormInside'
-import BpRadio from '../../components/custom/RadioButton'
+import RadioButtonGroup from '../../components/custom/RadioButtonGroupInput'
 import * as assetService from '../../services/assets'
 import * as categoryService from '../../services/category'
 
@@ -200,8 +200,7 @@ function NewCategoryCreate() {
                                             alignSelf:"center"
                                         }}
                                     >State *</Typography>
-                                    <RadioButtonGroupInput 
-                                        // fullwidth="true"
+                                    <RadioButtonGroup 
                                         label=""
                                         source="state"
                                         choices={[ {state_id:'0', state:"Available"}, {state_id:'1', state:"Not available"} ]}
@@ -210,32 +209,6 @@ function NewCategoryCreate() {
                                         optionText="state"
                                         optionValue="state_id"
                                         helperText={false}
-                                        sx={{
-                                            ".css-1m9pwf3 + .css-hyxlzm .css-1hbvpl3-MuiSvgIcon-root":{
-                                                width:"20px",
-                                                height:"20px",
-                                                color:'#000',
-                                                backgroundColor: '#fff',
-                                                borderRadius: '50%',
-                                            },
-                                            ".css-1m9pwf3:checked + .css-hyxlzm .css-1hbvpl3-MuiSvgIcon-root":{
-                                                width:"20px",
-                                                height:"20px",
-                                                color:'#cf2338',
-                                                backgroundColor: '#cf2338',
-                                                borderRadius: '50%',
-                                            },
-                                            ".css-1m9pwf3 + .css-hyxlzm .css-11zohuh-MuiSvgIcon-root":{
-                                                width:"20px",
-                                                height:"20px",
-                                                color:'#fff',
-                                            },
-                                            ".css-1m9pwf3:checked + .css-hyxlzm .css-11zohuh-MuiSvgIcon-root":{
-                                                width:"20px",
-                                                height:"20px",
-                                                color:'#fff',
-                                            }
-                                        }}
                                     />
                                 </Box>
                             </Box>
