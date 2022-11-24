@@ -24,17 +24,12 @@ namespace AssetManagement.Application.Tests
         private readonly AssetManagementDbContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
-        private List<Assignment> _assignments;
-        private List<Asset> _assets;
-        private List<Category> _categories;
-        private List<AppRole> _roles;
-        private List<AppUser> _users;
 
         public AssignmentControllerTests()
         {
             // Create InMemory dbcontext options
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
-                .UseInMemoryDatabase(databaseName: "AssetTestDb").Options;
+                .UseInMemoryDatabase(databaseName: "AssetTestDb1").Options;
 
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new AssignmentProfile())).CreateMapper();
 
@@ -48,7 +43,7 @@ namespace AssetManagement.Application.Tests
         {
             _context.Database.EnsureDeleted();
             //Create roles data
-            _roles = new()
+            List<AppRole> _roles = new ()
             {
                 new AppRole()
                 {
@@ -65,7 +60,7 @@ namespace AssetManagement.Application.Tests
                 }
             };
             //Create users data
-            _users = new()
+            List<AppUser> _users = new()
             {
                 new AppUser()
                 {
