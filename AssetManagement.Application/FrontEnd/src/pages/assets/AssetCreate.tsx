@@ -17,14 +17,14 @@ var currentDay = yyyy + '-' + mm + '-' + dd
 function NewCategoryCreate() {
     const [category, setCategory] = useState([])
     const [isValid, setIsValid] = useState(true);
-    const [create, {}] = useCreate();
+    const [create, { }] = useCreate();
     const navigate = useNavigate();
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
-    
+
     useEffect(() => {
         categoryService.getCategory()
-            .then(responseData => setCategory(responseData.data) )
+            .then(responseData => setCategory(responseData.data))
             .catch(error => console.log(error))
     }, []);
 
@@ -61,7 +61,7 @@ function NewCategoryCreate() {
                 <CssBaseline />
                 <Box
                     sx={{
-                        margin:"auto",
+                        margin: "auto",
                         marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
@@ -78,16 +78,16 @@ function NewCategoryCreate() {
                                     display="grid"
                                     gap="30px"
                                 >
-                                    <Box 
-                                        sx={{ display:"flex", flexDirection:"row", width:"650px" }}
+                                    <Box
+                                        sx={{ display: "flex", flexDirection: "row", width: "650px" }}
                                     >
-                                        <Typography 
+                                        <Typography
                                             variant="h6"
                                             style={{
-                                                width:"220px",
-                                                margin:"0",
-                                                padding:"0",
-                                                alignSelf:"center"
+                                                width: "220px",
+                                                margin: "0",
+                                                padding: "0",
+                                                alignSelf: "center"
                                             }}
                                         >Name *</Typography>
                                         <TextInput
@@ -95,43 +95,43 @@ function NewCategoryCreate() {
                                             label=""
                                             name="name"
                                             source="name"
-                                            InputLabelProps={{shrink: false}}
-                                            style={{ width:"430px", margin:"0", padding:"0" }}
+                                            InputLabelProps={{ shrink: false }}
+                                            style={{ width: "430px", margin: "0", padding: "0" }}
                                             helperText={false}
                                         />
                                     </Box>
-                                    
-                                    <Box 
-                                        style={{ display:"flex", flexDirection:"row", width:"650px" }}
+
+                                    <Box
+                                        style={{ display: "flex", flexDirection: "row", width: "650px" }}
                                     >
-                                        <Typography 
+                                        <Typography
                                             variant="h6"
                                             style={{
-                                                width:"220px", 
-                                                margin:"0", 
-                                                padding:"0", 
-                                                alignSelf:"center"
+                                                width: "220px",
+                                                margin: "0",
+                                                padding: "0",
+                                                alignSelf: "center"
                                             }}
                                         >Category *</Typography>
                                         {/* Custom Dropdown Selection (Category) */}
                                         <SelectBoxWithFormInside
                                             // category={category}
                                             source="categoryId"
-                                            format={(formValue) => (Array.prototype.filter.bind(category)(item => item.id===formValue))["name"]}
+                                            format={(formValue) => (Array.prototype.filter.bind(category)(item => item.id === formValue))["name"]}
                                             parse=""
                                         />
                                     </Box>
 
-                                    <Box 
-                                        style={{ display:"flex", flexDirection:"row", width:"650px" }}
+                                    <Box
+                                        style={{ display: "flex", flexDirection: "row", width: "650px" }}
                                     >
-                                        <Typography 
+                                        <Typography
                                             variant="h6"
                                             style={{
-                                                width:"220px", 
-                                                margin:"0", 
-                                                padding:"0", 
-                                                alignSelf:"center"
+                                                width: "220px",
+                                                margin: "0",
+                                                padding: "0",
+                                                alignSelf: "center"
                                             }}
                                         >Specification *</Typography>
                                         <TextInput
@@ -139,59 +139,59 @@ function NewCategoryCreate() {
                                             multiline
                                             label=""
                                             rows="3"
-                                            InputLabelProps={{shrink: false}}
-                                            style={{ width:"430px" }}
+                                            InputLabelProps={{ shrink: false }}
+                                            style={{ width: "430px" }}
                                             name="specification"
                                             source="specification"
                                             helperText={false}
                                         />
                                     </Box>
 
-                                    <Box 
-                                        style={{ display:"flex", flexDirection:"row", width:"650px" }}
+                                    <Box
+                                        style={{ display: "flex", flexDirection: "row", width: "650px" }}
                                     >
-                                        <Typography 
+                                        <Typography
                                             variant="h6"
                                             style={{
-                                                width:"220px", 
-                                                margin:"0", 
-                                                padding:"0", 
-                                                alignSelf:"center"
+                                                width: "220px",
+                                                margin: "0",
+                                                padding: "0",
+                                                alignSelf: "center"
                                             }}
                                         >Installed Date *</Typography>
-                                        <DateInput 
+                                        <DateInput
                                             fullWidth
                                             label=""
                                             name="installedDate"
                                             source="installedDate"
                                             defaultValue={currentDay}
-                                            InputLabelProps={{shrink: false}}
+                                            InputLabelProps={{ shrink: false }}
                                             inputProps={{ min: currentDay }}
                                             validate={minValue(currentDay)}
                                             onBlur={(e) => e.stopPropagation()}
-                                            style={{ width:"430px" }}
+                                            style={{ width: "430px" }}
                                             helperText={false}
                                         />
                                     </Box>
 
-                                    <Box 
-                                        style={{ display:"flex", flexDirection:"row", width:"650px" }}
+                                    <Box
+                                        style={{ display: "flex", flexDirection: "row", width: "650px" }}
                                     >
-                                        <Typography 
+                                        <Typography
                                             variant="h6"
                                             style={{
-                                                width:"220px", 
-                                                margin:"0", 
-                                                padding:"10px 0px", 
-                                                alignSelf:"start"
+                                                width: "220px",
+                                                margin: "0",
+                                                padding: "10px 0px",
+                                                alignSelf: "start"
                                             }}
                                         >State *</Typography>
-                                        <RadioButtonGroup 
+                                        <RadioButtonGroup
                                             label=""
                                             source="state"
-                                            choices={[ {state_id:'0', state:"Available"}, {state_id:'1', state:"Not available"} ]}
+                                            choices={[{ state_id: '0', state: "Available" }, { state_id: '1', state: "Not available" }]}
                                             row={false}
-                                            style={{ width:"430px"}}
+                                            style={{ width: "430px" }}
                                             optionText="state"
                                             optionValue="state_id"
                                             helperText={false}
