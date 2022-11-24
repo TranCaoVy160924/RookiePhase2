@@ -18,6 +18,8 @@ namespace AssetManagement.Domain.Models
         public string AssetCode { get; set; }
         public string Specification { get; set; }
         public DateTime InstalledDate { get; set; }
+        [MaxLength(50)]
+        public AssetManagement.Domain.Enums.AppUser.AppUserLocation Location { get; set; }
         public AssetManagement.Domain.Enums.Asset.State State { get; set; }
         public Boolean IsDeleted { get; set; }
 
