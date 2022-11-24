@@ -28,7 +28,7 @@ export const assetProvider: DataProvider = {
         throw new Error("Function not implemented.");
     },
     create: function <RecordType extends RaRecord = any>(resource: string, params: CreateParams<any>): Promise<CreateResult<RecordType>> {
-        throw new Error("Function not implemented.");
+        return axiosInstance.post(`/api/${resource}`, params.data).then(res => { res.data.id=9; return res } );
     },
     delete: async (resource, params) => {
         const url = `${config.api.base}/api/${resource}/${params.id}`;
@@ -57,9 +57,9 @@ export const assetProvider: DataProvider = {
             stateFilter: tmp ? tmp : null,
             searchString: searchString
         };
-        const url = `${config.api.base}/api/${resource}?${stringify(query)}`;
-        return axios(url).then(res => {
-            return Promise.resolve({ data: res.data.assets, total: res.data.total });
+        const url = `/api/${resource}?${stringify(query)}`;
+        return axiosInstance(url).then(res => {
+            return Promise.resolve({ data: res.data.data, total: res.data.total });
         });
     }
 };

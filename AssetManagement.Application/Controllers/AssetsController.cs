@@ -131,7 +131,7 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int start, [FromQuery]int end, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="name", [FromQuery]string? order="ASC")
+        public async Task<ActionResult<ViewList_ListResponse<ViewListAssets_AssetResponse>>> Get([FromQuery]int start, [FromQuery]int end, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="name", [FromQuery]string? order="ASC")
         {
             var list = _dbContext.Assets
                 .Include(x=>x.Category)
@@ -197,7 +197,7 @@ namespace AssetManagement.Application.Controllers
 
             var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(sortedResult);
 
-            return Ok(new ViewListAssets_ListResponse { Assets = mappedResult, Total = list.Count() });
+            return Ok(new ViewList_ListResponse<ViewListAssets_AssetResponse> { Data = mappedResult, Total = list.Count() });
         }
     }
 }

@@ -16,6 +16,6 @@ namespace AssetManagement.Contracts.Asset.Request
         public DateTime InstalledDate { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
-        public AssetManagement.Domain.Enums.Asset.State State { get; set; }
+        public int State { get; set; }
     }
 }

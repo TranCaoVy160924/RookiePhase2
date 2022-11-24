@@ -62,7 +62,7 @@ namespace AssetManagement.Application.Tests
                 Name = "Laptop 21",
                 Specification = "This is laptop #21",
                 InstalledDate = DateTime.Now,
-                State = State.Available
+                State = (int)(State.Available)
             };
 
             AssetsController controller = new(_context, _mapper);
@@ -101,7 +101,7 @@ namespace AssetManagement.Application.Tests
                 Name = "Laptop 21",
                 Specification = "This is laptop #21",
                 InstalledDate = DateTime.Now,
-                State = State.Available
+                State = (int)State.Available
             };
 
             AssetsController controller = new(_context, _mapper);
@@ -185,9 +185,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -217,9 +217,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = JsonConvert.SerializeObject(resultValue.Assets);
+            var assetsList = JsonConvert.SerializeObject(resultValue.Data);
 
             var isSorted = assetsList.SequenceEqual(expected);
             Assert.True(isSorted);
@@ -250,9 +250,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -280,9 +280,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -311,9 +311,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -342,9 +342,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -373,9 +373,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -404,9 +404,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -435,9 +435,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -465,9 +465,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
