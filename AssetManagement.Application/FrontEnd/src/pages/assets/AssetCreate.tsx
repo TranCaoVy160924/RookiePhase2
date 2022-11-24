@@ -28,24 +28,10 @@ function NewCategoryCreate() {
             .catch(error => console.log(error))
     }, []);
 
-    const handleFormSubmit = (data) => {
-        create('assets', 
-        {
-            data: { 
-                categoryId:data.category, 
-                name:data.name, 
-                specification:data.specification, 
-                installedDate:data.installedDate,
-                state:parseInt(data.state)
-            }
-        });
-        navigate("/assets")
-    };
-
     const requiredInput = (values) => {
         const errors = {
             name: "",
-            category: "",
+            categoryId: "",
             specification: "",
             installedDate: "",
             state: ""
@@ -53,8 +39,8 @@ function NewCategoryCreate() {
         if (!values.name) {
             errors.name = "This is required";
             setIsValid(true);
-        } else if (!values.category) {
-            errors.category = "This is required";
+        } else if (!values.categoryId) {
+            errors.categoryId = "This is required";
             setIsValid(true);
         } else if (!values.specification) {
             errors.specification = "This is required";
@@ -79,7 +65,6 @@ function NewCategoryCreate() {
                         marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
-                        // alignItems: 'center',
                         width: "650px"
                     }}
                 >
@@ -88,7 +73,7 @@ function NewCategoryCreate() {
                     </Typography>
                     <Box sx={{ mt: 1 }}>
                         <CreateBase redirect="show">
-                            <SimpleForm toolbar={<AssetCreateToolbar disable={true} />}>
+                            <SimpleForm validate={requiredInput} toolbar={<AssetCreateToolbar disable={isValid} />}>
                                 <Box
                                     display="grid"
                                     gap="30px"
@@ -131,7 +116,7 @@ function NewCategoryCreate() {
                                         {/* Custom Dropdown Selection (Category) */}
                                         <SelectBoxWithFormInside
                                             // category={category}
-                                            source="category"
+                                            source="categoryId"
                                             format={(formValue) => (Array.prototype.filter.bind(category)(item => item.id===formValue))["name"]}
                                             parse=""
                                         />
