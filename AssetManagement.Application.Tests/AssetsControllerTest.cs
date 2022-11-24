@@ -31,7 +31,7 @@ namespace AssetManagement.Application.Tests
     public class AssetsControllerTest
     {
         private readonly DbContextOptions _options;
-        private readonly AssetManagementDbContext _context;
+        private AssetManagementDbContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
         private List<Asset> _assets;
@@ -46,9 +46,9 @@ namespace AssetManagement.Application.Tests
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new UserProfile())).CreateMapper();
 
             // Create InMemory dbcontext with options
-            _context = new AssetManagementDbContext(_options);
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
+            //_context = new AssetManagementDbContext(_options);
+            //_context.Database.EnsureDeleted();
+            //_context.Database.EnsureCreated();
         }
 
         #region CreateAsset
@@ -56,6 +56,7 @@ namespace AssetManagement.Application.Tests
         public async Task CreateAsset_SuccessAsync()
         {
             //ARRANGE
+            SetUpDataBase();
             CreateAssetRequest request = new()
             {
                 CategoryId = 2,
@@ -95,6 +96,7 @@ namespace AssetManagement.Application.Tests
         public async Task CreateAsset_BadRequest_InvalidCategoryAsync()
         {
             //ARRANGE
+            SetUpDataBase();
             CreateAssetRequest request = new()
             {
                 CategoryId = -1,
@@ -132,6 +134,7 @@ namespace AssetManagement.Application.Tests
         public async Task DeleteAsset_Success_ReturnDeletedAsset()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
             var deletedAsset = _mapper
                 .Map<DeleteAssetReponse>(await _context.Assets
@@ -153,6 +156,7 @@ namespace AssetManagement.Application.Tests
         public async Task DeleteAsset_Invalid_ReturnBadRequest()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             // Act 
@@ -169,6 +173,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_ForDefault()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             // Act 
@@ -199,6 +204,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_SearchString_WithData()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             var searchString = "top 1";
@@ -231,6 +237,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_SearchString_WithOutData()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             var searchString = "Nash 1";
@@ -264,6 +271,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_FilterState()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
             var state = (int)AssetManagement.Domain.Enums.Asset.State.Available;
             // Act 
@@ -294,6 +302,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_ForDefaultSorted()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             var sortType = "id";
@@ -325,6 +334,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_ForDefaultSortedByCode()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             var sortType = "assetCode";
@@ -356,6 +366,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_ForDefaultSortedByState()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             var sortType = "state";
@@ -387,6 +398,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_ForDefaultSortedByName()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             var sortType = "name";
@@ -418,6 +430,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_ForDefaultSortedDesc()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             var sortType = "id";
@@ -449,6 +462,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetList_ForDefault_InvalidPaging()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             // Act 
@@ -476,11 +490,71 @@ namespace AssetManagement.Application.Tests
         }
         #endregion
 
+        #region UpdateAsset
+        [Fact]
+        public async Task UpdateAsset_NotFound_ReturnBadRequest()
+        {
+            // Arrange 
+            SetUpDataBase();
+            DateTime now = DateTime.Now;
+            UpdateAssetRequest request = new UpdateAssetRequest
+            {
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable
+            };
+
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var result = await assetController.UpdateAsset(0, request);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async Task UpdateAsset_Success_ReturnUpdatedAsset()
+        {
+            // Arrange 
+            SetUpDataBase();
+            DateTime now = DateTime.Now;
+            UpdateAssetRequest request = new UpdateAssetRequest
+            {
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable
+            };
+
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var response = await assetController.UpdateAsset(1, request);
+            var result = ConvertOkObject<UpdateAssetResponse>(response);
+            var expected = JsonConvert.SerializeObject(new UpdateAssetResponse
+            {
+                Id = 1,
+                AssetCode = "LA10000" + 1,
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable,
+                IsDeleted = false,
+            });
+
+            // Assert
+            Assert.Equal(expected, result);
+        }
+        #endregion
+
         #region GetAssetById
         [Fact]
         public async Task GetAssetById_Success_ReturnAsset()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
             var asset = _mapper.Map<GetAssetByIdResponse>(
                 await _context.Assets
@@ -503,6 +577,7 @@ namespace AssetManagement.Application.Tests
         public async Task GetAssetById_NotFound_ReturnBadRequest()
         {
             // Arrange 
+            SetUpDataBase();
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             // Act 
@@ -513,6 +588,14 @@ namespace AssetManagement.Application.Tests
 
         }
         #endregion
+
+        public void SetUpDataBase()
+        {
+            // Create InMemory dbcontext with options
+            _context = new AssetManagementDbContext(_options);
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+        }
 
         //#region DataSeed
         //private void SeedData()
