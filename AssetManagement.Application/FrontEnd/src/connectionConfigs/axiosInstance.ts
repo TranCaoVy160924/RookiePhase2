@@ -21,12 +21,6 @@ const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
 }
 
 const onRequestError = (error: AxiosError): Promise<AxiosError> => {
-    console.log("error request", error.status);
-    if (error.status === 401) {
-        console.log("Auth error");
-        localStorage.removeItem("auth");
-        window.location.href = "https://localhost:57194/";
-    }
     return Promise.reject(error);
 
 }
@@ -36,7 +30,6 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 }
 
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
-    console.log("error response", error);
     if (error.response) {
         if (!error.response.request.responseURL.includes("/validate-token")) {
             var status = error.response.status;
