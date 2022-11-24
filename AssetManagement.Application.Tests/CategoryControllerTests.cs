@@ -7,6 +7,7 @@ using Xunit;
 using AssetManagement.Contracts.Category.Response;
 using AssetManagement.Contracts.Category.Request;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 #nullable disable
 namespace AssetManagement.Application.Controllers.Tests
@@ -100,7 +101,7 @@ namespace AssetManagement.Application.Controllers.Tests
         [InlineData("KeyBoard", "KY")]
         [InlineData("laptop", "LA")]
         [InlineData("mOnitoR", "Mn")]
-        public async Task Create_Badrequest_UniqueNameAsync(string name, string prefix)
+        public async Task Create_BadRequest_UniqueNameAsync(string name, string prefix)
         {
             //ARRANGE
             CreateCategoryRequest request = new() { Name = name, Prefix = prefix };
@@ -118,7 +119,7 @@ namespace AssetManagement.Application.Controllers.Tests
         [InlineData("Mouse", "MO")]
         [InlineData("Lube Tube", "lT")]
         [InlineData("Kibble", "kb")]
-        public async Task Create_Badrequest_UniquePrefixAsync(string name, string prefix)
+        public async Task Create_BadRequest_UniquePrefixAsync(string name, string prefix)
         {
             //ARRANGE
             CreateCategoryRequest request = new() { Name = name, Prefix = prefix };
@@ -130,6 +131,21 @@ namespace AssetManagement.Application.Controllers.Tests
             //ASSERT
             Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Prefix is already existed. Please enter a different prefix", message);
+        }
+
+        [Fact]
+        public async Task Create_BadRequest_ExceptionAsync()
+        {
+            //ARRANGE
+            CreateCategoryRequest request = new() { Name = "PowerCord", Prefix = "PwC" };
+            //Add null as mapper to cause exception
+            CategoryController controller = new(null, _context);
+
+            //ACT
+            IActionResult result = await controller.CreateAsync(request);
+            string message = ((ObjectResult)result).Value.ToString();
+            //ASSERT
+            Assert.IsType<BadRequestObjectResult>(result);
         }
         #endregion
 

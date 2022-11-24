@@ -22,6 +22,8 @@ using Xunit;
 using AssetManagement.Contracts.Asset.Request;
 using AssetManagement.Application.Tests.TestHelper;
 using AssetManagement.Contracts.Common;
+using Microsoft.AspNetCore.Http;
+using System.Security.Principal;
 
 #nullable disable
 namespace AssetManagement.Application.Tests
@@ -50,60 +52,79 @@ namespace AssetManagement.Application.Tests
         }
 
         #region CreateAsset
-        //[Fact]
-        //public async Task CreateAsset_SuccessAsync()
-        //{
-        //    //ARRANGE
-        //    CreateAssetRequest request = new()
-        //    {
-        //        CategoryId = 1,
-        //        Name = "Laptop 21",
-        //        Specification = "This is laptop #21",
-        //        InstalledDate = DateTime.Now,
-        //        State = Domain.Enums.Asset.State.Available
-        //    };
+        [Fact]
+        public async Task CreateAsset_SuccessAsync()
+        {
+            //ARRANGE
+            CreateAssetRequest request = new()
+            {
+                CategoryId = 1,
+                Name = "Laptop 21",
+                Specification = "This is laptop #21",
+                InstalledDate = DateTime.Now,
+                State = State.Available
+            };
 
-        //    AssetsController controller = new(_context, _mapper);
+            AssetsController controller = new(_context, _mapper);
+            AppUser user = _context.Users.FirstOrDefault();
+            //Create context for controller with fake login
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new GenericPrincipal(new GenericIdentity(user.UserName), null)
+                }
+            };
 
-        //    //ACT
-        //    IActionResult response = await controller.CreateAssetAsync(request);
-        //    object result = ((ObjectResult)response).Value;
-        //    Asset newAsset = _context.Assets.LastOrDefault();
+            //ACT
+            IActionResult response = await controller.CreateAssetAsync(request);
+            object result = ((ObjectResult)response).Value;
+            Asset newAsset = _context.Assets.LastOrDefault();
 
-        //    //ASSERT
-        //    Assert.NotNull(response);
-        //    Assert.IsType<SuccessResponseResult<string>>(result);
-        //    Assert.Equal("Create Asset sucessfully", ((SuccessResponseResult<string>)result).Result);
-        //    Assert.Equal(newAsset.Name, request.Name);
-        //    Assert.Equal("LT000005", newAsset.AssetCode);
-        //    Assert.Equivalent(newAsset.Category, _categories[0]);
-        //}
+            //ASSERT
+            Assert.NotNull(response);
+            Assert.IsType<SuccessResponseResult<string>>(result);
+            Assert.Equal("Create Asset sucessfully", ((SuccessResponseResult<string>)result).Result);
+            Assert.Equal(newAsset.Name, request.Name);
+            Assert.Equal("LT000005", newAsset.AssetCode);
+            Assert.Equivalent(newAsset.Category, _categories[0]);
+            Assert.Equal(user.Location, newAsset.Location);
+        }
 
-        //[Fact]
-        //public async Task CreateAsset_BadRequest_InvalidCategoryAsync()
-        //{
-        //    //ARRANGE
-        //    CreateAssetRequest request = new()
-        //    {
-        //        CategoryId = -1,
-        //        Name = "Laptop 21",
-        //        Specification = "This is laptop #21",
-        //        InstalledDate = DateTime.Now,
-        //        State = Domain.Enums.Asset.State.Available
-        //    };
+        [Fact]
+        public async Task CreateAsset_BadRequest_InvalidCategoryAsync()
+        {
+            //ARRANGE
+            CreateAssetRequest request = new()
+            {
+                CategoryId = -1,
+                Name = "Laptop 21",
+                Specification = "This is laptop #21",
+                InstalledDate = DateTime.Now,
+                State = State.Available
+            };
 
-        //    AssetsController controller = new(_context, _mapper);
+            AssetsController controller = new(_context, _mapper);
+            AppUser user = _context.Users.FirstOrDefault();
+            //Create context for controller with fake login
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new GenericPrincipal(new GenericIdentity(user.UserName), null)
+                }
+            };
 
-        //    //ACT
-        //    IActionResult response = await controller.CreateAssetAsync(request);
-        //    var result = (response as ObjectResult).Value;
+            //ACT
+            IActionResult response = await controller.CreateAssetAsync(request);
+            var result = (response as ObjectResult).Value;
 
-        //    //ASSERT
-        //    Assert.NotNull(response);
-        //    Assert.IsType<ErrorResponseResult<string>>(result);
-        //    Assert.False(((ErrorResponseResult<string>)result).IsSuccessed);
-        //    Assert.Equal("Invalid Category", ((ErrorResponseResult<string>)result).Message);
-        //}
+            //ASSERT
+            Assert.NotNull(response);
+            Assert.IsType<ErrorResponseResult<string>>(result);
+            Assert.False(((ErrorResponseResult<string>)result).IsSuccessed);
+            Assert.Equal("Invalid Category", ((ErrorResponseResult<string>)result).Message);
+        }
         #endregion
 
         #region DeleteAsset
@@ -140,69 +161,6 @@ namespace AssetManagement.Application.Tests
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
 
-        }
-        #endregion
-
-        #region DataSeed
-        private void SeedData()
-        {
-            _context.Database.EnsureDeleted();
-            #region Create some Categories
-            _categories = new()
-            {
-                new (){Name = "Laptop", Prefix = "LT", IsDeleted = false },
-                new (){Name = "Monitor", Prefix = "MO", IsDeleted = false },
-                new (){Name = "Keyboard", Prefix = "KB", IsDeleted = false },
-            };
-            #endregion
-            #region Create some Laptops
-            _assets = new();
-            //Create some laptops
-            for (int i = 0; i < 4; i++)
-            {
-                _assets.Add(new()
-                {
-                    Name = $"Laptop {i}",
-                    AssetCode = $"LT00000{i}",
-                    Specification = $"This is laptop #{i}",
-                    InstalledDate = DateTime.Now.AddDays(-i),
-                    Category = _categories[0],
-                    State = Domain.Enums.Asset.State.Available,
-                    IsDeleted = false
-                });
-            }
-            //Create some Monitor
-            for (int i = 0; i < 4; i++)
-            {
-                _assets.Add(new()
-                {
-                    Name = $"Monitor {i}",
-                    AssetCode = $"MO00000{i}",
-                    Specification = $"This is monitor #{i}",
-                    InstalledDate = DateTime.Now.AddDays(-i),
-                    Category = _categories[1],
-                    State = Domain.Enums.Asset.State.Available,
-                    IsDeleted = false
-                });
-            }
-            //Create some Keyboards
-            for (int i = 0; i < 4; i++)
-            {
-                _assets.Add(new()
-                {
-                    Name = $"Keyboard {i}",
-                    AssetCode = $"KB00000{i}",
-                    Specification = $"This is keyboard #{i}",
-                    InstalledDate = DateTime.Now.AddDays(-i),
-                    Category = _categories[0],
-                    State = Domain.Enums.Asset.State.Available,
-                    IsDeleted = false
-                });
-            }
-            #endregion
-            _context.Categories.AddRange(_categories);
-            _context.Assets.AddRange(_assets);
-            _context.SaveChanges();
         }
         #endregion
 
@@ -515,6 +473,75 @@ namespace AssetManagement.Application.Tests
             // Assert
             Assert.True(isSorted);
             Assert.Equal(assetsList.Count(), expected.Count());
+        }
+        #endregion
+
+        #region DataSeed
+        private void SeedData()
+        {
+            _context.Database.EnsureDeleted();
+            #region Create some Categories
+            _categories = new()
+            {
+                new (){Name = "Laptop", Prefix = "LT", IsDeleted = false },
+                new (){Name = "Monitor", Prefix = "MO", IsDeleted = false },
+                new (){Name = "Keyboard", Prefix = "KB", IsDeleted = false },
+            };
+            #endregion
+            #region Create some Laptops
+            _assets = new();
+            //Create some laptops
+            for (int i = 0; i < 4; i++)
+            {
+                _assets.Add(new()
+                {
+                    Name = $"Laptop {i}",
+                    AssetCode = $"LT00000{i}",
+                    Specification = $"This is laptop #{i}",
+                    InstalledDate = DateTime.Now.AddDays(-i),
+                    Category = _categories[0],
+                    State = State.Available,
+                    IsDeleted = false
+                });
+            }
+            //Create some Monitor
+            for (int i = 0; i < 4; i++)
+            {
+                _assets.Add(new()
+                {
+                    Name = $"Monitor {i}",
+                    AssetCode = $"MO00000{i}",
+                    Specification = $"This is monitor #{i}",
+                    InstalledDate = DateTime.Now.AddDays(-i),
+                    Category = _categories[1],
+                    State = State.Available,
+                    IsDeleted = false
+                });
+            }
+            //Create some Keyboards
+            for (int i = 0; i < 4; i++)
+            {
+                _assets.Add(new()
+                {
+                    Name = $"Keyboard {i}",
+                    AssetCode = $"KB00000{i}",
+                    Specification = $"This is keyboard #{i}",
+                    InstalledDate = DateTime.Now.AddDays(-i),
+                    Category = _categories[0],
+                    State = State.Available,
+                    IsDeleted = false
+                });
+            }
+            #endregion
+            _context.Categories.AddRange(_categories);
+            _context.Assets.AddRange(_assets);
+            _context.Users.Add(new()
+            {
+                FirstName = "Binh", LastName = "Nguyen",
+                UserName = "admin",
+                Location = Domain.Enums.AppUser.AppUserLocation.HoChiMinh
+            });
+            _context.SaveChanges();
         }
         #endregion
 
