@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@
 import { useNavigate, useParams } from 'react-router-dom';
 import * as assetService from '../../services/assets'
 import * as categoryService from '../../services/category'
-import SelectBoxWithFormInside from '../../components/custom/SelectBoxWithFormInside'
+import CategorySelectBoxDisabled from '../../components/custom/CategorySelectBoxDisabled'
 
 
 var today = new Date();
@@ -17,28 +17,24 @@ var currentDay = yyyy + '-' + mm + '-' + dd
 function EditAssetInformations() {
     const [category, setCategory] = useState([])
     const [isValid, setIsValid] = useState(true);
-    const [asset, setAsset] = useState({name: "",
-    specification: "",
-    installedDate: currentDay,
-    state: 0
-});
     const { id } = useParams();
-    console.log("pathname", id);
+    const [asset, setAsset] = useState({name: null,
+        specification: null,
+        installedDate: null,
+        state: 0,
+        categoryId: 0
+    });
     const navigate = useNavigate();
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
-    // useEffect(() => {
-    //     categoryService.getCategory()
-    //         .then(responseData => setCategory(responseData) )
-    //         .catch(error => console.log(error))
-    //     }, [])
     useEffect(() => {
-        assetService.getAssetById(id)
-            .then(responseData => setAsset(responseData) )
+        categoryService.getCategory()
+            .then(responseData => setCategory(responseData) )
             .catch(error => console.log(error))
-    }, [])
-    // useEffect(() => {
-    // }, [])
+        assetService.getAssetById(id)
+                .then(responseData => setAsset(responseData) )
+                .catch(error => console.log(error))
+        }, [])
     console.log("asset", asset,category);
     const handleFormSubmit = (data) => {
         assetService.updateAsset(id,
@@ -115,13 +111,13 @@ function EditAssetInformations() {
                                     >Name *</Typography>
                                     <TextInput
                                         fullWidth
-                                        label=""
+                                        label={false}
                                         name="name"
                                         source="name"
+                                        defaultValue={asset.name}
                                         style={{ width: "430px", margin: "0", padding: "0" }}
                                         helperText={false}
-                                        // InputLabelProps={{ shrink: false }}
-                                        defaultValue={asset.name}
+                                        InputLabelProps={{ shrink: false }}
                                     />
                                 </Box>
 
@@ -138,12 +134,13 @@ function EditAssetInformations() {
                                         }}
                                     >Category *</Typography>
                                     {/* Custom Dropdown Selection (Category) */}
-                                    {/* <SelectBoxWithFormInside
-                                        // category={category}
+                                    <CategorySelectBoxDisabled
                                         source="category"
                                         format={(formValue) => (Array.prototype.filter.bind(category)(item => item.id===formValue))["name"]}
                                         parse=""
-                                    /> */}
+                                        defaultValue={asset.categoryId}
+                                        disabled={true}
+                                    />
                                 </Box>
 
                                 <Box
@@ -159,7 +156,7 @@ function EditAssetInformations() {
                                         }}
                                     >Specification *</Typography>
                                     <TextInput
-                                        label=""
+                                        label={false}
                                         fullWidth
                                         multiline
                                         rows="3"
@@ -167,7 +164,7 @@ function EditAssetInformations() {
                                         name="specification"
                                         source="specification"
                                         helperText={false}
-                                        // defaultValue={ asset.specification}
+                                        defaultValue={ asset.specification}
                                         InputLabelProps={{ shrink: false }}
                                     />
                                 </Box>
@@ -186,15 +183,16 @@ function EditAssetInformations() {
                                     >Installed Date *</Typography>
                                     <DateInput
                                         fullWidth
+                                        label={false}
                                         name="installedDate"
                                         source="installedDate"
-                                        defaultValue={asset.installedDate}
                                         inputProps={{ min: currentDay }}
                                         // InputLabelProps={{ shrink: false }}
                                         validate={minValue(currentDay)}
                                         onBlur={(e) => e.stopPropagation()}
                                         style={{ width: "430px" }}
                                         helperText={false}
+                                        defaultValue={asset.installedDate}
                                     />
                                 </Box>
 
@@ -212,8 +210,15 @@ function EditAssetInformations() {
                                     >State *</Typography>
                                     <RadioButtonGroupInput
                                         // fullwidth="true"
+                                        defaultValue={asset.state}
+                                        label={false}
                                         source="state"
-                                        choices={[{ state_id: '1', state: "Available" }, { state_id: '0', state: "Not available" }]}
+                                        choices={[
+                                            { state_id: '0', state: "Not available" },
+                                            { state_id: '1', state: "Available" }, 
+                                            { state_id: '2', state: "WaitingForRecycling" }, 
+                                            { state_id: '3', state: "Recycled" }, 
+                                        ]}
                                         row={false}
                                         style={{ width: "430px" }}
                                         optionText="state"
@@ -233,7 +238,7 @@ function EditAssetInformations() {
                                 </Button>
                                 <Button
                                     variant="outlined"
-                                    onClick={(e) => navigate("/api/Category")}
+                                    onClick={(e) => navigate("/assets")}
                                     style={{ margin: "10px", color: "gray" }}
                                 >
                                     Cancel
