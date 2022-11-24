@@ -1,13 +1,14 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { useInput } from 'react-admin';
+import { useInput, useNotify } from 'react-admin';
 import { Box, MenuItem, Select, Typography } from '@mui/material';
+import { theme } from '../../theme'
 import * as categoryService from '../../services/category'
 import SimpleForm from './SimpleForm'
 
 function SelectBoxWithFormInside({ source, format, parse }) {
     const [addingData, setAddingData] = useState({ status:false, data:Array })
-    // const format = (formValue) => (Array.prototype.filter.bind(addingData.data)(item => item.id===formValue))["name"];
-    // const parse = (inputValue) => (Array.prototype.filter.bind(addingData.data)(item => item.id===inputValue))["id"];
+    const notify = useNotify();
+    
     const {
         field,
         fieldState: { isTouched, invalid, error },
@@ -29,7 +30,7 @@ function SelectBoxWithFormInside({ source, format, parse }) {
         categoryService.createCategory(formData)
             .then(response => categoryService.getCategory())
             .then(responseData => setAddingData({ status:false, data:responseData }) )
-            .catch(error => console.log(error))
+            .catch(error => notify(error.response.data))
     }
     // Handle Close to close form for createing new Category
     const handleClose = (e) => {
@@ -41,28 +42,39 @@ function SelectBoxWithFormInside({ source, format, parse }) {
             label=""
             {...field}
             sx={{ 
-                width:"300px", 
+                width:"430px", 
                 height:"40px",
                 padding:"0px",
                 boxSizing:"border-box",
                 "& .MuiDataGrid-root": {
-                    border: "none",
+                    border: "none"
                 },
             }}
         >
+            {/* <Box sx={{backgroundColor:"whitesmoke", padding:"0", marginBlockStart:"-10px", maxHeight:"144px", overflowY:"scroll" }}>
+                {Array.prototype.map.bind(addingData.data)(
+                    (item, index) =>
+                    <MenuItem key={index} value={item.id}>
+                        {item.name}
+                    </MenuItem>)
+                }
+            </Box> */}
             {Array.prototype.map.bind(addingData.data)(
-                (item, index) => <MenuItem key={index} value={item.id}>{item.name}</MenuItem>)
+                (item, index) =>
+                <MenuItem key={index} value={item.id}>
+                    {item.name}
+                </MenuItem>)
             }
-            <hr style={{ color:"gray" }} />
-            <Box>
+            <hr style={{ margin:"0", color:"gray", backgroundColor:"whitesmoke" }} />
+            <Box sx={{backgroundColor:"#eff1f5"}}>
                 {addingData.status==false && <Typography 
-                    color="red" 
-                    variant="h6" 
+                    color={theme.palette.secondary.main} 
                     sx={{ 
                         cursor:"pointer", 
                         fontStyle:"italic", 
                         textDecoration:"underline",
-                        padding:"6px 16px" 
+                        padding:"6px 16px",
+                        // marginBlockEnd:"-10px"
                     }} 
                     onClick={handleClick}
                 >

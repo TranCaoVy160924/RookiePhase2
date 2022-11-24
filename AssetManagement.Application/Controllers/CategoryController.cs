@@ -3,6 +3,7 @@ using AssetManagement.Contracts.Category.Response;
 using AssetManagement.Data.EF;
 using AssetManagement.Domain.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,14 +25,16 @@ namespace AssetManagement.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<List<GetCategoryResponse>> Get()
+        [Authorize]
+        public async Task<List<GetCategoryResponse>> GetAsync()
         {
             List<Category> categories = await _dbContext.Categories.Where(c => !c.IsDeleted).ToListAsync();
             return _mapper.Map<List<GetCategoryResponse>>(categories);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateAsync([FromBody] CreateCategoryRequest request)
         {
             if (ModelState.IsValid)
             {
@@ -39,16 +42,17 @@ namespace AssetManagement.Application.Controllers
                                                                                           || c.Prefix.ToLower() == request.Prefix.ToLower());
                 if (category != null)
                 {
-                    if (category.Name == request.Name) return BadRequest("Category is already existed. Please enter a different category");
+                    if (category.Name.ToLower() == request.Name.ToLower()) return BadRequest("Category is already existed. Please enter a different category");
                     return BadRequest("Prefix is already existed. Please enter a different prefix");
                 }
 
                 try
                 {
                     request.Prefix = request.Prefix.ToUpper();
-                    await _dbContext.Categories.AddAsync(_mapper.Map<Category>(request));
-                    _dbContext.SaveChanges();
-                    return Ok();
+                    Category newCategory = _mapper.Map<Category>(request);
+                    await _dbContext.Categories.AddAsync(newCategory);
+                    await _dbContext.SaveChangesAsync();
+                    return Ok(newCategory);
                 }
                 catch (Exception error) { return BadRequest(error.Message); }
             }

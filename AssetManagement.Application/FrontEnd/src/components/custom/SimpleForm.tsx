@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Form, TextInput } from 'react-admin';
-import { Box, IconButton } from '@mui/material'
+import { Box, IconButton, ThemeProvider } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import { theme } from '../../theme'
 
 function SimpleForm({ handleSubmit, handleClose }) {
     const [isValid, setIsValid] = useState(true);
@@ -23,42 +24,62 @@ function SimpleForm({ handleSubmit, handleClose }) {
     }
 
     return (
-        <Form validate={requiredInput} onSubmit={handleSubmit}>
+        <ThemeProvider theme={theme}>
+            <Form validate={requiredInput} onSubmit={handleSubmit}>
             <Box
                 display="flex"
                 flexDirection="row"
-                width="300px"
+                width="430px"
                 padding="6px 16px"
                 boxSizing="border-box"
+                sx={{
+                    backgroundColor:"#eff1f5",
+                    // marginBlockEnd:"-10px"
+                }}
             >
                 <TextInput
                     fullWidth
-                    label=""
                     name="name"
                     source="name"
-                    sx={{ width:"60%", borderRadius:"unset" }}
-                    onChange={(e) => e.preventDefault()}
+                    sx={{ 
+                        width:"60%", 
+                        borderRadius:"0px", 
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderRadius: `4px 0px 0px 4px`,
+                            },
+                        }, 
+                    }}
+                    onKeyDown={(e) => e.stopPropagation()}
                     helperText={false}
                 />
                 <TextInput
                     fullWidth
-                    label=""
                     name="prefix"
                     source="prefix"
-                    sx={{ width:"15%", borderRadius:"unset" }}
-                    onChange={(e) => e.stopPropagation()}
+                    sx={{ 
+                        width:"20%", 
+                        borderRadius:"0px", 
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderRadius: `0px 4px 4px 0px`,
+                            },
+                        }, 
+                    }}
+                    onKeyDown={(e) => e.stopPropagation()}
                     helperText={false}
                 />
-                <Box display="flex" flexDirection="row" >
-                    <IconButton type="submit" color="secondary" disabled={isValid}>
+                <Box display="flex" flexDirection="row">
+                    <IconButton sx={{ color:theme.palette.secondary.main }} type="submit" disabled={isValid}>
                         <CheckIcon fontSize='small' />
                     </IconButton>
-                    <IconButton color="secondary" onClick={handleClose}>
-                        <ClearIcon fontSize='small' />
+                    <IconButton onClick={handleClose}>
+                        <ClearIcon fontSize='small' htmlColor='black'/>
                     </IconButton>
                 </Box>
             </Box>
         </Form>
+        </ThemeProvider>
     )
 }
 

@@ -1,4 +1,5 @@
 ﻿using AssetManagement.Contracts.Asset.Request;
+using AssetManagement.Contracts.Asset.Response;
 using AutoMapper;
 
 namespace AssetManagement.Contracts.AutoMapper
@@ -7,7 +8,9 @@ namespace AssetManagement.Contracts.AutoMapper
     {
         public AssetProfile()
         {
-            CreateMap<CreateAssetRequest, AssetManagement.Domain.Models.Asset>();
+            CreateMap<Domain.Models.Asset, ViewListAssets_AssetResponse>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<Domain.Models.Asset, DeleteAssetReponse>();
+            CreateMap<CreateAssetRequest, Domain.Models.Asset>();
         }
     }
 }

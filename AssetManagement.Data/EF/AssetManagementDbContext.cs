@@ -19,6 +19,7 @@ namespace AssetManagement.Data.EF
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
+            modelBuilder.Entity<AppUser>().HasIndex(x => x.UserName).IsUnique();
 
             modelBuilder.Seed();
         }
