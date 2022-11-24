@@ -17,7 +17,7 @@ function SelectBoxWithFormInside({ source, format, parse }) {
 
     useEffect(() => {
         categoryService.getCategory()
-            .then(responseData => setAddingData({ status:false, data:responseData }) )
+            .then(responseData => setAddingData({ status:false, data:responseData.data }) )
             .catch(error => console.log(error))
     }, [])
 
@@ -29,7 +29,7 @@ function SelectBoxWithFormInside({ source, format, parse }) {
     const handleSubmit = (formData) => {
         categoryService.createCategory(formData)
             .then(response => categoryService.getCategory())
-            .then(responseData => setAddingData({ status:false, data:responseData }) )
+            .then(responseData => setAddingData({ status:false, data:responseData.data }) )
             .catch(error => notify(error.response.data))
     }
     // Handle Close to close form for createing new Category
@@ -51,14 +51,6 @@ function SelectBoxWithFormInside({ source, format, parse }) {
                 },
             }}
         >
-            {/* <Box sx={{backgroundColor:"whitesmoke", padding:"0", marginBlockStart:"-10px", maxHeight:"144px", overflowY:"scroll" }}>
-                {Array.prototype.map.bind(addingData.data)(
-                    (item, index) =>
-                    <MenuItem key={index} value={item.id}>
-                        {item.name}
-                    </MenuItem>)
-                }
-            </Box> */}
             {Array.prototype.map.bind(addingData.data)(
                 (item, index) =>
                 <MenuItem key={index} value={item.id}>

@@ -1,4 +1,5 @@
-﻿using AssetManagement.Contracts.Category.Request;
+﻿using AssetManagement.Contracts.Asset.Response;
+using AssetManagement.Contracts.Category.Request;
 using AssetManagement.Contracts.Category.Response;
 using AssetManagement.Data.EF;
 using AssetManagement.Domain.Models;
@@ -26,10 +27,11 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<List<GetCategoryResponse>> GetAsync()
+        public async Task<ActionResult<ViewList_ListResponse<GetCategoryResponse>>> GetAsync()
         {
             List<Category> categories = await _dbContext.Categories.Where(c => !c.IsDeleted).ToListAsync();
-            return _mapper.Map<List<GetCategoryResponse>>(categories);
+            var mappedData = _mapper.Map<List<GetCategoryResponse>>(categories);
+            return Ok(new ViewList_ListResponse<GetCategoryResponse>{ Data = mappedData, Total = mappedData.Count()});
         }
 
         [HttpPost]

@@ -185,7 +185,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
@@ -217,7 +217,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = JsonConvert.SerializeObject(resultValue.Assets);
 
@@ -250,7 +250,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
@@ -280,7 +280,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
@@ -311,7 +311,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
@@ -342,7 +342,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
@@ -373,7 +373,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
@@ -404,7 +404,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
@@ -435,7 +435,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
@@ -465,7 +465,7 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse)okobjectResult.Value;
 
             var assetsList = resultValue.Assets;
 
