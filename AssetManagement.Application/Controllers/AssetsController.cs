@@ -154,7 +154,7 @@ namespace AssetManagement.Application.Controllers
                         list = list.OrderBy(x => x.Name);
                         break;
                     }
-                case "category":
+                case "categoryName":
                     {
                         list = list.OrderBy(x => x.Category.Name);
                         break;
