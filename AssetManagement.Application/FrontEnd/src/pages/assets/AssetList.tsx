@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Datagrid,
   List,
@@ -6,6 +6,7 @@ import {
   SelectArrayInput,
   TextField,
   TextInput,
+  useListContext,
 } from "react-admin";
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -58,12 +59,21 @@ export default () => {
   return (
     <>
       <List
+        perPage={5}
         pagination={<AssetsPagination />}
         filters={assetsFilter}
         exporter={false}
         sort={{ field: "name", order: "DESC" }}
       >
-        <Datagrid rowClick={postRowClick} bulkActionButtons={false}>
+        <Datagrid
+          rowClick={postRowClick}
+          empty={
+            <p>
+              <h2>No Result found</h2>
+            </p>
+          }
+          bulkActionButtons={false}
+        >
           <TextField source="id" />
           <TextField source="name" />
           <TextField source="assetCode" />

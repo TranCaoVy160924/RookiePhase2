@@ -23,506 +23,591 @@ namespace AssetManagement.Data.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("AssetManagement.Domain.Models.AppRole", b =>
-            {
-                b.Property<Guid>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<string>("ConcurrencyStamp")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("Description")
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnType("nvarchar(100)");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                b.Property<string>("Name")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("NormalizedName")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(max)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.ToTable("AppRole");
+                    b.ToTable("AppRole");
 
-                b.HasData(
-                    new
-                    {
-                        Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                        ConcurrencyStamp = "01c4f369-5a4f-4dff-8347-4d268a8f3ddf",
-                        Description = "Administrator role",
-                        Name = "Admin",
-                        NormalizedName = "admin"
-                    },
-                    new
-                    {
-                        Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                        ConcurrencyStamp = "a79e428e-0271-4df1-abdd-6ea3cd17a4dd",
-                        Description = "Staff role",
-                        Name = "Staff",
-                        NormalizedName = "staff"
-                    });
-            });
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
+                            ConcurrencyStamp = "cac42767-d9c6-4acb-ab2e-a3c0c502d3e3",
+                            Description = "Administrator role",
+                            Name = "Admin",
+                            NormalizedName = "admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
+                            ConcurrencyStamp = "d434f50b-7e89-42ba-960f-3b14cd4d69f4",
+                            Description = "Staff role",
+                            Name = "Staff",
+                            NormalizedName = "staff"
+                        });
+                });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.AppUser", b =>
-            {
-                b.Property<Guid>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<int>("AccessFailedCount")
-                    .HasColumnType("int");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
-                b.Property<string>("ConcurrencyStamp")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<DateTime>("CreatedDate")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
-                b.Property<DateTime>("Dob")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime>("Dob")
+                        .HasColumnType("datetime2");
 
-                b.Property<string>("Email")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<bool>("EmailConfirmed")
-                    .HasColumnType("bit");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
-                b.Property<string>("FirstName")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("nvarchar(50)");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                b.Property<int>("Gender")
-                    .HasMaxLength(50)
-                    .HasColumnType("int");
+                    b.Property<int>("Gender")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
 
-                b.Property<bool>("IsLoginFirstTime")
-                    .HasColumnType("bit");
+                    b.Property<bool>("IsLoginFirstTime")
+                        .HasColumnType("bit");
 
-                b.Property<string>("LastName")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("nvarchar(50)");
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                b.Property<int>("Location")
-                    .HasMaxLength(50)
-                    .HasColumnType("int");
+                    b.Property<int>("Location")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
 
-                b.Property<bool>("LockoutEnabled")
-                    .HasColumnType("bit");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
 
-                b.Property<DateTimeOffset?>("LockoutEnd")
-                    .HasColumnType("datetimeoffset");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
-                b.Property<DateTime>("ModifiedDate")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
-                b.Property<string>("NormalizedEmail")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("NormalizedUserName")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("PasswordHash")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("PhoneNumber")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<bool>("PhoneNumberConfirmed")
-                    .HasColumnType("bit");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
-                b.Property<Guid>("RoleId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<string>("SecurityStamp")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<bool>("TwoFactorEnabled")
-                    .HasColumnType("bit");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
-                b.Property<string>("UserName")
-                    .HasColumnType("nvarchar(450)");
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("RoleId")
-                    .IsUnique();
+                    b.HasIndex("RoleId")
+                        .IsUnique();
 
-                b.HasIndex("UserName")
-                    .IsUnique()
-                    .HasFilter("[UserName] IS NOT NULL");
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
-                b.ToTable("AppUser");
+                    b.ToTable("AppUser");
 
-                b.HasData(
-                    new
-                    {
-                        Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                        AccessFailedCount = 0,
-                        ConcurrencyStamp = "88e07999-2a5a-474d-828a-a4c7a202bec4",
-                        CreatedDate = new DateTime(2022, 11, 23, 23, 21, 55, 27, DateTimeKind.Local).AddTicks(5315),
-                        Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                        Email = "admin@gmail.com",
-                        EmailConfirmed = true,
-                        FirstName = "Toan",
-                        Gender = 0,
-                        IsLoginFirstTime = true,
-                        LastName = "Bach",
-                        Location = 0,
-                        LockoutEnabled = false,
-                        ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                        NormalizedEmail = "admin@gmail.com",
-                        NormalizedUserName = "admin",
-                        PasswordHash = "AQAAAAEAACcQAAAAECzvcaduyUdJjqkjGmu+McZedqbrOjoSNuBsxGl+ye8JraA6pBc5ZnZtnjA4BH7ZSg==",
-                        PhoneNumberConfirmed = false,
-                        RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                        SecurityStamp = "",
-                        TwoFactorEnabled = false,
-                        UserName = "admin"
-                    },
-                    new
-                    {
-                        Id = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
-                        AccessFailedCount = 0,
-                        ConcurrencyStamp = "730409f6-791a-4de1-8ca3-d22e870b63f7",
-                        CreatedDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(7758),
-                        Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                        Email = "staff@gmail.com",
-                        EmailConfirmed = true,
-                        FirstName = "Toan",
-                        Gender = 1,
-                        IsLoginFirstTime = true,
-                        LastName = "Bach",
-                        Location = 1,
-                        LockoutEnabled = false,
-                        ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                        NormalizedEmail = "staff@gmail.com",
-                        NormalizedUserName = "staff",
-                        PasswordHash = "AQAAAAEAACcQAAAAEJmVBJk7Qh1AeYSQvMaZYCV7lSnkWKcXuuhe8XI93H2AfE5biINuhogMcjr/xu3lgg==",
-                        PhoneNumberConfirmed = false,
-                        RoleId = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                        SecurityStamp = "",
-                        TwoFactorEnabled = false,
-                        UserName = "staff"
-                    });
-            });
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8a2f5a4e-c642-4c54-ab3b-7f49006ca7fa",
+                            CreatedDate = new DateTime(2022, 11, 24, 12, 4, 12, 298, DateTimeKind.Local).AddTicks(1811),
+                            Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Toan",
+                            Gender = 0,
+                            IsLoginFirstTime = true,
+                            LastName = "Bach",
+                            Location = 0,
+                            LockoutEnabled = false,
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NormalizedEmail = "admin@gmail.com",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH6B8SRrHvPGHmQ84rjVlFCqzIlgTLOqPfSfTVvoOtjEJG2NxvYDblpgQaEhk5GVvg==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "468fe6e9-8d08-4dc4-8029-8c73e594f935",
+                            CreatedDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2746),
+                            Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "staff@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Toan",
+                            Gender = 1,
+                            IsLoginFirstTime = true,
+                            LastName = "Bach",
+                            Location = 1,
+                            LockoutEnabled = false,
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NormalizedEmail = "staff@gmail.com",
+                            NormalizedUserName = "staff",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIZX11XIjhKz0whNZLYbaCNwfpd2fIOKPTtoVw5T9qx+EKxPLQ58exvJg469enzQvw==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "staff"
+                        });
+                });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Asset", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                b.Property<string>("AssetCode")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("AssetCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<int?>("CategoryId")
-                    .HasColumnType("int");
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
-                b.Property<DateTime>("InstalledDate")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime>("InstalledDate")
+                        .HasColumnType("datetime2");
 
-                b.Property<bool>("IsDeleted")
-                    .HasColumnType("bit");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                b.Property<int>("Location")
-                    .HasMaxLength(50)
-                    .HasColumnType("int");
+                    b.Property<int>("Location")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("Specification")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Specification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<int>("State")
-                    .HasColumnType("int");
+                    b.Property<int>("State")
+                        .HasColumnType("int");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId");
 
-                b.ToTable("Assets");
+                    b.ToTable("Assets");
 
-                b.HasData(
-                    new
-                    {
-                        Id = 1,
-                        AssetCode = "LA100001",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8167),
-                        IsDeleted = false,
-                        Location = 0,
-                        Name = "Laptop 1",
-                        Specification = "Core i1, 1GB RAM, 150 GB HDD, Window 1",
-                        State = 1
-                    },
-                    new
-                    {
-                        Id = 2,
-                        AssetCode = "LA100002",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8204),
-                        IsDeleted = true,
-                        Location = 0,
-                        Name = "Laptop 2",
-                        Specification = "Core i2, 2GB RAM, 250 GB HDD, Window 2",
-                        State = 0
-                    },
-                    new
-                    {
-                        Id = 3,
-                        AssetCode = "LA100003",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8222),
-                        IsDeleted = false,
-                        Location = 0,
-                        Name = "Laptop 3",
-                        Specification = "Core i3, 3GB RAM, 350 GB HDD, Window 3",
-                        State = 1
-                    },
-                    new
-                    {
-                        Id = 4,
-                        AssetCode = "LA100004",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8239),
-                        IsDeleted = true,
-                        Location = 0,
-                        Name = "Laptop 4",
-                        Specification = "Core i4, 4GB RAM, 450 GB HDD, Window 4",
-                        State = 0
-                    },
-                    new
-                    {
-                        Id = 5,
-                        AssetCode = "LA100005",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8256),
-                        IsDeleted = false,
-                        Location = 0,
-                        Name = "Laptop 5",
-                        Specification = "Core i5, 5GB RAM, 550 GB HDD, Window 5",
-                        State = 1
-                    },
-                    new
-                    {
-                        Id = 6,
-                        AssetCode = "LA100006",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8283),
-                        IsDeleted = true,
-                        Location = 0,
-                        Name = "Laptop 6",
-                        Specification = "Core i6, 6GB RAM, 650 GB HDD, Window 6",
-                        State = 0
-                    },
-                    new
-                    {
-                        Id = 7,
-                        AssetCode = "LA100007",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8299),
-                        IsDeleted = false,
-                        Location = 0,
-                        Name = "Laptop 7",
-                        Specification = "Core i7, 7GB RAM, 750 GB HDD, Window 7",
-                        State = 1
-                    },
-                    new
-                    {
-                        Id = 8,
-                        AssetCode = "LA100008",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8316),
-                        IsDeleted = true,
-                        Location = 0,
-                        Name = "Laptop 8",
-                        Specification = "Core i8, 8GB RAM, 850 GB HDD, Window 8",
-                        State = 0
-                    },
-                    new
-                    {
-                        Id = 9,
-                        AssetCode = "LA100009",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8332),
-                        IsDeleted = false,
-                        Location = 0,
-                        Name = "Laptop 9",
-                        Specification = "Core i9, 9GB RAM, 950 GB HDD, Window 9",
-                        State = 1
-                    },
-                    new
-                    {
-                        Id = 10,
-                        AssetCode = "LA1000010",
-                        InstalledDate = new DateTime(2022, 11, 23, 23, 21, 55, 39, DateTimeKind.Local).AddTicks(8354),
-                        IsDeleted = true,
-                        Location = 0,
-                        Name = "Laptop 10",
-                        Specification = "Core i10, 10GB RAM, 1050 GB HDD, Window 10",
-                        State = 0
-                    });
-            });
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AssetCode = "LA100001",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2917),
+                            IsDeleted = false,
+                            Location = 0,
+                            Name = "Laptop 1",
+                            Specification = "Core i1, 1GB RAM, 150 GB HDD, Window 1",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AssetCode = "LA100002",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2930),
+                            IsDeleted = true,
+                            Location = 0,
+                            Name = "Laptop 2",
+                            Specification = "Core i2, 2GB RAM, 250 GB HDD, Window 2",
+                            State = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AssetCode = "LA100003",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2940),
+                            IsDeleted = false,
+                            Location = 0,
+                            Name = "Laptop 3",
+                            Specification = "Core i3, 3GB RAM, 350 GB HDD, Window 3",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AssetCode = "LA100004",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2949),
+                            IsDeleted = true,
+                            Location = 0,
+                            Name = "Laptop 4",
+                            Specification = "Core i4, 4GB RAM, 450 GB HDD, Window 4",
+                            State = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AssetCode = "LA100005",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2959),
+                            IsDeleted = false,
+                            Location = 0,
+                            Name = "Laptop 5",
+                            Specification = "Core i5, 5GB RAM, 550 GB HDD, Window 5",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AssetCode = "LA100006",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2971),
+                            IsDeleted = true,
+                            Location = 0,
+                            Name = "Laptop 6",
+                            Specification = "Core i6, 6GB RAM, 650 GB HDD, Window 6",
+                            State = 0
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AssetCode = "LA100007",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2980),
+                            IsDeleted = false,
+                            Location = 0,
+                            Name = "Laptop 7",
+                            Specification = "Core i7, 7GB RAM, 750 GB HDD, Window 7",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AssetCode = "LA100008",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2990),
+                            IsDeleted = true,
+                            Location = 0,
+                            Name = "Laptop 8",
+                            Specification = "Core i8, 8GB RAM, 850 GB HDD, Window 8",
+                            State = 0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AssetCode = "LA100009",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2999),
+                            IsDeleted = false,
+                            Location = 0,
+                            Name = "Laptop 9",
+                            Specification = "Core i9, 9GB RAM, 950 GB HDD, Window 9",
+                            State = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AssetCode = "LA1000010",
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(3011),
+                            IsDeleted = true,
+                            Location = 0,
+                            Name = "Laptop 10",
+                            Specification = "Core i10, 10GB RAM, 1050 GB HDD, Window 10",
+                            State = 0
+                        });
+                });
+
+            modelBuilder.Entity("AssetManagement.Domain.Models.Assignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AssetId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("AssignedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AssignedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("AssignedTo")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ReturnedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("AssignedBy");
+
+                    b.HasIndex("AssignedTo");
+
+                    b.ToTable("Assignments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AssetId = 1,
+                            AssignedBy = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
+                            AssignedDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(3026),
+                            AssignedTo = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            ReturnedDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(3026),
+                            State = 0
+                        });
+                });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Category", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                b.Property<bool>("IsDeleted")
-                    .HasColumnType("bit");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("Prefix")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Prefix")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.ToTable("Categories");
-            });
+                    b.ToTable("Categories");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                b.Property<string>("ClaimType")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("ClaimValue")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<Guid>("RoleId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.ToTable("AppRoleClaims", (string)null);
-            });
+                    b.ToTable("AppRoleClaims", (string)null);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                b.Property<string>("ClaimType")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("ClaimValue")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.ToTable("AppUserClaims", (string)null);
-            });
+                    b.ToTable("AppUserClaims", (string)null);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-            {
-                b.Property<Guid>("UserId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<string>("LoginProvider")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("ProviderDisplayName")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("ProviderKey")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(max)");
 
-                b.HasKey("UserId");
+                    b.HasKey("UserId");
 
-                b.ToTable("AppUserLogins", (string)null);
-            });
+                    b.ToTable("AppUserLogins", (string)null);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-            {
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uniqueidentifier");
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<Guid>("RoleId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.HasKey("UserId", "RoleId");
+                    b.HasKey("UserId", "RoleId");
 
-                b.ToTable("AppUserRoles", (string)null);
+                    b.ToTable("AppUserRoles", (string)null);
 
-                b.HasData(
-                    new
-                    {
-                        UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                        RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc")
-                    });
-            });
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc")
+                        });
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-            {
-                b.Property<Guid>("UserId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<string>("LoginProvider")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("Name")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("Value")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
-                b.HasKey("UserId");
+                    b.HasKey("UserId");
 
-                b.ToTable("AppUserTokens", (string)null);
-            });
+                    b.ToTable("AppUserTokens", (string)null);
+                });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.AppUser", b =>
-            {
-                b.HasOne("AssetManagement.Domain.Models.AppRole", "AppRole")
-                    .WithOne("AppUser")
-                    .HasForeignKey("AssetManagement.Domain.Models.AppUser", "RoleId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                {
+                    b.HasOne("AssetManagement.Domain.Models.AppRole", "AppRole")
+                        .WithOne("AppUser")
+                        .HasForeignKey("AssetManagement.Domain.Models.AppUser", "RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                b.Navigation("AppRole");
-            });
+                    b.Navigation("AppRole");
+                });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Asset", b =>
-            {
-                b.HasOne("AssetManagement.Domain.Models.Category", "Category")
-                    .WithMany("Assets")
-                    .HasForeignKey("CategoryId");
+                {
+                    b.HasOne("AssetManagement.Domain.Models.Category", "Category")
+                        .WithMany("Assets")
+                        .HasForeignKey("CategoryId");
 
-                b.Navigation("Category");
-            });
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("AssetManagement.Domain.Models.Assignment", b =>
+                {
+                    b.HasOne("AssetManagement.Domain.Models.Asset", "Asset")
+                        .WithMany("Assignments")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AssetManagement.Domain.Models.AppUser", "AssignedByToAppUser")
+                        .WithMany("AssignedByAssignments")
+                        .HasForeignKey("AssignedBy");
+
+                    b.HasOne("AssetManagement.Domain.Models.AppUser", "AssignedToAppUser")
+                        .WithMany("AssignedToAssignments")
+                        .HasForeignKey("AssignedTo");
+
+                    b.Navigation("Asset");
+
+                    b.Navigation("AssignedByToAppUser");
+
+                    b.Navigation("AssignedToAppUser");
+                });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.AppRole", b =>
-            {
-                b.Navigation("AppUser")
-                    .IsRequired();
-            });
+                {
+                    b.Navigation("AppUser")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AssetManagement.Domain.Models.AppUser", b =>
+                {
+                    b.Navigation("AssignedByAssignments");
+
+                    b.Navigation("AssignedToAssignments");
+                });
+
+            modelBuilder.Entity("AssetManagement.Domain.Models.Asset", b =>
+                {
+                    b.Navigation("Assignments");
+                });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Category", b =>
-            {
-                b.Navigation("Assets");
-            });
+                {
+                    b.Navigation("Assets");
+                });
 #pragma warning restore 612, 618
         }
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagement.Data.Migrations
 {
     [DbContext(typeof(AssetManagementDbContext))]
-    [Migration("20221123102717_AddTableAssignment")]
+    [Migration("20221124050412_AddTableAssignment")]
     partial class AddTableAssignment
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "617ba2f4-a79d-4698-8da8-4a51243c8fda",
+                            ConcurrencyStamp = "cac42767-d9c6-4acb-ab2e-a3c0c502d3e3",
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -60,7 +60,7 @@ namespace AssetManagement.Data.Migrations
                         new
                         {
                             Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            ConcurrencyStamp = "6668ad26-c733-48b5-89b6-4fd5406d7d3b",
+                            ConcurrencyStamp = "d434f50b-7e89-42ba-960f-3b14cd4d69f4",
                             Description = "Staff role",
                             Name = "Staff",
                             NormalizedName = "staff"
@@ -146,12 +146,16 @@ namespace AssetManagement.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId")
                         .IsUnique();
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("AppUser");
 
@@ -160,8 +164,8 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dace1ade-efcc-4b99-ab59-9c2a908e1565",
-                            CreatedDate = new DateTime(2022, 11, 23, 17, 27, 16, 825, DateTimeKind.Local).AddTicks(804),
+                            ConcurrencyStamp = "8a2f5a4e-c642-4c54-ab3b-7f49006ca7fa",
+                            CreatedDate = new DateTime(2022, 11, 24, 12, 4, 12, 298, DateTimeKind.Local).AddTicks(1811),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -174,7 +178,7 @@ namespace AssetManagement.Data.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEA9u7Ng7I4rT6dX05T1GAxFN7GdJfe9JN6qBrkWpRsOR4GrroKjjJ9CI6GIchMfzVw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH6B8SRrHvPGHmQ84rjVlFCqzIlgTLOqPfSfTVvoOtjEJG2NxvYDblpgQaEhk5GVvg==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                             SecurityStamp = "",
@@ -185,8 +189,8 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f84ebdb1-eedf-4d83-867d-e718d78eb115",
-                            CreatedDate = new DateTime(2022, 11, 23, 17, 27, 16, 831, DateTimeKind.Local).AddTicks(9562),
+                            ConcurrencyStamp = "468fe6e9-8d08-4dc4-8029-8c73e594f935",
+                            CreatedDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2746),
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "staff@gmail.com",
                             EmailConfirmed = true,
@@ -199,7 +203,7 @@ namespace AssetManagement.Data.Migrations
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "staff@gmail.com",
                             NormalizedUserName = "staff",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKAH7IK7NS+JIIs1PgwK3LI2HRs+CaBPtdpg+8UM1dtPcMHbjGjVw0P9rG8CWSQMdg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIZX11XIjhKz0whNZLYbaCNwfpd2fIOKPTtoVw5T9qx+EKxPLQ58exvJg469enzQvw==",
                             PhoneNumberConfirmed = false,
                             RoleId = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
                             SecurityStamp = "",
@@ -230,6 +234,7 @@ namespace AssetManagement.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("Location")
+                        .HasMaxLength(50)
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -254,7 +259,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 1,
                             AssetCode = "LA100001",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(120),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2917),
                             IsDeleted = false,
                             Location = 0,
                             Name = "Laptop 1",
@@ -265,7 +270,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 2,
                             AssetCode = "LA100002",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(335),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2930),
                             IsDeleted = true,
                             Location = 0,
                             Name = "Laptop 2",
@@ -276,7 +281,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 3,
                             AssetCode = "LA100003",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(347),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2940),
                             IsDeleted = false,
                             Location = 0,
                             Name = "Laptop 3",
@@ -287,7 +292,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 4,
                             AssetCode = "LA100004",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(356),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2949),
                             IsDeleted = true,
                             Location = 0,
                             Name = "Laptop 4",
@@ -298,7 +303,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 5,
                             AssetCode = "LA100005",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(365),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2959),
                             IsDeleted = false,
                             Location = 0,
                             Name = "Laptop 5",
@@ -309,7 +314,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 6,
                             AssetCode = "LA100006",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(381),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2971),
                             IsDeleted = true,
                             Location = 0,
                             Name = "Laptop 6",
@@ -320,7 +325,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 7,
                             AssetCode = "LA100007",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(390),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2980),
                             IsDeleted = false,
                             Location = 0,
                             Name = "Laptop 7",
@@ -331,7 +336,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 8,
                             AssetCode = "LA100008",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(398),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2990),
                             IsDeleted = true,
                             Location = 0,
                             Name = "Laptop 8",
@@ -342,7 +347,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 9,
                             AssetCode = "LA100009",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(407),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(2999),
                             IsDeleted = false,
                             Location = 0,
                             Name = "Laptop 9",
@@ -353,7 +358,7 @@ namespace AssetManagement.Data.Migrations
                         {
                             Id = 10,
                             AssetCode = "LA1000010",
-                            InstalledDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(418),
+                            InstalledDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(3011),
                             IsDeleted = true,
                             Location = 0,
                             Name = "Laptop 10",
@@ -405,9 +410,9 @@ namespace AssetManagement.Data.Migrations
                             Id = 1,
                             AssetId = 1,
                             AssignedBy = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
-                            AssignedDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(570),
+                            AssignedDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(3026),
                             AssignedTo = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            ReturnedDate = new DateTime(2022, 11, 23, 17, 27, 16, 832, DateTimeKind.Local).AddTicks(570),
+                            ReturnedDate = new DateTime(2022, 11, 24, 12, 4, 12, 304, DateTimeKind.Local).AddTicks(3026),
                             State = 0
                         });
                 });
@@ -420,7 +425,14 @@ namespace AssetManagement.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Prefix")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -547,7 +559,7 @@ namespace AssetManagement.Data.Migrations
             modelBuilder.Entity("AssetManagement.Domain.Models.Asset", b =>
                 {
                     b.HasOne("AssetManagement.Domain.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Assets")
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
@@ -592,6 +604,11 @@ namespace AssetManagement.Data.Migrations
             modelBuilder.Entity("AssetManagement.Domain.Models.Asset", b =>
                 {
                     b.Navigation("Assignments");
+                });
+
+            modelBuilder.Entity("AssetManagement.Domain.Models.Category", b =>
+                {
+                    b.Navigation("Assets");
                 });
 #pragma warning restore 612, 618
         }
