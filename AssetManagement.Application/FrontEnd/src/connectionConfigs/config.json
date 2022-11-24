@@ -2,7 +2,7 @@
    "api":{ 
       "base": ".",
       "auth": "./api/auth",
-      "asset": "./api/Assets",
-      "category": "./api/Category"
+      "asset": "/api/Assets",
+      "category": "/api/Category"
    }
 }
