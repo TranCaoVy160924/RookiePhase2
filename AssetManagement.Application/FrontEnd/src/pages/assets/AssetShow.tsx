@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { SimpleShowLayout, TextField } from "react-admin";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { getAssignementByAssetCodeId } from "../../services/asset";
+import { getAssignementByAssetCodeId } from "../../services/assignment";
 
 const StyledDialog = styled(Dialog)`
   .MuiBackdrop-root {
