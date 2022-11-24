@@ -84,7 +84,7 @@ namespace AssetManagement.Data.Extensions
             });
 
 
-            for(int i = 1; i <= 10; i++)
+            for (int i = 1; i <= 10; i++)
             {
                 modelBuilder.Entity<Asset>().HasData(new Asset
                 {
@@ -93,10 +93,21 @@ namespace AssetManagement.Data.Extensions
                     AssetCode = "LA10000" + i,
                     Specification = $"Core i{i}, {i}GB RAM, {i}50 GB HDD, Window {i}",
                     InstalledDate = DateTime.Now,
-                    State = i%2 == 0 ? State.Available : State.NotAvailable,
-                    IsDeleted = i%2 == 0 ? true : false,
+                    State = i % 2 == 0 ? State.Available : State.NotAvailable,
+                    IsDeleted = i % 2 == 0 ? true : false,
                 });
             }
+
+            modelBuilder.Entity<Assignment>().HasData(new Assignment
+            {
+                Id = 1,
+                AssignedDate = DateTime.Now,
+                ReturnedDate = DateTime.Now,
+                State = Domain.Enums.Assignment.State.Accepted,
+                AssetId = 1,
+                AssignedTo = adminId,
+                AssignedBy = staffId
+            });
         }
     }
 }
