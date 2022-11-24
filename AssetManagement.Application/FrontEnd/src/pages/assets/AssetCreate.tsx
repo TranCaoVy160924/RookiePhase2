@@ -4,6 +4,7 @@ import { Box, Button, Typography, Container, CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import SelectBoxWithFormInside from '../../components/custom/SelectBoxWithFormInside'
+import RadioButtonGroup from '../../components/custom/RadioButtonGroupInput'
 import * as assetService from '../../services/assets'
 import * as categoryService from '../../services/category'
 
@@ -199,8 +200,7 @@ function NewCategoryCreate() {
                                             alignSelf:"center"
                                         }}
                                     >State *</Typography>
-                                    <RadioButtonGroupInput 
-                                        // fullwidth="true"
+                                    <RadioButtonGroup 
                                         label=""
                                         source="state"
                                         choices={[ {state_id:'0', state:"Available"}, {state_id:'1', state:"Not available"} ]}
@@ -209,11 +209,6 @@ function NewCategoryCreate() {
                                         optionText="state"
                                         optionValue="state_id"
                                         helperText={false}
-                                        sx={{
-                                            ".css-1m9pwf3:checked + .css-hyxlzm":{
-                                                color:"red"
-                                            }
-                                        }}
                                     />
                                 </Box>
                             </Box>
