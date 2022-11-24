@@ -31,20 +31,20 @@ namespace AssetManagement.Application.Controllers.Tests
         }
 
         #region GetCategory
-        //[Fact]
-        //public async Task Get_SuccessAsync()
-        //{
-        //    //ARRANGE
-        //    CategoryController controller = new(_mapper, _context);
+        [Fact]
+        public async Task Get_SuccessAsync()
+        {
+            //ARRANGE
+            CategoryController controller = new(_mapper, _context);
 
-        //    //ACT
-        //    ViewList_ListResponse<GetCategoryResponse> result = await controller.GetAsync();
-
-        //    //ASSERT
-        //    Assert.NotNull(result);
-        //    Assert.NotEmpty(result);
-        //    Assert.Equivalent(_mapper.Map<List<GetCategoryResponse>>(_categories), result);
-        //}
+            //ACT
+            IActionResult result = await controller.GetAsync();
+            ViewList_ListResponse<GetCategoryResponse> data = (ViewList_ListResponse<GetCategoryResponse>)((ObjectResult)result).Value;
+            //ASSERT
+            Assert.NotNull(result);
+            Assert.Equal(_context.Categories.Count(), data.Total);
+            Assert.Equivalent(_mapper.Map<List<GetCategoryResponse>>(_categories), data.Data);
+        }
         #endregion
 
         #region CreateCategory
