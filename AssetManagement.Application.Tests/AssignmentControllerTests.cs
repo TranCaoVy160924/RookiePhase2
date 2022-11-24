@@ -9,14 +9,12 @@ using AutoMapper;
 using Castle.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.ContentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Asset = AssetManagement.Domain.Models.Asset;
 
 namespace AssetManagement.Application.Tests
 {
