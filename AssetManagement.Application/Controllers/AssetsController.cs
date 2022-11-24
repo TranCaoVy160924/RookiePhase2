@@ -23,7 +23,23 @@ namespace AssetManagement.Application.Controllers
             _dbContext = dbContext;
             _mapper = mapper;
         }
+        [HttpGet("{id}")]
+        // [Authorize]
+        public async Task<IActionResult> GetAssetById(int id)
+        {
+            Asset gettingAsset = await _dbContext.Assets
+                .Where(a => !a.IsDeleted && a.Id == id)
+                .FirstOrDefaultAsync();
 
+            if (gettingAsset != null)
+            {
+                return Ok(_mapper.Map<GetAssetByIdResponse>(gettingAsset));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
 
         [HttpPost()]
         [Authorize]
@@ -55,7 +71,7 @@ namespace AssetManagement.Application.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Update(int id, [FromForm] UpdateAssetRequest request)
+        public async Task<IActionResult> UpdateAsset(int id, UpdateAssetRequest request)
         {
             Asset? updatingAsset = await _dbContext.Assets
                 .Where(a => a.Id == id)
@@ -81,7 +97,7 @@ namespace AssetManagement.Application.Controllers
                 return BadRequest(new ErrorResponseResult<string>(ex.Message));
             }
 
-            return StatusCode(StatusCodes.Status200OK);
+            return Ok(_mapper.Map<UpdateAssetResponse>(updatingAsset));
         }
 
         [HttpDelete("{id}")]
@@ -114,7 +130,7 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int start, [FromQuery]int end, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="name", [FromQuery]string? order="ASC")
+        public async Task<ActionResult<ViewList_ListResponse<ViewListAssets_AssetResponse>>> Get([FromQuery]int start, [FromQuery]int end, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="name", [FromQuery]string? order="ASC")
         {
             var list = _dbContext.Assets
                 .Include(x=>x.Category)
@@ -154,7 +170,7 @@ namespace AssetManagement.Application.Controllers
                         list = list.OrderBy(x => x.Name);
                         break;
                     }
-                case "category":
+                case "categoryName":
                     {
                         list = list.OrderBy(x => x.Category.Name);
                         break;
@@ -180,7 +196,7 @@ namespace AssetManagement.Application.Controllers
 
             var mappedResult = _mapper.Map<List<ViewListAssets_AssetResponse>>(sortedResult);
 
-            return Ok(new ViewListAssets_ListResponse { Assets = mappedResult, Total = list.Count() });
+            return Ok(new ViewList_ListResponse<ViewListAssets_AssetResponse> { Data = mappedResult, Total = list.Count() });
         }
     }
 }

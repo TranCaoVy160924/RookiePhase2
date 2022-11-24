@@ -28,7 +28,7 @@ using System.Security.Principal;
 #nullable disable
 namespace AssetManagement.Application.Tests
 {
-    public class AssetsControllerTest : IDisposable
+    public class AssetsControllerTest: IDisposable
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
@@ -43,12 +43,12 @@ namespace AssetManagement.Application.Tests
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
                 .UseInMemoryDatabase(databaseName: "AssetTestDb").Options;
 
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new AssetProfile())).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new UserProfile())).CreateMapper();
 
             // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
             _context.Database.EnsureDeleted();
-            SeedData();
+            _context.Database.EnsureCreated();
         }
 
         #region CreateAsset
@@ -58,11 +58,11 @@ namespace AssetManagement.Application.Tests
             //ARRANGE
             CreateAssetRequest request = new()
             {
-                CategoryId = 1,
+                CategoryId = 2,
                 Name = "Laptop 21",
                 Specification = "This is laptop #21",
                 InstalledDate = DateTime.Now,
-                State = State.Available
+                State = (int)(State.Available)
             };
 
             AssetsController controller = new(_context, _mapper);
@@ -77,17 +77,17 @@ namespace AssetManagement.Application.Tests
             };
 
             //ACT
-            IActionResult response = await controller.CreateAssetAsync(request);
-            object result = ((ObjectResult)response).Value;
+            var response = await controller.CreateAssetAsync(request);
+            string result = ConvertOkObject<SuccessResponseResult<string>>(response);
             Asset newAsset = _context.Assets.LastOrDefault();
+            var expected = JsonConvert.SerializeObject(
+                new SuccessResponseResult<string>("Create Asset sucessfully"));
 
             //ASSERT
             Assert.NotNull(response);
-            Assert.IsType<SuccessResponseResult<string>>(result);
-            Assert.Equal("Create Asset sucessfully", ((SuccessResponseResult<string>)result).Result);
+            Assert.Equal(expected, result);
             Assert.Equal(newAsset.Name, request.Name);
-            Assert.Equal("LT000005", newAsset.AssetCode);
-            Assert.Equivalent(newAsset.Category, _categories[0]);
+            Assert.Equal("MO000001", newAsset.AssetCode);
             Assert.Equal(user.Location, newAsset.Location);
         }
 
@@ -101,7 +101,7 @@ namespace AssetManagement.Application.Tests
                 Name = "Laptop 21",
                 Specification = "This is laptop #21",
                 InstalledDate = DateTime.Now,
-                State = State.Available
+                State = (int)State.Available
             };
 
             AssetsController controller = new(_context, _mapper);
@@ -156,7 +156,7 @@ namespace AssetManagement.Application.Tests
             AssetsController assetController = new AssetsController(_context, _mapper);
 
             // Act 
-            var result = await assetController.DeleteAsset(_assets.Count + 99);
+            var result = await assetController.DeleteAsset(0);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -176,18 +176,18 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Where(x=>!x.IsDeleted)
+                .Where(x => !x.IsDeleted)
                 .OrderBy(x => x.Name);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
 
-            var expected = _mapper.Map <List<ViewListAssets_AssetResponse>>(list);
+            var expected = _mapper.Map<List<ViewListAssets_AssetResponse>>(list);
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -207,7 +207,7 @@ namespace AssetManagement.Application.Tests
             var result = await assetController.Get(1, 2, searchString);
 
             var query = _context.Assets.Include(x => x.Category)
-                .Where(x=>(x.Name.Contains(searchString) || x.AssetCode.Contains(searchString))
+                .Where(x => (x.Name.Contains(searchString) || x.AssetCode.Contains(searchString))
                     && !x.IsDeleted)
                 .OrderBy(x => x.Name);
 
@@ -217,9 +217,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = JsonConvert.SerializeObject(resultValue.Assets);
+            var assetsList = JsonConvert.SerializeObject(resultValue.Data);
 
             var isSorted = assetsList.SequenceEqual(expected);
             Assert.True(isSorted);
@@ -250,9 +250,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -267,11 +267,11 @@ namespace AssetManagement.Application.Tests
             AssetsController assetController = new AssetsController(_context, _mapper);
             var state = (int)AssetManagement.Domain.Enums.Asset.State.Available;
             // Act 
-            var result = await assetController.Get(1, 2,"","",state.ToString());
+            var result = await assetController.Get(1, 2, "", "", state.ToString());
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Where(x=>(int)x.State == state && !x.IsDeleted)
+                .Where(x => (int)x.State == state && !x.IsDeleted)
                 .OrderBy(x => x.Name);
 
             var list = StaticFunctions<Asset>.Paging(query, 1, 2);
@@ -280,9 +280,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -311,9 +311,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -342,16 +342,16 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
             Assert.Equal(assetsList.Count(), expected.Count());
             Assert.True(isSorted);
-        }       
-        
+        }
+
         [Fact]
         public async Task GetList_ForDefaultSortedByState()
         {
@@ -373,16 +373,16 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
             Assert.Equal(assetsList.Count(), expected.Count());
             Assert.True(isSorted);
-        }        
-        
+        }
+
         [Fact]
         public async Task GetList_ForDefaultSortedByName()
         {
@@ -404,9 +404,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -435,9 +435,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -465,9 +465,9 @@ namespace AssetManagement.Application.Tests
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListAssets_ListResponse)okobjectResult.Value;
+            var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Assets;
+            var assetsList = resultValue.Data;
 
             var isSorted = assetsList.SequenceEqual(expected);
             // Assert
@@ -476,79 +476,103 @@ namespace AssetManagement.Application.Tests
         }
         #endregion
 
-        #region DataSeed
-        private void SeedData()
+        #region UpdateAsset
+        [Fact]
+        public async Task UpdateAsset_NotFound_ReturnBadRequest()
         {
-            _context.Database.EnsureDeleted();
-            #region Create some Categories
-            _categories = new()
+            // Arrange 
+            DateTime now = DateTime.Now;
+            UpdateAssetRequest request = new UpdateAssetRequest
             {
-                new (){Name = "Laptop", Prefix = "LT", IsDeleted = false },
-                new (){Name = "Monitor", Prefix = "MO", IsDeleted = false },
-                new (){Name = "Keyboard", Prefix = "KB", IsDeleted = false },
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable
             };
-            #endregion
-            #region Create some Laptops
-            _assets = new();
-            //Create some laptops
-            for (int i = 0; i < 4; i++)
+
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var result = await assetController.UpdateAsset(0, request);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async Task UpdateAsset_Success_ReturnUpdatedAsset()
+        {
+            // Arrange 
+            DateTime now = DateTime.Now;
+            UpdateAssetRequest request = new UpdateAssetRequest
             {
-                _assets.Add(new()
-                {
-                    Name = $"Laptop {i}",
-                    AssetCode = $"LT00000{i}",
-                    Specification = $"This is laptop #{i}",
-                    InstalledDate = DateTime.Now.AddDays(-i),
-                    Category = _categories[0],
-                    State = State.Available,
-                    IsDeleted = false
-                });
-            }
-            //Create some Monitor
-            for (int i = 0; i < 4; i++)
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable
+            };
+
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var response = await assetController.UpdateAsset(1, request);
+            var result = ConvertOkObject<UpdateAssetResponse>(response);
+            var expected = JsonConvert.SerializeObject(new UpdateAssetResponse
             {
-                _assets.Add(new()
-                {
-                    Name = $"Monitor {i}",
-                    AssetCode = $"MO00000{i}",
-                    Specification = $"This is monitor #{i}",
-                    InstalledDate = DateTime.Now.AddDays(-i),
-                    Category = _categories[1],
-                    State = State.Available,
-                    IsDeleted = false
-                });
-            }
-            //Create some Keyboards
-            for (int i = 0; i < 4; i++)
-            {
-                _assets.Add(new()
-                {
-                    Name = $"Keyboard {i}",
-                    AssetCode = $"KB00000{i}",
-                    Specification = $"This is keyboard #{i}",
-                    InstalledDate = DateTime.Now.AddDays(-i),
-                    Category = _categories[0],
-                    State = State.Available,
-                    IsDeleted = false
-                });
-            }
-            #endregion
-            _context.Categories.AddRange(_categories);
-            _context.Assets.AddRange(_assets);
-            _context.Users.Add(new()
-            {
-                FirstName = "Binh", LastName = "Nguyen",
-                UserName = "admin",
-                Location = Domain.Enums.AppUser.AppUserLocation.HoChiMinh
+                Id = 1,
+                AssetCode = "LA10000" + 1,
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable,
+                IsDeleted = false,
             });
-            _context.SaveChanges();
+
+            // Assert
+            Assert.Equal(expected, result);
         }
         #endregion
 
-        //Clean up after tests
+        #region GetAssetById
+        [Fact]
+        public async Task GetAssetById_Success_ReturnAsset()
+        {
+            // Arrange 
+            AssetsController assetController = new AssetsController(_context, _mapper);
+            var asset = _mapper.Map<GetAssetByIdResponse>(
+                await _context.Assets
+                    .Where(x => x.Id == 1)
+                    .FirstOrDefaultAsync()
+            );
+
+            // Act 
+            var assets = _context.Assets.ToList();
+            var result = await assetController.GetAssetById(1);
+
+            string resultObject = ConvertOkObject<GetAssetByIdResponse>(result);
+            string expectedObject = JsonConvert.SerializeObject(asset);
+
+            // Assert
+            Assert.Equal(resultObject, expectedObject);
+        }
+
+        [Fact]
+        public async Task GetAssetById_NotFound_ReturnBadRequest()
+        {
+            // Arrange 
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var result = await assetController.GetAssetById(0);
+
+            // Assert
+            result.Should().BeOfType<BadRequestResult>();
+
+        }
+        #endregion
+
         public void Dispose()
         {
-            _context.Database.EnsureDeleted();
             _context.Dispose();
         }
     }

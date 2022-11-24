@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.Contracts.Asset.Response
 {
-    public class ViewListAssets_ListResponse
+    public class ViewList_ListResponse<T> where T: class
     {
-        public List<ViewListAssets_AssetResponse> Assets { get; set; }
+        public List<T> Data { get; set; }
         public int Total { get; set; }
     }
 }
