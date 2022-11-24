@@ -29,19 +29,27 @@ function SimpleForm({ handleSubmit, handleClose }) {
             <Box
                 display="flex"
                 flexDirection="row"
-                width="350px"
+                width="430px"
                 padding="6px 16px"
                 boxSizing="border-box"
                 sx={{
                     backgroundColor:"#eff1f5",
-                    marginBlockEnd:"-10px"
+                    // marginBlockEnd:"-10px"
                 }}
             >
                 <TextInput
                     fullWidth
                     name="name"
                     source="name"
-                    sx={{ width:"80%", borderRadius:"unset" }}
+                    sx={{ 
+                        width:"60%", 
+                        borderRadius:"0px", 
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderRadius: `4px 0px 0px 4px`,
+                            },
+                        }, 
+                    }}
                     onKeyDown={(e) => e.stopPropagation()}
                     helperText={false}
                 />
@@ -49,7 +57,15 @@ function SimpleForm({ handleSubmit, handleClose }) {
                     fullWidth
                     name="prefix"
                     source="prefix"
-                    sx={{ width:"20%", borderRadius:"unset", marginRight:"1%"}}
+                    sx={{ 
+                        width:"20%", 
+                        borderRadius:"0px", 
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderRadius: `0px 4px 4px 0px`,
+                            },
+                        }, 
+                    }}
                     onKeyDown={(e) => e.stopPropagation()}
                     helperText={false}
                 />

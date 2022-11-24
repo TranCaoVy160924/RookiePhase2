@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AssetManagement.Application.Controllers
 {
@@ -28,6 +29,13 @@ namespace AssetManagement.Application.Controllers
         [Authorize]
         public async Task<IActionResult> CreateAssetAsync(CreateAssetRequest createAssetRequest)
         {
+            string token = Request.Headers.Authorization;
+            string userName = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
+            AppUser user = await _dbContext.AppUsers.FirstAsync(u => u.UserName == userName);
+            if (user == null)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Invalid UserName"));
+            }
             Category? category = await _dbContext.Categories.FindAsync(createAssetRequest.CategoryId);
             if (category == null)
             {
@@ -38,6 +46,7 @@ namespace AssetManagement.Application.Controllers
             int countAsset = await _dbContext.Assets.Where(_ => _.AssetCode.StartsWith(category.Prefix)).CountAsync();
             asset.AssetCode = category.Prefix + (countAsset + 1).ToString().PadLeft(6, '0');
             asset.Category = category;
+            asset.Location = user.Location;
 
             await _dbContext.Assets.AddAsync(asset);
             await _dbContext.SaveChangesAsync();
@@ -105,16 +114,33 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery] int end, [FromQuery] int start, [FromQuery] string? categoryFilter = "", [FromQuery] string? stateFilter = "", [FromQuery] string? sort = "Name", [FromQuery] string? order = "ASC")
+        public async Task<ActionResult<ViewListAssets_ListResponse>> Get([FromQuery]int start, [FromQuery]int end, [FromQuery]string? searchString="", [FromQuery]string? categoryFilter="", [FromQuery]string? stateFilter="", [FromQuery]string? sort="name", [FromQuery]string? order="ASC")
         {
-            var list = _dbContext.Assets.Include(x => x.Category).AsQueryable();
-            if (categoryFilter != "")
+            var list = _dbContext.Assets
+                .Include(x=>x.Category)
+                .Where(x=>!x.IsDeleted)
+                .AsQueryable();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper()) || x.AssetCode.ToUpper().Contains(searchString.ToUpper()));
+            }
+            if(categoryFilter != "")
             {
                 list = list.Where(x => x.CategoryId == int.Parse(categoryFilter));
             }
-            if (stateFilter != "")
+            if(!string.IsNullOrEmpty(stateFilter))
             {
-                list = list.Where(x => (int)x.State == int.Parse(stateFilter));
+                var arrayChar = stateFilter.Split("&");
+                var arrNumberChar = new List<int>();
+                for (int i = 0; i < arrayChar.Length; i++)
+                {
+                    var temp = 0;
+                    if (int.TryParse(arrayChar[i], out temp))
+                    {
+                        arrNumberChar.Add(int.Parse(arrayChar[i]));
+                    }
+                }
+                list = list.Where(x=> arrNumberChar.Contains((int)x.State));
             }
             switch (sort)
             {
@@ -149,8 +175,6 @@ namespace AssetManagement.Application.Controllers
             {
                 list = list.Reverse();
             }
-
-            //var result = StaticFunctions<Asset>.Sort(list, sort, order);
 
             var sortedResult = StaticFunctions<Asset>.Paging(list, start, end);
 
