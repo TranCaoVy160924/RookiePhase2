@@ -12,7 +12,7 @@ export default (props) => {
       formState: { isSubmitted }
    } = useInput(props);
 
-   const { setFilters, displayedFilters, setPerPage } = useListContext();
+   const { setFilters, displayedFilters, setPerPage, filterValues } = useListContext();
 
    const [states, setStates] = useState<string[]>([]);
 
@@ -36,7 +36,8 @@ export default (props) => {
    };
 
    useEffect(() => {
-      setFilters({ states: states }, displayedFilters);
+      var tmp = filterValues.categories;
+      setFilters({ states: states, categories: tmp }, displayedFilters);
    }, [states])
 
    useEffect(() => {

@@ -57,6 +57,7 @@ export const assetProvider: DataProvider = {
                 tmp1 += element + "&";
             }
         }
+        console.log(params);
         const query = {
             end: JSON.stringify((page) * perPage),
             start: JSON.stringify((page - 1) * perPage),

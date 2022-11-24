@@ -12,21 +12,20 @@ export default (props) => {
       formState: { isSubmitted }
    } = useInput(props);
 
-   const { setFilters, displayedFilters, setPerPage } = useListContext();
+   const { setFilters, displayedFilters, setPerPage, filterValues } = useListContext();
 
    const [states, setStates] = useState<string[]>([]);
    const [categoriesList, setCategoriesList] = useState<any>();
    const [filterElement, setFilterElement] = useState<any>();
-   const handleChange = (event: SelectChangeEvent<typeof states>, length) => {
+   const handleChange = (event: SelectChangeEvent<typeof states>, list) => {
       const {
          target: { value },
-      } = event;
-      console.log(event);
+      } = event
       if (value.includes("all")) {
-         if (states.length == length) {
+         if (states.length == list.length) {
             setStates([]);
          } else {
-            handleSelectAll();
+            handleSelectAll(list);
          }
       } else {
 
@@ -39,23 +38,23 @@ export default (props) => {
 
    useEffect(() => {
       console.log(states);
-      setFilters({ categories: states }, displayedFilters);
+      var tmp = filterValues.states;
+      setFilters({ categories: states, states: tmp }, displayedFilters);
    }, [states])
 
    useEffect(() => {
       setPerPage(5)
    }, [])
 
-   const handleSelectAll = () => {
+   const handleSelectAll = (list) => {
       let arr: Array<string> = [];
-      categoriesList.forEach(({ id, name }) => {
+      list.forEach(({ id, name }) => {
          arr.push(id);
       });
       setStates(arr);
    }
    useEffect(() => {
       props.statesList.then(res => {
-         console.log(res);
          setCategoriesList(res);
 
 
@@ -67,7 +66,7 @@ export default (props) => {
                multiple
                value={states}
                renderValue={(selected) => selected.map(key => { return res.find((o) => o.id == key).name ? res.find((o) => o.id == key).name : "" }).join(', ')}
-               onChange={(e) => handleChange(e, res.length)}
+               onChange={(e) => handleChange(e, res)}
             >
                <MenuItem value={"all"}>
                   <Checkbox sx={{
