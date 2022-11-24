@@ -20,8 +20,8 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("assignement/{assetCodeId}")]
-        [Authorize]
+        [HttpGet("assignement/{assetCodeId}")]  
+        //[Authorize]
         public IActionResult GetAssignmentsByAssetCodeId(int assetCodeId)
         {
             var result = _dbContext.Assignments.Where(x => x.AssetId == assetCodeId).ToList();
