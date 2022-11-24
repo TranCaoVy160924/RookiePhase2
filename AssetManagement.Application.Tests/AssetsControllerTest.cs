@@ -28,7 +28,7 @@ using System.Security.Principal;
 #nullable disable
 namespace AssetManagement.Application.Tests
 {
-    public class AssetsControllerTest
+    public class AssetsControllerTest: IDisposable
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
@@ -476,6 +476,63 @@ namespace AssetManagement.Application.Tests
         }
         #endregion
 
+        #region UpdateAsset
+        [Fact]
+        public async Task UpdateAsset_NotFound_ReturnBadRequest()
+        {
+            // Arrange 
+            DateTime now = DateTime.Now;
+            UpdateAssetRequest request = new UpdateAssetRequest
+            {
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable
+            };
+
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var result = await assetController.UpdateAsset(0, request);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async Task UpdateAsset_Success_ReturnUpdatedAsset()
+        {
+            // Arrange 
+            DateTime now = DateTime.Now;
+            UpdateAssetRequest request = new UpdateAssetRequest
+            {
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable
+            };
+
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var response = await assetController.UpdateAsset(1, request);
+            var result = ConvertOkObject<UpdateAssetResponse>(response);
+            var expected = JsonConvert.SerializeObject(new UpdateAssetResponse
+            {
+                Id = 1,
+                AssetCode = "LA10000" + 1,
+                Name = "Laptop Asus Rog Strix",
+                Specification = "Core 100, 1000 GB RAM, 200 50 GB HDD, Window 200",
+                InstalledDate = now,
+                State = State.NotAvailable,
+                IsDeleted = false,
+            });
+
+            // Assert
+            Assert.Equal(expected, result);
+        }
+        #endregion
+
         #region GetAssetById
         [Fact]
         public async Task GetAssetById_Success_ReturnAsset()
@@ -514,80 +571,9 @@ namespace AssetManagement.Application.Tests
         }
         #endregion
 
-        //#region DataSeed
-        //private void SeedData()
-        //{
-        //    _context.Database.EnsureDeleted();
-        //    #region Create some Categories
-        //    _categories = new()
-        //    {
-        //        new (){Name = "Laptop", Prefix = "LT", IsDeleted = false },
-        //        new (){Name = "Monitor", Prefix = "MO", IsDeleted = false },
-        //        new (){Name = "Keyboard", Prefix = "KB", IsDeleted = false },
-        //    };
-        //    #endregion
-        //    #region Create some Laptops
-        //    _assets = new();
-        //    //Create some laptops
-        //    for (int i = 0; i < 4; i++)
-        //    {
-        //        _assets.Add(new()
-        //        {
-        //            Name = $"Laptop {i}",
-        //            AssetCode = $"LT00000{i}",
-        //            Specification = $"This is laptop #{i}",
-        //            InstalledDate = DateTime.Now.AddDays(-i),
-        //            Category = _categories[0],
-        //            State = State.Available,
-        //            IsDeleted = false
-        //        });
-        //    }
-        //    //Create some Monitor
-        //    for (int i = 0; i < 4; i++)
-        //    {
-        //        _assets.Add(new()
-        //        {
-        //            Name = $"Monitor {i}",
-        //            AssetCode = $"MO00000{i}",
-        //            Specification = $"This is monitor #{i}",
-        //            InstalledDate = DateTime.Now.AddDays(-i),
-        //            Category = _categories[1],
-        //            State = State.Available,
-        //            IsDeleted = false
-        //        });
-        //    }
-        //    //Create some Keyboards
-        //    for (int i = 0; i < 4; i++)
-        //    {
-        //        _assets.Add(new()
-        //        {
-        //            Name = $"Keyboard {i}",
-        //            AssetCode = $"KB00000{i}",
-        //            Specification = $"This is keyboard #{i}",
-        //            InstalledDate = DateTime.Now.AddDays(-i),
-        //            Category = _categories[0],
-        //            State = State.Available,
-        //            IsDeleted = false
-        //        });
-        //    }
-        //    #endregion
-        //    _context.Categories.AddRange(_categories);
-        //    _context.Assets.AddRange(_assets);
-        //    _context.Users.Add(new()
-        //    {
-        //        FirstName = "Binh", LastName = "Nguyen",
-        //        UserName = "admin",
-        //        Location = Domain.Enums.AppUser.AppUserLocation.HoChiMinh
-        //    });
-        //    _context.SaveChanges();
-        //}
-        //#endregion
-
-        ////Clean up after tests
-        //public void Dispose()
-        //{
-        //    _context.Database.EnsureDeleted();
-        //    _context.Dispose();
-        //}
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
     }
 }
