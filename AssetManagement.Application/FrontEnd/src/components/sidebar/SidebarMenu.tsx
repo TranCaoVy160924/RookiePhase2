@@ -3,13 +3,15 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import LabelIcon from '@mui/icons-material/Label';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import RedoIcon from '@mui/icons-material/Redo';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import logo from '../../assets/images/logo-transparent.png';
 import HomeIcon from '@mui/icons-material/Home';
 import { createTheme } from '@mui/material/styles';
-
+import Card from '@mui/material/Card';
 const theme = createTheme();
 
 const SidebarMenu = () => {
@@ -22,7 +24,8 @@ const SidebarMenu = () => {
             fontWeight: "bold",
             ".css-cveggr-MuiListItemIcon-root" :{
                 color: "#fff",
-            }
+            },
+            marginBottom: "3px",
         },
         ".css-y07vd-MuiButtonBase-root-MuiMenuItem-root-RaMenuItemLink-root" :{
             color:"#000",
@@ -30,12 +33,22 @@ const SidebarMenu = () => {
             fontWeight: "bold",
             ".css-cveggr-MuiListItemIcon-root" :{
                 color: "#000",
-            }
+            },
+            marginBottom: "3px",
         },
-        
     }}>
-        <img src={logo} alt="logo" className="logo"/>
-        <Typography textAlign="center" variant="h3" component="h2" color="#cf2338" fontSize='1rem' fontWeight="bold" mb={3}>Online Asset Management</Typography>
+        <CardMedia
+        component="img"
+        alt="logo"
+        height="auto"
+        sx={
+            {maxWidth:"100px",
+            padding:"5px"
+        }
+        }
+        image={logo}
+        />
+        <Typography textAlign="center" variant="h3" component="h2" color="secondary" fontSize='1rem' fontWeight="bold" className="appTitleMenuBar" mb={3}>Online Asset Management</Typography>
         <Menu.Item to="/home" primaryText="Home" leftIcon={<HomeIcon/>}/>
             {permissions === 'Admin' ?<Menu.Item to="/users" primaryText="Manage User" leftIcon={<PeopleIcon/>}/>:null }
             {permissions === 'Admin' ?<Menu.Item to="/assets" primaryText="Manage Asset" leftIcon={<LabelIcon/>}/>:null }
