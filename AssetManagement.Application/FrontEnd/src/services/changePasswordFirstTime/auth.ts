@@ -5,6 +5,8 @@ const baseUrl = config.api.auth;
 const getUserProfile = async () => {
     let url = baseUrl + "/user-profile";
     const response = await axiosInstance.get(url);
+    console.log(response.data);
+    localStorage.setItem('userName', response.data.username);
 
     return response.data;
 }
