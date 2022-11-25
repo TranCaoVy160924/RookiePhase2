@@ -99,6 +99,14 @@ namespace AssetManagement.Data.Extensions
                 IsDeleted = false,
             });
 
+            modelBuilder.Entity<Category>().HasData(new Category
+            {
+                Id = 3,
+                Name = "Personal Computer",
+                Prefix = "PC",
+                IsDeleted = false,
+            });
+
             for (int i = 1; i <= 10; i++)
             {
                 modelBuilder.Entity<Asset>().HasData(new Asset
