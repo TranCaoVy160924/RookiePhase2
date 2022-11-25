@@ -17,9 +17,9 @@ namespace AssetManagement.Domain.Models
         public DateTime ReturnedDate { get; set; }
         public AssetManagement.Domain.Enums.Assignment.State State { get; set; }
 
-        [ForeignKey("Asset")]
         public int? AssetId { get; set; }
-        public virtual Asset Asset { get; set; }
+        [ForeignKey("AssetId")]
+        public virtual Asset? Asset { get; set; }
 
         [ForeignKey(nameof(AssignedToAppUser))]
         public Guid? AssignedTo { get; set; }

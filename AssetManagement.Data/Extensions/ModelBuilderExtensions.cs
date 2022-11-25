@@ -114,16 +114,16 @@ namespace AssetManagement.Data.Extensions
                 });
             }
 
-            modelBuilder.Entity<Assignment>().HasData(new Assignment
-            {
-                Id = 1,
-                AssignedDate = DateTime.Now,
-                ReturnedDate = DateTime.Now,
-                State = Domain.Enums.Assignment.State.Accepted,
-                AssetId = 1,
-                AssignedTo = adminId,
-                AssignedBy = staffId
-            });
+            //modelBuilder.Entity<Assignment>().HasData(new Assignment
+            //{
+            //    Id = 1,
+            //    AssignedDate = DateTime.Now,
+            //    ReturnedDate = DateTime.Now,
+            //    State = Domain.Enums.Assignment.State.Accepted,
+            //    AssetId = 1,
+            //    AssignedTo = adminId,
+            //    AssignedBy = staffId
+            //});
         }
     }
 }

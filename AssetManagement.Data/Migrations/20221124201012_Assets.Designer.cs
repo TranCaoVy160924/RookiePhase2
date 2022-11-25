@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagement.Data.Migrations
 {
     [DbContext(typeof(AssetManagementDbContext))]
-    [Migration("20221124081709_SeedCategory")]
-    partial class SeedCategory
+    [Migration("20221124201012_Assets")]
+    partial class Assets
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,24 +47,6 @@ namespace AssetManagement.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppRole");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "a21f15d3-d9a2-43ea-92d8-4de01d506724",
-                            Description = "Administrator role",
-                            Name = "Admin",
-                            NormalizedName = "admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            ConcurrencyStamp = "6e366294-68e4-4c58-82e7-b6235ab15a12",
-                            Description = "Staff role",
-                            Name = "Staff",
-                            NormalizedName = "staff"
-                        });
                 });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.AppUser", b =>
@@ -158,58 +140,6 @@ namespace AssetManagement.Data.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("AppUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "ce50172c-a580-44d4-abfc-8f2561304e84",
-                            CreatedDate = new DateTime(2022, 11, 24, 15, 17, 9, 312, DateTimeKind.Local).AddTicks(7415),
-                            Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "admin@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Toan",
-                            Gender = 0,
-                            IsLoginFirstTime = true,
-                            LastName = "Bach",
-                            Location = 0,
-                            LockoutEnabled = false,
-                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "admin@gmail.com",
-                            NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMPTWMiN4TNoeqa9mRgBLZHWCQEJz6qk4q07LorlkIyCCWygTsOW2u2WJdYR5tjuDQ==",
-                            PhoneNumberConfirmed = false,
-                            RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "2836ad41-6059-457e-bdc4-f06019d6254b",
-                            CreatedDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(2888),
-                            Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "staff@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Toan",
-                            Gender = 1,
-                            IsLoginFirstTime = true,
-                            LastName = "Bach",
-                            Location = 1,
-                            LockoutEnabled = false,
-                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "staff@gmail.com",
-                            NormalizedUserName = "staff",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIR9Y87kfIdBysczWPzcYokD2KP+bD6NDFXb8xn3iDjVwDsmW+EuoPQFCl0Nm+dQsA==",
-                            PhoneNumberConfirmed = false,
-                            RoleId = new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "staff"
-                        });
                 });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Asset", b =>
@@ -252,129 +182,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Assets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AssetCode = "LA100001",
-                            CategoryId = 2,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3087),
-                            IsDeleted = false,
-                            Location = 0,
-                            Name = "Laptop 1",
-                            Specification = "Core i1, 1GB RAM, 150 GB HDD, Window 1",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AssetCode = "LA100002",
-                            CategoryId = 1,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3103),
-                            IsDeleted = true,
-                            Location = 0,
-                            Name = "Laptop 2",
-                            Specification = "Core i2, 2GB RAM, 250 GB HDD, Window 2",
-                            State = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AssetCode = "LA100003",
-                            CategoryId = 2,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3114),
-                            IsDeleted = false,
-                            Location = 0,
-                            Name = "Laptop 3",
-                            Specification = "Core i3, 3GB RAM, 350 GB HDD, Window 3",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AssetCode = "LA100004",
-                            CategoryId = 1,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3124),
-                            IsDeleted = true,
-                            Location = 0,
-                            Name = "Laptop 4",
-                            Specification = "Core i4, 4GB RAM, 450 GB HDD, Window 4",
-                            State = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AssetCode = "LA100005",
-                            CategoryId = 2,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3134),
-                            IsDeleted = false,
-                            Location = 0,
-                            Name = "Laptop 5",
-                            Specification = "Core i5, 5GB RAM, 550 GB HDD, Window 5",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AssetCode = "LA100006",
-                            CategoryId = 1,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3152),
-                            IsDeleted = true,
-                            Location = 0,
-                            Name = "Laptop 6",
-                            Specification = "Core i6, 6GB RAM, 650 GB HDD, Window 6",
-                            State = 0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AssetCode = "LA100007",
-                            CategoryId = 2,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3161),
-                            IsDeleted = false,
-                            Location = 0,
-                            Name = "Laptop 7",
-                            Specification = "Core i7, 7GB RAM, 750 GB HDD, Window 7",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AssetCode = "LA100008",
-                            CategoryId = 1,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3264),
-                            IsDeleted = true,
-                            Location = 0,
-                            Name = "Laptop 8",
-                            Specification = "Core i8, 8GB RAM, 850 GB HDD, Window 8",
-                            State = 0
-                        },
-                        new
-                        {
-                            Id = 9,
-                            AssetCode = "LA100009",
-                            CategoryId = 2,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3276),
-                            IsDeleted = false,
-                            Location = 0,
-                            Name = "Laptop 9",
-                            Specification = "Core i9, 9GB RAM, 950 GB HDD, Window 9",
-                            State = 1
-                        },
-                        new
-                        {
-                            Id = 10,
-                            AssetCode = "LA1000010",
-                            CategoryId = 1,
-                            InstalledDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3289),
-                            IsDeleted = true,
-                            Location = 0,
-                            Name = "Laptop 10",
-                            Specification = "Core i10, 10GB RAM, 1050 GB HDD, Window 10",
-                            State = 0
-                        });
+                    b.ToTable("Assets", null, t => t.ExcludeFromMigrations());
                 });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Assignment", b =>
@@ -386,7 +194,6 @@ namespace AssetManagement.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("AssetId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<Guid?>("AssignedBy")
@@ -413,18 +220,6 @@ namespace AssetManagement.Data.Migrations
                     b.HasIndex("AssignedTo");
 
                     b.ToTable("Assignments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AssetId = 1,
-                            AssignedBy = new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
-                            AssignedDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3306),
-                            AssignedTo = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            ReturnedDate = new DateTime(2022, 11, 24, 15, 17, 9, 320, DateTimeKind.Local).AddTicks(3306),
-                            State = 0
-                        });
                 });
 
             modelBuilder.Entity("AssetManagement.Domain.Models.Category", b =>
@@ -448,23 +243,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsDeleted = false,
-                            Name = "Laptop",
-                            Prefix = "LA"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsDeleted = false,
-                            Name = "Monitor",
-                            Prefix = "MO"
-                        });
+                    b.ToTable("Categories", null, t => t.ExcludeFromMigrations());
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -542,13 +321,6 @@ namespace AssetManagement.Data.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("AppUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -595,9 +367,7 @@ namespace AssetManagement.Data.Migrations
                 {
                     b.HasOne("AssetManagement.Domain.Models.Asset", "Asset")
                         .WithMany("Assignments")
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AssetId");
 
                     b.HasOne("AssetManagement.Domain.Models.AppUser", "AssignedByToAppUser")
                         .WithMany("AssignedByAssignments")
