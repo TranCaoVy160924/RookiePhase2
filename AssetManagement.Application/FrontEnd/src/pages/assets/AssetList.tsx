@@ -10,7 +10,8 @@ import {
   EditButton,
   useListController,
   useDataProvider,
-  useGetList
+  useGetList,
+  useRefresh
 } from "react-admin";
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -38,6 +39,8 @@ export default () => {
     return "";
   };
 
+  const refresh = useRefresh();
+
   const assetsFilter = [
     <TextInput label="Search" source="searchString" alwaysOn />,
     // <SelectArrayInput source="states" choices={[
@@ -60,9 +63,6 @@ export default () => {
       statesList={data}
     />
   ];
-
-
-
 
   return (
     <>
@@ -91,6 +91,7 @@ export default () => {
             <EditButton variant="text" size="small" label="" />
             <CustomDeleteWithConfirmButton
               icon={<HighlightOffIcon />}
+              mutationOptions={{ onSuccess: (data) => refresh() }}
               confirmTitle="Are you sure?"
               confirmContent="Do you want to delete this asset?"
             />
