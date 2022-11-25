@@ -93,6 +93,7 @@ const App = () => {
             <ChangePasswordModal
                 loginFirstTime={loginFirstTime}
                 setLoginFirstTime={setLoginFirstTime}
+                logout={authProvider.logout}
             />
         </>
     )

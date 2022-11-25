@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import { Form, PasswordInput, SaveButton, TextInput, useNotify } from 'react-admin';
+import { DeleteButton, Form, PasswordInput, SaveButton, TextInput, useNotify } from 'react-admin';
 import authService from "../../../services/changePasswordFirstTime/auth";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -10,14 +10,23 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import * as CryptoJS from 'crypto-js';
 import config from "../../../connectionConfigs/config.json";
+import AuthProvider from '../../../providers/authenticationProvider/authProvider';
 
 const encryptKey = config.encryption.key;
 
 const ChangePasswordModal = ({
     loginFirstTime,
     setLoginFirstTime,
+    logout
 }) => {
     const notify = useNotify();
+
+    const handleLogout = () => {
+        setLoginFirstTime(false);
+        localStorage.removeItem("loginFirstTime");
+        logout();
+        window.location.href = ".";
+    }
 
     const decrypt = (text) => {
         console.log(encryptKey)
@@ -61,7 +70,13 @@ const ChangePasswordModal = ({
 
     const style = {
         bgcolor: '#cf2338',
-        color: "#fff"
+        color: "#fff",
+    }
+
+    const buttonStyle = {
+        bgcolor: '#cf2338',
+        color: "#fff",
+        marginRight: 3
     }
 
     return (
@@ -86,7 +101,8 @@ const ChangePasswordModal = ({
                                 <PasswordInput source="newPassword" fullWidth />
                             </Grid>
                             <Grid alignItems="left" item xs={12}>
-                                <SaveButton label='Save' sx={style} type="submit" icon={<></>}/>
+                                <SaveButton label='Save' sx={buttonStyle} type="submit" icon={<></>}/>
+                                <Button type="button" onClick={handleLogout} sx={buttonStyle}>Logout</Button>
                             </Grid>
                         </Grid>
                     </Form>
