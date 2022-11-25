@@ -12,23 +12,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 const ChangePasswordModal = ({
     loginFirstTime,
     setLoginFirstTime,
+    password
 }) => {
     const notify = useNotify();
 
     const requiredInput = (values) => {
         let errors = {
-            currentPassword: "",
             newPassword: "",
-            confirmPassword: "",
         };
-        if (!values.currentPassword) {
-            errors.currentPassword = "This is required";
-        } else if (!values.newPassword) {
+        if (!values.newPassword) {
             errors.newPassword = "This is required";
-        } else if (!values.confirmPassword) {
-            errors.confirmPassword = "This is required";
-        } else if (values.confirmPassword !== values.newPassword) {
-            errors.confirmPassword = "Confirm password not match";
         } else {
             return {};
         }
@@ -37,15 +30,15 @@ const ChangePasswordModal = ({
 
     const handleChangePassword = data => {
         const newPassword = data.newPassword;
-        const confirmPassword = data.confirmPassword;
-        const currentPassword = data.currentPassword;
+        const confirmPassword = data.newPassword;
+        const currentPassword = password;
 
         console.log(newPassword, confirmPassword, currentPassword)
 
         const changePasswordRequest = {
             newPassword: data.newPassword,
             confirmPassword: data.confirmPassword,
-            currentPassword: data.currentPassword
+            currentPassword: data.confirmPassword
         }
 
         authService.changePassword(changePasswordRequest)
@@ -82,16 +75,10 @@ const ChangePasswordModal = ({
                     <Form onSubmit={handleChangePassword} validate={requiredInput}>
                         <Grid container>
                             <Grid item xs={12}>
-                                <TextInput type="password" source="currentPassword" fullWidth />
+                                <PasswordInput source="newPassword" fullWidth />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextInput type="password" source="newPassword" fullWidth />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextInput type="password" source="confirmPassword" fullWidth />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <SaveButton label='Change Password' sx={style} type="submit" />
+                                <SaveButton label='Change Password' sx={style} type="submit" icon={<></>}/>
                             </Grid>
                         </Grid>
                     </Form>

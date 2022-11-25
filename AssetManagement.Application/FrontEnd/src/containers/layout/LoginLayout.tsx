@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, TextInput, useLogin, useNotify } from 'react-admin';
+import { Form, PasswordInput, TextInput, useLogin, useNotify } from 'react-admin';
 import { Avatar, Button, Box, CssBaseline, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -17,7 +17,7 @@ const LoginPage = ({ checkIsLoginFirstTime }) => {
     const handleFormSubmit = ({ userName, password }: any) => {
         login({ username: userName, password: password })
             .then(data => {
-                checkIsLoginFirstTime();
+                checkIsLoginFirstTime(password);
             })
             .catch(error => {
                 console.log(error);
@@ -74,12 +74,11 @@ const LoginPage = ({ checkIsLoginFirstTime }) => {
                                     sx={{ gridColumn: "span 5" }}
                                     source="username"
                                 />
-                                <TextInput
+                                <PasswordInput
                                     fullWidth
                                     id="password"
                                     label="Password"
                                     name="password"
-                                    type="password"
                                     autoComplete="current-password"
                                     sx={{ gridColumn: "span 5" }}
                                     source="password"

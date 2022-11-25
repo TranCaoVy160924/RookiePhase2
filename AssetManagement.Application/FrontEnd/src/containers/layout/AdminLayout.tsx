@@ -22,7 +22,7 @@ import HomeList from '../../pages/home/HomeList';
 import config from "../../connectionConfigs/config.json";
 import { assetProvider } from '../../providers/assetProvider/assetProvider';
 import AssetList from '../../pages/assets/AssetList';
-import AssetEdit  from '../../pages/assets/AssetEdit';
+import AssetEdit from '../../pages/assets/AssetEdit';
 import AssetCreate from '../../pages/assets/AssetCreate';
 // import AssetManager from '../../pages/asset/AssetManager';
 
@@ -31,13 +31,15 @@ const authProvider = AuthProvider(config.api.base);
 
 const App = () => {
     const [loginFirstTime, setLoginFirstTime] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState("");
     const permissions = localStorage.getItem("permissions");
 
-    const checkIsLoginFirstTime = () => {
+    const checkIsLoginFirstTime = (currentPassword) => {
         authService.getUserProfile()
             .then(data => {
                 if (data.isLoginFirstTime) {
                     setLoginFirstTime(true);
+                    setCurrentPassword(currentPassword);
                     localStorage.setItem('loginFirstTime', "new");
                 }
             })
@@ -84,6 +86,7 @@ const App = () => {
             <ChangePasswordModal
                 loginFirstTime={loginFirstTime}
                 setLoginFirstTime={setLoginFirstTime}
+                password={currentPassword}
             />
         </>
     )
