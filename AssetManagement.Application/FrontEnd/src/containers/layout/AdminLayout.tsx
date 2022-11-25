@@ -36,7 +36,6 @@ const App = () => {
     const permissions = localStorage.getItem("permissions");
 
     const encrypt = (text) => {
-        console.log(encryptKey)
         return CryptoJS.AES
             .encrypt(text, encryptKey)
             .toString();
