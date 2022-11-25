@@ -147,6 +147,7 @@ app.UseSpa(spa =>
 
     if (app.Environment.IsDevelopment())
     {
+        spa.Options.StartupTimeout = TimeSpan.FromSeconds(1200);
         spa.UseReactDevelopmentServer(npmScript: "start");
     }
 });
