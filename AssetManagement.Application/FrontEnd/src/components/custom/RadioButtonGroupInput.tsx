@@ -7,29 +7,34 @@ function RadioButtonGroup(props) {
             // fullwidth="true"
             {...props}
             sx={{
-                ".css-1m9pwf3 + .css-hyxlzm .css-1hbvpl3-MuiSvgIcon-root":{
-                    width:"20px",
-                    height:"20px",
-                    color:'#000',
-                    backgroundColor: '#fff',
-                    borderRadius: '50%',
+                ".PrivateSwitchBase-input + span":{
+                    ".MuiSvgIcon-root:nth-child(1)" : {
+                        width:"20px",
+                        height:"20px",
+                        color:'#000',
+                        backgroundColor: '#fff',
+                        borderRadius: '50%',
+                    },
+                    ".MuiSvgIcon-root:nth-child(2)":{
+                        width:"20px",
+                        height:"20px",
+                        color:'#fff',
+                    },
                 },
-                ".css-1m9pwf3:checked + .css-hyxlzm .css-1hbvpl3-MuiSvgIcon-root":{
+                ".PrivateSwitchBase-input:checked + span ":{
+                    ".MuiSvgIcon-root:nth-child(1)":{
                     width:"20px",
                     height:"20px",
                     color:'#cf2338',
                     backgroundColor: '#cf2338',
                     borderRadius: '50%',
-                },
-                ".css-1m9pwf3 + .css-hyxlzm .css-11zohuh-MuiSvgIcon-root":{
-                    width:"20px",
-                    height:"20px",
-                    color:'#fff',
-                },
-                ".css-1m9pwf3:checked + .css-hyxlzm .css-11zohuh-MuiSvgIcon-root":{
-                    width:"20px",
-                    height:"20px",
-                    color:'#fff',
+                    },
+                    ".MuiSvgIcon-root:nth-child(2)":{
+                        width:"20px",
+                        height:"20px",
+                        color:'#fff',
+                    }
+
                 }
             }}
         />

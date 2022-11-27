@@ -11,7 +11,7 @@ const SidebarMenu = () => {
     return(
     <Menu 
     sx={{
-        width: "950px",
+        minWidth: "950px",
         margin: "10px",
         paddingTop: "40px",
         color: "#000",
@@ -25,6 +25,17 @@ const SidebarMenu = () => {
             },
             marginBottom: "3px",
         },
+        ".MuiMenuItem-root:hover" :{
+            height:"50px",
+            backgroundColor: "#eff1f5",
+            fontWeight: "900",
+            color: "#cf2338",
+            ".RaMenuItemLink-icon" :{
+                color: "#cf2338",
+            },
+            marginBottom: "3px",
+            opacity: "0.8"
+        },
         ".RaMenuItemLink-active": {
             color: "#cf2338",
             backgroundColor: '#cf2338',
@@ -35,7 +46,19 @@ const SidebarMenu = () => {
                 color: "#fff",
             },
             marginBottom: "3px",
-        }
+        },
+        ".RaMenuItemLink-active:hover": {
+            color: "#000",
+            backgroundColor: '#000',
+            "&.RaMenuItemLink-active" : {
+                color: "#fff",
+            },
+            "& .RaMenuItemLink-icon" :{
+                color: "#fff",
+            },
+            marginBottom: "3px",
+            opacity: "0.8"
+        },
     }}
     >
         <CardMedia
