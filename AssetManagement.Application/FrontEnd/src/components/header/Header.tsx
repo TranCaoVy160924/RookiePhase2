@@ -15,7 +15,7 @@ const Header = () => {
             color="inherit"
             endIcon={<ArrowDropDownIcon />}
             label={userName}
-            sx={headerStyle.userMenuButton}
+            sx={headerStyle.userMenuButtonStyle}
         />
     );
     return (
