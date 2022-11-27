@@ -15,7 +15,7 @@ export const formStyle: Record<string, SxProps<Theme> | undefined> = {
         width: "700px",
     },
     textInputStyle: {
-        width: "430px",
+        maxWidth: "430px",
         margin: "0",
         padding: "0",
     },

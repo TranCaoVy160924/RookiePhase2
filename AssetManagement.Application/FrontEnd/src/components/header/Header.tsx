@@ -21,7 +21,7 @@ const Header = () => {
     return (
         <AppBar
             userMenu={<UserMenu icon={button} />}
-            open={false}
+            open={true}
             sx={headerStyle.appBarStyle}
         />
     );
