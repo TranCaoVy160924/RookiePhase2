@@ -50,6 +50,10 @@ namespace AssetManagement.Application.Controllers
 
                 try
                 {
+                    if (request.Name.Length > 100)
+                    {
+                        return BadRequest("New category's name no longer than 100 characters");
+                    }
                     if (request.Prefix.Length > 5)
                     {
                         return BadRequest("New category's prefix no longer than 5 characters");
