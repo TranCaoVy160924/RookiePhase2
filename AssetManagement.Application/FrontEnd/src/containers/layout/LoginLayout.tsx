@@ -11,8 +11,6 @@ const LoginPage = ({ checkIsLoginFirstTime }) => {
     const [isValid, setIsValid] = useState(true);
     const login = useLogin();
     const notify = useNotify();
-    // let theme = createTheme();
-    // theme = unstable_createMuiStrictModeTheme(theme);
 
     const handleFormSubmit = ({ userName, password }: any) => {
         login({ username: userName, password: password })
@@ -21,7 +19,7 @@ const LoginPage = ({ checkIsLoginFirstTime }) => {
             })
             .catch(error => {
                 console.log(error);
-                notify('Invalid email or password');
+                notify('Username or password is incorrect. Please try again');
             });
     };
 

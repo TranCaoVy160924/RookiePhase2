@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     Datagrid,
     List,
@@ -20,15 +20,13 @@ import StateFilterSelect from "../../components/select/StateFilterSelect";
 import AssetShow from "./AssetShow";
 import { ButtonGroup } from "@mui/material";
 import CategoryFilterSelect from "../../components/select/CategoryFilterSelect";
-import axios from "axios";
-import axiosInstance from "../../connectionConfigs/axiosInstance";
 
 export default () => {
-    const [isOpened, setIsOpened] = useState(false);
-    const [record, setRecord] = useState();
-    // const { data } = useGetList("category/get", { pagination: { page: 1, perPage: 99 } })
-    const dataProvider = useDataProvider();
-    let data = dataProvider.getList("category/get", { pagination: { page: 1, perPage: 99 }, sort: { field: "name", order: "ASC" }, filter: {} }).then(res => res.data)
+  const [isOpened, setIsOpened] = useState(false);
+  const [record, setRecord] = useState();
+  // const { data } = useGetList("category", { pagination: { page: 1, perPage: 99 } })
+  const dataProvider = useDataProvider();
+  let data = dataProvider.getList("category", { pagination: { page: 1, perPage: 99 }, sort: { field: "name", order: "ASC" }, filter: {} }).then(res => res.data)
 
     const toggle = () => {
         setIsOpened(!isOpened);
