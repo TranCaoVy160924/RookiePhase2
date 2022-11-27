@@ -5,7 +5,6 @@ const baseUrl = config.api.auth;
 const getUserProfile = async () => {
     let url = baseUrl + "/user-profile";
     const response = await axiosInstance.get(url);
-    console.log(response.data);
     localStorage.setItem('userName', response.data.username);
 
     return response.data;
@@ -14,7 +13,6 @@ const getUserProfile = async () => {
 const changePassword = async (changePasswordRequest) => {
     let url = baseUrl + "/change-password";
     const response = await axiosInstance.post(url, changePasswordRequest);
-    console.log(response);
     return response.data;
 }
 
