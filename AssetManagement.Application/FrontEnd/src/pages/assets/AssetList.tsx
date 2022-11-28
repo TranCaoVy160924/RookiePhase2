@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import {
     Datagrid,
+    List,
+    Title,
     TextField,
+    TextInput,
     EditButton,
     useDataProvider,
-    useRefresh,
     FunctionField,
+    useRefresh,
     ListBase,
     FilterForm,
     CreateButton,
+    Button,
     SearchInput
 } from "react-admin";
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
@@ -70,6 +74,7 @@ export default () => {
 
     return (
         <>
+            <Title title="Manage Asset" />
             <ListBase
                 perPage={5}
                 sort={{ field: "name", order: "DESC" }}
