@@ -33,7 +33,6 @@ const encryptKey = config.encryption.key;
 
 const App = () => {
     const [loginFirstTime, setLoginFirstTime] = useState(false);
-    const [currentPassword, setCurrentPassword] = useState("");
     const refresh = useRefresh();
 
     const encrypt = (text) => {
@@ -48,7 +47,7 @@ const App = () => {
     })
 
     console.log("permissionsAdminlayout" , permissions)
-    const checkIsLoginFirstTime = () => {
+    const checkIsLoginFirstTime = (currentPassword) => {
         authService.getUserProfile()
         .then(data => {
             if (data.isLoginFirstTime) {
