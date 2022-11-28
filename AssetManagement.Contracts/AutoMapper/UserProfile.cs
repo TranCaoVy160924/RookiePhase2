@@ -1,14 +1,7 @@
-﻿using AssetManagement.Contracts.Asset.Response;
-using AssetManagement.Contracts.Authority.Response;
+﻿using AssetManagement.Contracts.Authority.Response;
 using AssetManagement.Domain.Models;
-using AssetManagement.Contracts.Asset.Request;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using AssetManagement.Contracts.User.Response;
 
 namespace AssetManagement.Contracts.AutoMapper
 {
@@ -17,7 +10,7 @@ namespace AssetManagement.Contracts.AutoMapper
         public UserProfile()
         {
             CreateMap<AppUser, UserResponse>();
-            
+            CreateMap<AppUser, UpdateUserResponse>();
         }
     }
 }
