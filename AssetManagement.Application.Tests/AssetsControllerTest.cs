@@ -59,8 +59,8 @@ namespace AssetManagement.Application.Tests
             CreateAssetRequest request = new()
             {
                 CategoryId = 2,
-                Name = "Laptop 21",
-                Specification = "This is laptop #21",
+                Name = "Monitor 1",
+                Specification = "This is monitor #1",
                 InstalledDate = DateTime.Now,
                 State = (int)(State.Available)
             };

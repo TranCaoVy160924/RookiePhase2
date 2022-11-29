@@ -29,7 +29,7 @@ namespace AssetManagement.Application.Tests
         {
             // Create InMemory dbcontext options
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
-                .UseInMemoryDatabase(databaseName: "AssetTestDb1").Options;
+                .UseInMemoryDatabase(databaseName: "AssignmentTestDb").Options;
 
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new AssignmentProfile())).CreateMapper();
 
