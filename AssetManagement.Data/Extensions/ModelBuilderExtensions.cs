@@ -52,12 +52,12 @@ namespace AssetManagement.Data.Extensions
                 SecurityStamp = string.Empty,
                 FirstName = "Toan",
                 LastName = "Bach",
-                Dob = new DateTime(2020, 01, 31),
+                Dob = new DateTime(2000, 01, 31),
                 IsLoginFirstTime = false,
                 CreatedDate = DateTime.Now,
                 Gender = Domain.Enums.AppUser.UserGender.Male,
                 Location = Domain.Enums.AppUser.AppUserLocation.HoChiMinh,
-                StaffCode = " SD0001"
+                StaffCode = "SD0001"
             });
 
             modelBuilder.Entity<AppUser>().HasData(new AppUser
@@ -72,12 +72,12 @@ namespace AssetManagement.Data.Extensions
                 SecurityStamp = string.Empty,
                 FirstName = "Toan",
                 LastName = "Bach",
-                Dob = new DateTime(2020, 01, 31),
+                Dob = new DateTime(2000, 01, 31),
                 IsLoginFirstTime = true,
                 CreatedDate = DateTime.Now,
                 Gender = Domain.Enums.AppUser.UserGender.Male,
                 Location = Domain.Enums.AppUser.AppUserLocation.HaNoi,
-                StaffCode = " SD0002"
+                StaffCode = "SD0002"
             });
 
             modelBuilder.Entity<AppUser>().HasData(new AppUser
@@ -92,12 +92,12 @@ namespace AssetManagement.Data.Extensions
                 SecurityStamp = string.Empty,
                 FirstName = "Toan",
                 LastName = "Bach",
-                Dob = new DateTime(2020, 01, 31),
+                Dob = new DateTime(2000, 01, 31),
                 IsLoginFirstTime = true,
                 CreatedDate = DateTime.Now,
                 Gender = Domain.Enums.AppUser.UserGender.Female,
                 Location = Domain.Enums.AppUser.AppUserLocation.HaNoi,
-                StaffCode = " SD0003"
+                StaffCode = "SD0003"
             });
 
             modelBuilder.Entity<AppUser>().HasData(new AppUser
@@ -112,12 +112,12 @@ namespace AssetManagement.Data.Extensions
                 SecurityStamp = string.Empty,
                 FirstName = "Toan",
                 LastName = "Bach",
-                Dob = new DateTime(2020, 01, 31),
+                Dob = new DateTime(2000, 01, 31),
                 IsLoginFirstTime = true,
                 CreatedDate = DateTime.Now,
                 Gender = Domain.Enums.AppUser.UserGender.Female,
                 Location = Domain.Enums.AppUser.AppUserLocation.HaNoi,
-                StaffCode = " SD0004"
+                StaffCode = "SD0004"
             });
 
             modelBuilder.Entity<AppUser>().HasData(new AppUser
@@ -132,12 +132,12 @@ namespace AssetManagement.Data.Extensions
                 SecurityStamp = string.Empty,
                 FirstName = "Toan",
                 LastName = "Bach",
-                Dob = new DateTime(2020, 01, 31),
+                Dob = new DateTime(2000, 01, 31),
                 IsLoginFirstTime = true,
                 CreatedDate = DateTime.Now,
                 Gender = Domain.Enums.AppUser.UserGender.Female,
                 Location = Domain.Enums.AppUser.AppUserLocation.HaNoi,
-                StaffCode = " SD0005",
+                StaffCode = "SD0005",
                 IsDeleted = true,
             });
 
@@ -212,6 +212,7 @@ namespace AssetManagement.Data.Extensions
                     Note = $"Note for assignment {i}",
                     AssignedDate = DateTime.Today,
                     ReturnedDate = DateTime.Today.AddDays(i),
+                    AssetId = i,
                     State = i % 2 == 0 ? Domain.Enums.Assignment.State.Accepted : Domain.Enums.Assignment.State.WaitingForAcceptance,
                     AssignedTo = staffAbleId1,
                     AssignedBy = adminHcmId,
