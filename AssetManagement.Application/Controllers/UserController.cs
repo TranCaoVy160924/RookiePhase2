@@ -138,12 +138,12 @@ namespace AssetManagement.Application.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("{id}")]
+        [HttpPut("{StaffCode}")]
         public async Task<IActionResult> UpdateUserAsync(string staffCode, UpdateUserRequest request)
         {
             if (ModelState.IsValid)
             {
-                if(request.Dob < DateTime.Now.AddYears(-18))
+                if(request.Dob > DateTime.Now.AddYears(-18))
                 {
                     return BadRequest("User is under 18. Please select a different date");
                 }
@@ -170,6 +170,7 @@ namespace AssetManagement.Application.Controllers
                         user.Dob = request.Dob;
                         user.CreatedDate = request.JoinedDate;
                         user.Gender = request.Gender;
+                        user.ModifiedDate = DateTime.Now;
                         roleKey.UserId = user.Id;
                         roleKey.RoleId = role.Id;
 
