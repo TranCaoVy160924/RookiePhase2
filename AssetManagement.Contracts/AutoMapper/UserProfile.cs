@@ -11,6 +11,8 @@ namespace AssetManagement.Contracts.AutoMapper
         {
             CreateMap<AppUser, UserResponse>();
             CreateMap<AppUser, UpdateUserResponse>();
+            CreateMap<AppUser, ViewListUser_UserResponse>().ForMember(dest => dest.Id, opt => opt.Ignore())
+                                                           .ForMember(dest => dest.JoinedDate, opt => opt.MapFrom(src => src.CreatedDate));
         }
     }
 }
