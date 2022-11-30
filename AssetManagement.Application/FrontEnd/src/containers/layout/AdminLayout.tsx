@@ -6,6 +6,7 @@ import {
     Resource,
     NotFound,
     useRefresh,
+    CustomRoutes,
 } from 'react-admin';
 import { theme } from '../../theme';
 import Layout from '../Layout';
@@ -21,6 +22,8 @@ import AssetList from '../../pages/assets/AssetList';
 import AssetEdit from '../../pages/assets/AssetEdit';
 import AssetCreate from '../../pages/assets/AssetCreate';
 import UserList from '../../pages/users/UserList';
+import EditUser from '../../pages/users/UserEdit';
+import { Route } from 'react-router-dom';
 
 // You will fix this API-URL
 const authProvider = AuthProvider(config.api.base);
@@ -90,7 +93,7 @@ const App = () => {
             >
                 <Resource name="home" options={{ label: 'Home' }} list={HomeList} />
                 {permissions == 'Admin' ? <Resource name="assets" list={AssetList} edit={AssetEdit} create={AssetCreate} options={{ label: 'Manage Asset' }} /> : null}
-                {permissions == 'Admin' ? <Resource name="user" list={UserList} options={{ label: 'Manage User' }} /> : null}
+                {permissions == 'Admin' ? <Resource name="user" list={UserList} edit={EditUser} options={{ label: 'Manage User'}} /> : null}
             </Admin>
 
             <ChangePasswordModal

@@ -1,4 +1,5 @@
 ﻿using AssetManagement.Contracts.Authority.Response;
+using AssetManagement.Contracts.User.Response;
 using AssetManagement.Domain.Models;
 using AutoMapper;
 using System;
@@ -15,7 +16,11 @@ namespace AssetManagement.Contracts.AutoMapper
         {
             CreateMap<AppUser, UserResponse>();
             CreateMap<AppUser, UpdateUserResponse>();
-            CreateMap<AppUser, ViewListUser_UserResponse>().ForMember(dest => dest.Id, opt => opt.Ignore())
+
+            CreateMap<AppUser, ViewDetailUser_UserResponse>().ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.Dob))
+                                                             .ForMember(dest => dest.JoinedDate, opt => opt.MapFrom(src => src.CreatedDate));
+            
+            CreateMap<AppUser, ViewListUser_UserResponse>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.StaffCode))
                                                            .ForMember(dest => dest.JoinedDate, opt => opt.MapFrom(src => src.CreatedDate));
         }
     }

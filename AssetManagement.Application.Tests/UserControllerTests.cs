@@ -22,12 +22,7 @@ namespace AssetManagement.Application.Tests
         private readonly Mock<UserManager<AppUser>> _userManager;
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
-        private readonly Mock<UserManager<AppUser>> _userManager;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _config;
-        private List<AppUser> _users;
-        private List<Asset> _assets;
-        private List<Category> _categories;
 
         public UserControllerTests()
         {
@@ -86,18 +81,6 @@ namespace AssetManagement.Application.Tests
             Assert.IsType<OkObjectResult>(result);
             Assert.NotNull(data);
             Assert.Equal(expected, data);
-            }
-            _userManager.Setup(_ => _.GetUsersInRoleAsync("Admin").Result).Returns(addminRole);
-            _userManager.Setup(_ => _.GetUsersInRoleAsync("Staff").Result).Returns(staffRole);
-
-            // Act 
-
-            var result = await userController.GetAllUser(0, 2, "", "", "staffCode", "ASC", "");
-            var badrequestResult = result.Result as BadRequestObjectResult;
-            string actualResult = badrequestResult?.Value as string;
-
-            // Assert
-            Assert.NotNull(actualResult);
         }
 
         [Fact]
@@ -122,8 +105,6 @@ namespace AssetManagement.Application.Tests
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("\"User is under 18. Please select a different date\"", data);
-            }
-            #endregion
         }
 
         [Fact]
@@ -196,33 +177,6 @@ namespace AssetManagement.Application.Tests
             //ASSERT
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
-        }
-        #endregion
-
-        #region GetSingleUser
-        [Fact]
-        public async Task EditUser_BadRequest_ExceptionAsync()
-            {
-            //ARRANGE
-            UpdateUserRequest request = new()
-        {
-                Dob = new(2000, 11, 29),
-                Gender = Domain.Enums.AppUser.UserGender.Female,
-                JoinedDate = new(2022, 11, 28),
-                Type = "Admin"
-            };
-
-            //Null mapper will cause exception
-            UserController controller = new UserController(_context, _userManager.Object, null);
-
-            //ACT
-            IActionResult result = await controller.UpdateUserAsync("SD0001", request);
-            string data = ConvertStatusCode(result);
-
-            //ASSERT
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("\"Object reference not set to an instance of an object.\"", data);
         }
         #endregion
 

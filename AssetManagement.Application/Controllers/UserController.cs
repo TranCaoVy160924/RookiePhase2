@@ -100,11 +100,11 @@ namespace AssetManagement.Application.Controllers
 
             List<ViewListUser_UserResponse> mapResult = new List<ViewListUser_UserResponse>();
 
-            int tempCount = 0;
+            //int tempCount = 0;
             foreach (AppUser user in sortedUsers)
             {
                 ViewListUser_UserResponse userData = _mapper.Map<ViewListUser_UserResponse>(user);
-                userData.Id = tempCount;
+                //userData.Id = tempCount;
                 string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
                 if (string.IsNullOrEmpty(userRole))
                 {
@@ -112,7 +112,7 @@ namespace AssetManagement.Application.Controllers
                 }
                 userData.Type = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
                 mapResult.Insert(0, userData);
-                tempCount += 1;
+                //tempCount += 1;
             }
 
             return Ok(new ViewList_ListResponse<ViewListUser_UserResponse>
