@@ -26,6 +26,8 @@ export default () => {
     const usersFilter = [
         <StateFilterSelect
             source="type"
+            label="Type"
+            sx={{ width:"140px" }}
             statesList={[
                 { value: 0, text: "Admin" },
                 { value: 1, text: "Staff" },

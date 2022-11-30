@@ -1,7 +1,11 @@
 ﻿using AssetManagement.Contracts.Authority.Response;
 using AssetManagement.Domain.Models;
 using AutoMapper;
-using AssetManagement.Contracts.User.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AssetManagement.Contracts.AutoMapper
 {

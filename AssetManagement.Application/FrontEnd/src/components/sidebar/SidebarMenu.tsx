@@ -1,4 +1,4 @@
-import { Menu, usePermissions  } from 'react-admin';
+import { Menu, usePermissions } from 'react-admin';
 import React from 'react';
 import { Typography } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';

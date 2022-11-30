@@ -19,10 +19,15 @@ namespace AssetManagement.Application.Tests
 {
     public class UserControllerTests : IDisposable
     {
+        private readonly Mock<UserManager<AppUser>> _userManager;
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
         private readonly Mock<UserManager<AppUser>> _userManager;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _config;
+        private List<AppUser> _users;
+        private List<Asset> _assets;
+        private List<Category> _categories;
 
         public UserControllerTests()
         {
@@ -37,6 +42,11 @@ namespace AssetManagement.Application.Tests
             Mock<IUserStore<AppUser>> userStoreMoq = new();
             //Create UserManager mock using userStoreMoq
             _userManager = new(userStoreMoq.Object, null, null, null, null, null, null, null, null);
+            // Create InMemory dbcontext options
+            _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
+                .UseInMemoryDatabase(databaseName: "AssetTestDb").Options;
+
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new UserProfile())).CreateMapper();
 
             // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
@@ -59,7 +69,7 @@ namespace AssetManagement.Application.Tests
                 JoinedDate = new(2022, 11, 28),
                 Type = "Admin"
             };
-            
+
             string staffCode = _context.AppUsers.ToList()[index].StaffCode;
 
             UserController controller = new UserController(_context, _userManager.Object, _mapper);
@@ -70,12 +80,24 @@ namespace AssetManagement.Application.Tests
             string expected = JsonConvert.SerializeObject(
                 _mapper.Map<UpdateUserResponse>(_context.AppUsers.ToList()[index])
             );
-            
+
             //ASSERT
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             Assert.NotNull(data);
             Assert.Equal(expected, data);
+            }
+            _userManager.Setup(_ => _.GetUsersInRoleAsync("Admin").Result).Returns(addminRole);
+            _userManager.Setup(_ => _.GetUsersInRoleAsync("Staff").Result).Returns(staffRole);
+
+            // Act 
+
+            var result = await userController.GetAllUser(0, 2, "", "", "staffCode", "ASC", "");
+            var badrequestResult = result.Result as BadRequestObjectResult;
+            string actualResult = badrequestResult?.Value as string;
+
+            // Assert
+            Assert.NotNull(actualResult);
         }
 
         [Fact]
@@ -100,6 +122,8 @@ namespace AssetManagement.Application.Tests
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("\"User is under 18. Please select a different date\"", data);
+            }
+            #endregion
         }
 
         [Fact]
@@ -173,13 +197,15 @@ namespace AssetManagement.Application.Tests
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
         }
+        #endregion
 
+        #region GetSingleUser
         [Fact]
         public async Task EditUser_BadRequest_ExceptionAsync()
-        {
+            {
             //ARRANGE
             UpdateUserRequest request = new()
-            {
+        {
                 Dob = new(2000, 11, 29),
                 Gender = Domain.Enums.AppUser.UserGender.Female,
                 JoinedDate = new(2022, 11, 28),

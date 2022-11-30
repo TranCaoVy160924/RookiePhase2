@@ -212,6 +212,7 @@ namespace AssetManagement.Data.Extensions
                     Note = $"Note for assignment {i}",
                     AssignedDate = DateTime.Today,
                     ReturnedDate = DateTime.Today.AddDays(i),
+                    AssetId = i,
                     State = i % 2 == 0 ? Domain.Enums.Assignment.State.Accepted : Domain.Enums.Assignment.State.WaitingForAcceptance,
                     AssignedTo = staffAbleId1,
                     AssignedBy = adminHcmId,
