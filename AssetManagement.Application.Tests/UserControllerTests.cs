@@ -60,7 +60,7 @@ namespace AssetManagement.Application.Tests
             UpdateUserRequest request = new()
             {
                 Dob = new(2000, 11, 28),
-                Gender = Domain.Enums.AppUser.UserGender.Female,
+                Gender = (byte)Domain.Enums.AppUser.UserGender.Female,
                 JoinedDate = new(2022, 11, 28),
                 Type = "Admin"
             };
@@ -72,15 +72,14 @@ namespace AssetManagement.Application.Tests
             //ACT
             IActionResult result = await controller.UpdateUserAsync(staffCode, request);
             string data = ConvertOkObject<UpdateUserResponse>(result);
-            string expected = JsonConvert.SerializeObject(
-                _mapper.Map<UpdateUserResponse>(_context.AppUsers.ToList()[index])
-            );
+            UpdateUserResponse expected = _mapper.Map<UpdateUserResponse>(_context.AppUsers.ToList()[index]);
+            expected.Type = "Admin";
 
             //ASSERT
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             Assert.NotNull(data);
-            Assert.Equal(expected, data);
+            Assert.Equal(JsonConvert.SerializeObject(expected), data);
         }
 
         [Fact]
@@ -90,7 +89,7 @@ namespace AssetManagement.Application.Tests
             UpdateUserRequest request = new()
             {
                 Dob = DateTime.Now.AddYears(-18).AddSeconds(1),
-                Gender = Domain.Enums.AppUser.UserGender.Female,
+                Gender = (byte)Domain.Enums.AppUser.UserGender.Female,
                 JoinedDate = new(2022, 11, 28),
                 Type = "Admin"
             };
@@ -114,7 +113,7 @@ namespace AssetManagement.Application.Tests
             UpdateUserRequest request = new()
             {
                 Dob = new(2000, 11, 29),
-                Gender = Domain.Enums.AppUser.UserGender.Female,
+                Gender = (byte)Domain.Enums.AppUser.UserGender.Female,
                 JoinedDate = new(2018, 11, 28),
                 Type = "Admin"
             };
@@ -140,7 +139,7 @@ namespace AssetManagement.Application.Tests
             UpdateUserRequest request = new()
             {
                 Dob = new(2000, 11, 20),
-                Gender = Domain.Enums.AppUser.UserGender.Female,
+                Gender = (byte)Domain.Enums.AppUser.UserGender.Female,
                 JoinedDate = new(jyear, jmonth, jday),
                 Type = "Admin"
             };
@@ -164,7 +163,7 @@ namespace AssetManagement.Application.Tests
             UpdateUserRequest request = new()
             {
                 Dob = new(2000, 11, 29),
-                Gender = Domain.Enums.AppUser.UserGender.Female,
+                Gender = (byte)Domain.Enums.AppUser.UserGender.Female,
                 JoinedDate = new(2022, 11, 28),
                 Type = "Admin"
             };
