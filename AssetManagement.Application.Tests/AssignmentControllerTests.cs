@@ -1,5 +1,4 @@
 ﻿using AssetManagement.Application.Controllers;
-using AssetManagement.Contracts.Asset.Response;
 using AssetManagement.Contracts.Assignment.Response;
 using AssetManagement.Contracts.Common;
 using AssetManagement.Contracts.AutoMapper;
@@ -11,12 +10,8 @@ using Castle.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
+using AssetManagement.Application.Tests.TestHelper;
 
 namespace AssetManagement.Application.Tests
 {
@@ -31,97 +26,14 @@ namespace AssetManagement.Application.Tests
         {
             // Create InMemory dbcontext options
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
-                .UseInMemoryDatabase(databaseName: "AssetTestDb1").Options;
+                .UseInMemoryDatabase(databaseName: "AssignmentTestDb").Options;
 
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new AssignmentProfile())).CreateMapper();
 
             // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
             _context.Database.EnsureDeleted();
-            SeedData();
-        }
-
-        private void SeedData()
-        {
-            _context.Database.EnsureDeleted();
-            //Create roles data
-            List<AppRole> _roles = new()
-            {
-                new AppRole()
-                {
-                    Id = new Guid("12147FE0-4571-4AD2-B8F7-D2C863EB78A5"),
-                    Name = "Admin",
-                    Description = "Admin role"
-                },
-
-                new AppRole()
-                {
-                    Id = new Guid("8D04DCE2-969A-435D-BBA4-DF3F325983DC"),
-                    Name = "Staff",
-                    Description = "Staff role"
-                }
-            };
-            //Create users data
-            List<AppUser> _users = new()
-            {
-                new AppUser()
-                {
-                    Id= new Guid("69BD714F-9576-45BA-B5B7-F00649BE00DE"),
-                    FirstName = "Binh",
-                    LastName = "Nguyen Van",
-                    UserName = "binhnv",
-                    Email = "bnv@gmail.com",
-                    PasswordHash = "abc",
-                    Gender = Domain.Enums.AppUser.UserGender.Male,
-                    Location = Domain.Enums.AppUser.AppUserLocation.HoChiMinh,
-                    //RoleId = _roles[0].Id,
-                    IsLoginFirstTime = true,
-                    StaffCode = "SD01",
-                },
-
-                new AppUser()
-                {
-                    Id = new Guid("70BD714F-9576-45BA-B5B7-F00649BE00DE"),
-                    FirstName = "An",
-                    LastName = "Nguyen Van",
-                    UserName = "annv",
-                    Email = "anv@gmail.com",
-                    PasswordHash = "xyz",
-                    Gender = Domain.Enums.AppUser.UserGender.Male,
-                    Location = Domain.Enums.AppUser.AppUserLocation.HaNoi,
-                    //RoleId = _roles[1].Id,
-                    IsLoginFirstTime = true,
-                    StaffCode = "SD02",
-                }
-            };
-            //Add roles
-            _context.AppRoles.AddRange(_roles);
-            //Add users
-            _context.AppUsers.AddRange(_users);
-            _context.Assets.Add(new Asset
-            {
-                Id = 1,
-                Name = $"Laptop 1",
-                AssetCode = $"LT000001",
-                Specification = $"This is laptop #1",
-                InstalledDate = DateTime.Now.AddDays(-1),
-                Category = null,
-                Location = Domain.Enums.AppUser.AppUserLocation.HoChiMinh,
-                State = State.Available,
-                IsDeleted = false
-            });
-            _context.Assignments.Add(new Assignment
-            {
-                Id = 1,
-                AssignedDate = DateTime.Now,
-                ReturnedDate = DateTime.Now,
-                State = Domain.Enums.Assignment.State.Accepted,
-                AssetId = 1,
-                AssignedTo = _users[0].Id,
-                AssignedBy = _users[1].Id,
-                Note = "Co len",
-            });
-            _context.SaveChanges();
+            _context.Database.EnsureCreated();
         }
 
         // [Fact]
@@ -656,9 +568,79 @@ namespace AssetManagement.Application.Tests
         }
         #endregion
 
+        #region DeleteAssignment
+        #nullable disable
+        #region DeleteSuccess
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(9)]
+        [InlineData(10)]
+        public async Task Delete_SuccessAsync(int id)
+        {
+            //ARRANGE
+            AssignmentsController controller = new(_context, _mapper);
+
+            //ACT
+            IActionResult result = await controller.DeleteAsync(id);
+            string data = ConverterFromIActionResult.ConvertOkObject<AssignmentResponse>(result);
+            Assignment deleted = _context.Assignments.Find(id);
+            AssignmentResponse expected = _mapper.Map<AssignmentResponse>(deleted);
+            //ASSERT
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.True(deleted.IsDeleted);
+            Assert.Equal(JsonConvert.SerializeObject(expected), data);
+        }
+        #endregion
+
+        #region Delete_NotFound
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(11)]
+        [InlineData(999)]
+        public async Task Delete_NotFoundAsync(int id)
+        {
+            //ARRANGE
+            AssignmentsController controller = new(_context, _mapper);
+
+            //ACT
+            IActionResult result = await controller.DeleteAsync(id);
+            string data = ConverterFromIActionResult.ConvertStatusCode(result);
+
+            //ASSERT
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundObjectResult>(result);
+            
+            Assert.Equal("\"Assignment does not exist\"", data);
+        }
+        #endregion
+
+        #region DeleteException
+        [Fact]
+        public async Task Delete_ExceptionAsync()
+        {
+            //ARRANGE
+            //Use null mapper to cause exception
+            AssignmentsController controller = new(_context, null);
+
+            //ACT
+            IActionResult result = await controller.DeleteAsync(1);
+            string data = ConverterFromIActionResult.ConvertStatusCode(result);
+
+            //ASSERT
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("\"Object reference not set to an instance of an object.\"", data);
+        }
+        #endregion
+        #endregion
+
         public void Dispose()
         {
-            _context.Database.EnsureDeleted();
             _context.Dispose();
         }
     }
