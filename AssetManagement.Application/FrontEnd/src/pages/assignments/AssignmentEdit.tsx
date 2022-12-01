@@ -124,7 +124,7 @@ const AssignmentEdit = () => {
                                 >
                                     User *
                                 </Typography>
-                                <SelectInput 
+                                <TextInput
                                     id="edit_assignment_user_choice"
                                     fullWidth
                                     label={false}
@@ -136,29 +136,10 @@ const AssignmentEdit = () => {
                                         maxWidth: "430px",
                                         margin: "0",
                                         padding: "0",
-                                        color: "red !important"
                                     }}
                                     helperText={false}
                                     InputLabelProps={{ shrink: false }}
                                 />
-
-                                {/* <TextInput
-                                    id="edit_assignment_user_choice"
-                                    fullWidth
-                                    label={false}
-                                    name="assignToAppUserStaffCode"
-                                    source="assignToAppUserStaffCode"
-                                    onClick={() => { toggleUserChoice() }}
-                                    disabled
-                                    sx={{
-                                        maxWidth: "430px",
-                                        margin: "0",
-                                        padding: "0",
-                                        color: "red !important"
-                                    }}
-                                    helperText={false}
-                                    InputLabelProps={{ shrink: false }}
-                                /> */}
 
                                 <SelectUserModal
                                     setSelectedUser={setSelectedUser}
