@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextInput, DateInput, SimpleForm, Title, EditBase, useRefresh, Edit } from "react-admin";
+import { TextInput, DateInput, SimpleForm, Title, EditBase, useRefresh, Edit, SelectInput } from "react-admin";
 import { useParams } from "react-router-dom";
 import { Box, Typography, Container } from "@mui/material";
 import {
@@ -81,15 +81,18 @@ const AssignmentEdit = () => {
     const requiredInput = (values) => {
         const errors = {
             note: "",
+            assignedDate: ""
         };
         if (!values.note) {
             errors.note = "This is required";
+            setIsInvalid(true);
+        } else if (!values.assignedDate) {
+            errors.assignedDate = "This is required";
             setIsInvalid(true);
         } else {
             setIsInvalid(false);
             return {};
         }
-        console.log(errors);
         return errors;
     };
 
@@ -121,18 +124,41 @@ const AssignmentEdit = () => {
                                 >
                                     User *
                                 </Typography>
-                                <TextInput
+                                <SelectInput 
                                     id="edit_assignment_user_choice"
                                     fullWidth
                                     label={false}
                                     name="assignToAppUserStaffCode"
                                     source="assignToAppUserStaffCode"
-                                    disabled
                                     onClick={() => { toggleUserChoice() }}
-                                    sx={formStyle.textInputStyle}
+                                    disabled
+                                    sx={{
+                                        maxWidth: "430px",
+                                        margin: "0",
+                                        padding: "0",
+                                        color: "red !important"
+                                    }}
                                     helperText={false}
                                     InputLabelProps={{ shrink: false }}
                                 />
+
+                                {/* <TextInput
+                                    id="edit_assignment_user_choice"
+                                    fullWidth
+                                    label={false}
+                                    name="assignToAppUserStaffCode"
+                                    source="assignToAppUserStaffCode"
+                                    onClick={() => { toggleUserChoice() }}
+                                    disabled
+                                    sx={{
+                                        maxWidth: "430px",
+                                        margin: "0",
+                                        padding: "0",
+                                        color: "red !important"
+                                    }}
+                                    helperText={false}
+                                    InputLabelProps={{ shrink: false }}
+                                /> */}
 
                                 <SelectUserModal
                                     setSelectedUser={setSelectedUser}
@@ -198,6 +224,8 @@ const AssignmentEdit = () => {
                                 <TextInput
                                     fullWidth
                                     label={false}
+                                    multiline
+                                    rows={3}
                                     name="note"
                                     source="note"
                                     sx={formStyle.textInputStyle}
