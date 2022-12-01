@@ -1,19 +1,17 @@
 ﻿import { Box, Container, createTheme, ThemeProvider, Typography, unstable_createMuiStrictModeTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { DateInput, EditBase, EditGuesser, number, SelectField, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { DateInput, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
 import { useNavigate, useParams } from "react-router-dom";
 import { assetProvider } from "../../providers/assetProvider/assetProvider";
 import { formStyle } from "../../styles/formStyle";
 import RadioButtonGroup from "../../components/custom/RadioButtonGroupInput";
 import UserEditToolbar from "../../components/toolbar/UserEditToolbar";
-import { setDefaultResultOrder } from "dns";
 
 const UserEdit = () => {
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme();
     const navigate = useNavigate();
     const params= useParams();
-    const staffCode= params.id;
     const [isValid, setIsValid] = useState(true);
     const errors = {dob:'', joinedDate:''};
     const [user, setUser] = useState({
@@ -25,12 +23,16 @@ const UserEdit = () => {
         gender:'',
         type:''
     });
+    let staffCode;
 
-    useEffect(()=>{    
+    useEffect(()=>{
+        //console.log(params);
+        staffCode= params.id
         assetProvider.getOne('user', { id:staffCode }).then(res => {
-            setUser(res.data);
+            setUser(res.data.result);
+            //console.log(user);
         })
-    },[])
+    },[staffCode])
 
     const Validate = (form) => {
         const dob = new Date(form.dob);
@@ -61,7 +63,7 @@ const UserEdit = () => {
     }
 
     function EditUser(e) {
-        console.log(e);
+        //console.log(e);
         const changes = {
             dob: e.dob,
             gender: e.gender==='Male'?0:1,
@@ -71,7 +73,7 @@ const UserEdit = () => {
         console.log(changes)
         assetProvider.update('user', {id: user.staffCode, data: changes, previousData: user}).then(
             (response) => {
-                console.log(response)
+                //console.log(response)
                 navigate("/user", {state: {user}})
             }
         ).catch(error => console.log(error))

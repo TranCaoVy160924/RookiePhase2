@@ -10,17 +10,9 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static AssetManagement.Application.Tests.TestHelper.ConverterFromIActionResult;
 using Xunit;
-using AssetManagement.Contracts.Asset.Request;
-using AssetManagement.Application.Tests.TestHelper;
 using AssetManagement.Contracts.Common;
 using Microsoft.AspNetCore.Http;
 using System.Security.Principal;
@@ -81,7 +73,8 @@ namespace AssetManagement.Application.Tests
             string result = ConvertOkObject<CreateAssetResponse>(response);
             Asset newAsset = _context.Assets.LastOrDefault();
             var expected = JsonConvert.SerializeObject(
-                new CreateAssetResponse { 
+                new CreateAssetResponse 
+                { 
                     Id = newAsset.Id, 
                     AssetCode = newAsset.AssetCode, 
                     Name = newAsset.Name, 
@@ -303,7 +296,7 @@ namespace AssetManagement.Application.Tests
             AssetsController assetController = new AssetsController(_context, _mapper);
             var createdId = "3";
             // Act 
-            var result = await assetController.Get(0, 2, "", "", "", "name", "ASC", createdId);
+            var result = await assetController.Get(0, 3, "", "", "", "name", "ASC", createdId);
 
             var query = _context.Assets
                 .Include(x => x.Category)
@@ -312,23 +305,22 @@ namespace AssetManagement.Application.Tests
             var queryCreatedId = _context.Assets
                 .Include(x => x.Category)
                 .Where(x => x.Id == int.Parse(createdId) && !x.IsDeleted)
-                .OrderBy(x => x.Name).AsQueryable();
-            query = queryCreatedId.Concat(query);
+                .AsNoTracking().FirstOrDefault();
 
-            var list = StaticFunctions<Asset>.Paging(query, 0, 2);
+            var list = StaticFunctions<Asset>.Paging(query, 0, 3-1);
 
-            var expected = _mapper.Map<List<ViewListAssets_AssetResponse>>(list);
+            list.Insert(0, queryCreatedId);
+
+            var expected = JsonConvert.SerializeObject(
+                _mapper.Map<List<ViewListAssets_AssetResponse>>(list));
 
             var okobjectResult = (OkObjectResult)result.Result;
 
             var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Data;
+            var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
-            var isSorted = assetsList.SequenceEqual(expected);
-            // Assert
-            Assert.True(isSorted);
-            Assert.Equal(assetsList.Count(), expected.Count());
+            Assert.Equal(expected, assignmentsList);
         }
 
         [Fact]

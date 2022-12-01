@@ -54,11 +54,11 @@ function EditAssetInformations() {
         } else if (!values.categoryId) {
             errors.categoryId = "This is required";
             setIsValid(true);
+        } else if (values.installedDate == null) {
+            errors.installedDate = "This is required";
+            setIsValid(true);
         } else if (!values.specification) {
             errors.specification = "This is required";
-            setIsValid(true);
-        } else if (!values.state) {
-            errors.state = "This is required";
             setIsValid(true);
         } else {
             setIsValid(false);
@@ -86,7 +86,7 @@ function EditAssetInformations() {
                     >
                         <SimpleForm
                             validate={requiredInput}
-                            toolbar={<AssetEditToolbar />}
+                            toolbar={<AssetEditToolbar disable={isValid} />}
                         >
                             <Box sx={formStyle.boxStyle}>
                                 <Typography
@@ -154,7 +154,7 @@ function EditAssetInformations() {
                                 </Typography>
                                 <DateInput
                                     fullWidth
-                                    label=""
+                                    label={false}
                                     name="installedDate"
                                     source="installedDate"
                                     InputLabelProps={{ shrink: false }}

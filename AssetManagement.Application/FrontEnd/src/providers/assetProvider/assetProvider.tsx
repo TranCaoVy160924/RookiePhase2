@@ -24,6 +24,7 @@ export const assetProvider: DataProvider = {
         throw new Error("Function not implemented.");
     },
     update: (resource, params) => {
+        console.log(params.data);
         return axiosInstance.put(`/api/${resource}/${params.id}`, params.data).then(res => {
             localStorage.setItem("item", JSON.stringify(res.data))
             return res
@@ -48,7 +49,7 @@ export const assetProvider: DataProvider = {
     },
     getList: function <RecordType extends RaRecord = any>(resource: string, params: GetListParams): Promise<GetListResult<RecordType>> {
         const { page, perPage } = params.pagination;
-        const { states, searchString, categories } = params.filter;
+        const { states, searchString, categories, assignedDateFilter, noNumber } = params.filter;
         const { field, order } = params.sort;
         let tmp = "";
         for (const key in states) {
@@ -64,21 +65,20 @@ export const assetProvider: DataProvider = {
                 tmp1 += element + "&";
             }
         }
-
         const query = {
             end: JSON.stringify((page) * perPage),
             start: JSON.stringify((page - 1) * perPage),
             sort: field,
             order: order,
+            noNumber: noNumber,
             stateFilter: tmp ? tmp : null,
             searchString: searchString,
+            assignedDateFilter: assignedDateFilter,
             categoryFilter: tmp1 ? tmp1 : null,
             createdId: localStorage.getItem("item")!=null ? 
                 JSON.stringify(JSON.parse(localStorage.getItem("item") as string)["id"]) : 
-                null,
-            userName: localStorage.getItem("userName") ? localStorage.getItem("userName") : null
+                null
         };
-
         const url = `/api/${resource}?${stringify(query)}`;
         if (localStorage.getItem("item") != null && query.end != '99') {
             localStorage.removeItem("item");
