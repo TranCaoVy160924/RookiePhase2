@@ -1,18 +1,21 @@
 ﻿import { Box, Container, createTheme, ThemeProvider, Typography, unstable_createMuiStrictModeTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { DateInput, EditBase, EditGuesser, number, SelectField, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { assetProvider } from "../../providers/assetProvider/assetProvider";
 import { formStyle } from "../../styles/formStyle";
 import RadioButtonGroup from "../../components/custom/RadioButtonGroupInput";
 import UserEditToolbar from "../../components/toolbar/UserEditToolbar";
-import { updateUser } from "../../services/users";
+import { setDefaultResultOrder } from "dns";
 
 const UserEdit = () => {
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme();
+    const navigate = useNavigate();
     const params= useParams();
     const staffCode= params.id;
+    const [isValid, setIsValid] = useState(true);
+    const errors = {dob:'', joinedDate:''};
     const [user, setUser] = useState({
         firstName:'',
         lastName:'',
@@ -29,10 +32,37 @@ const UserEdit = () => {
         })
     },[])
 
+    const Validate = (form) => {
+        const dob = new Date(form.dob);
+        const joined = new Date(form.joinedDate);
+        let legal = new Date(Date.now());
+        legal.setFullYear(legal.getFullYear() - 18);
+        setIsValid(false);
+        if(dob > legal){
+            errors.dob = "User is under 18. Please select a different date";
+        }
+        else if(form.joined != '' && form.dob == '' ){
+            errors.joinedDate = "Please select Date of Birth";
+        }
+        else if(joined < new Date(
+            dob.getFullYear() + 18, dob.getMonth(), dob.getDate(),
+            dob.getHours(), dob.getMinutes(), dob.getSeconds())){
+                errors.joinedDate = "User under the age 18 may not join the company. Please select a different date";
+        }
+        else if(joined.getDay() > 5 || joined.getDay() < 1){
+            errors.joinedDate = "Joined date is Saturday or Sunday. Please select a different date"
+        }
+        else{
+            setIsValid(true);
+            return {};
+        }
+
+        return errors;
+    }
 
     function EditUser(e) {
         console.log(e);
-        let changes = {
+        const changes = {
             dob: e.dob,
             gender: e.gender==='Male'?0:1,
             joinedDate: e.joinedDate,
@@ -40,7 +70,10 @@ const UserEdit = () => {
         }
         console.log(changes)
         assetProvider.update('user', {id: user.staffCode, data: changes, previousData: user}).then(
-            response => console.log(response)
+            (response) => {
+                console.log(response)
+                navigate("/user", {state: {user}})
+            }
         ).catch(error => console.log(error))
     }
 
@@ -59,8 +92,8 @@ const UserEdit = () => {
 
                     {user.staffCode?
                         <SimpleForm
-                            // validate={requiredInput}
-                            toolbar={<UserEditToolbar />}
+                            validate={Validate}
+                            toolbar={<UserEditToolbar disabled={!isValid}/>}
                             onSubmit={(e)=>{EditUser(e)}}
                         >
                             <Box sx={formStyle.boxStyle}>
@@ -117,6 +150,7 @@ const UserEdit = () => {
                                     InputLabelProps={{ shrink: false }}
                                     defaultValue={new Date(user.dateOfBirth)}
                                     fullWidth
+                                    required
                                 />
                             </Box>
                             <Box sx={formStyle.boxStyle}>
@@ -155,6 +189,7 @@ const UserEdit = () => {
                                     InputLabelProps={{ shrink: false }}
                                     defaultValue={new Date(user.joinedDate)}
                                     fullWidth
+                                    required
                                 />
                             </Box>
                             <Box sx={formStyle.boxStyle}>
@@ -177,10 +212,11 @@ const UserEdit = () => {
                                     optionText="name"
                                     optionValue="name"
                                     defaultValue={user.type}
+                                    required
                                 />
                             </Box>
                         </SimpleForm>
-                    :<h2>No user found</h2>}
+                    :""}
                 </Box>
             </Container>
         </ThemeProvider>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Datagrid,
     Title,
@@ -20,12 +20,16 @@ import StateFilterSelect from "../../components/select/StateFilterSelect";
 import DetailModal from '../../components/modal/userDetailModal/DetailModal';
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
 import { assetProvider } from '../../providers/assetProvider/assetProvider'
-import EditUser from "./UserEdit";
-import CEditButton from "../../components/buttons/CustomEdit";
+import { useLocation } from "react-router-dom";
 
 export default () => {
     const [openDetail, setOpenDetail] = useState({ status:false, data:{} });
     const refresh = useRefresh();
+    const state = useLocation().state;
+
+    useEffect(()=>{
+        console.log(state);
+    }, [])
 
     const usersFilter = [
         <StateFilterSelect
