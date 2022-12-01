@@ -169,13 +169,15 @@ namespace AssetManagement.Application.Controllers
 
                         user.Dob = request.Dob;
                         user.CreatedDate = request.JoinedDate;
-                        user.Gender = request.Gender;
+                        user.Gender = (Domain.Enums.AppUser.UserGender)request.Gender;
                         user.ModifiedDate = DateTime.Now;
                         roleKey.UserId = user.Id;
                         roleKey.RoleId = role.Id;
 
                         await _dbContext.SaveChangesAsync();
-                        return Ok(_mapper.Map<UpdateUserResponse>(user));
+                        UpdateUserResponse response = _mapper.Map<UpdateUserResponse>(user);
+                        response.Type = request.Type;
+                        return Ok(response);
                     }
 
                     catch (Exception e) { return BadRequest(e.Message); }

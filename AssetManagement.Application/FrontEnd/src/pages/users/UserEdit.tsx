@@ -1,11 +1,12 @@
 ﻿import { Box, Container, createTheme, ThemeProvider, Typography, unstable_createMuiStrictModeTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { DateInput, EditBase, SimpleForm, TextInput, Title } from "react-admin";
+import { DateInput, EditBase, EditGuesser, number, SelectField, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
 import { useParams } from "react-router-dom";
 import { assetProvider } from "../../providers/assetProvider/assetProvider";
 import { formStyle } from "../../styles/formStyle";
 import RadioButtonGroup from "../../components/custom/RadioButtonGroupInput";
 import UserEditToolbar from "../../components/toolbar/UserEditToolbar";
+import { updateUser } from "../../services/users";
 
 const UserEdit = () => {
     let theme = createTheme();
@@ -19,6 +20,7 @@ const UserEdit = () => {
         dateOfBirth:'',
         joinedDate:'',
         gender:'',
+        type:''
     });
 
     useEffect(()=>{    
@@ -26,6 +28,21 @@ const UserEdit = () => {
             setUser(res.data);
         })
     },[])
+
+
+    function EditUser(e) {
+        console.log(e);
+        let changes = {
+            dob: e.dob,
+            gender: e.gender==='Male'?0:1,
+            joinedDate: e.joinedDate,
+            Type: e.type
+        }
+        console.log(changes)
+        assetProvider.update('user', {id: user.staffCode, data: changes, previousData: user}).then(
+            response => console.log(response)
+        ).catch(error => console.log(error))
+    }
 
     return(
         <ThemeProvider theme={theme}>
@@ -44,7 +61,7 @@ const UserEdit = () => {
                         <SimpleForm
                             // validate={requiredInput}
                             toolbar={<UserEditToolbar />}
-                            onSubmit={(e)=>{console.log(e)}}
+                            onSubmit={(e)=>{EditUser(e)}}
                         >
                             <Box sx={formStyle.boxStyle}>
                                 <Typography
@@ -61,6 +78,7 @@ const UserEdit = () => {
                                     helperText={false}
                                     InputLabelProps={{ shrink: false }}
                                     defaultValue={user.firstName}
+                                    fullWidth
                                     disabled
                                 />
                             </Box>
@@ -79,6 +97,7 @@ const UserEdit = () => {
                                     helperText={false}
                                     InputLabelProps={{ shrink: false }}
                                     defaultValue={user.lastName}
+                                    fullWidth
                                     disabled
                                 />
                             </Box>
@@ -97,11 +116,18 @@ const UserEdit = () => {
                                     helperText={false}
                                     InputLabelProps={{ shrink: false }}
                                     defaultValue={new Date(user.dateOfBirth)}
+                                    fullWidth
                                 />
                             </Box>
-                            <RadioButtonGroup
+                            <Box sx={formStyle.boxStyle}>
+                                <Typography
+                                    variant="h6"
+                                    sx={formStyle.typographyStyle}
+                                >
+                                    Gender *
+                                </Typography>
+                                <RadioButtonGroup
                                     label=""
-                                    row
                                     sx={formStyle.textInputStyle}
                                     source="gender"
                                     choices={[
@@ -109,8 +135,10 @@ const UserEdit = () => {
                                         { id: 1, name: "Female" }
                                     ]}
                                     optionText="name"
-                                    optionValue="id"
-                            />
+                                    optionValue="name"
+                                    defaultValue={user.gender}
+                                />
+                            </Box>
                             <Box sx={formStyle.boxStyle}>
                                 <Typography
                                     variant="h6"
@@ -126,6 +154,29 @@ const UserEdit = () => {
                                     helperText={false}
                                     InputLabelProps={{ shrink: false }}
                                     defaultValue={new Date(user.joinedDate)}
+                                    fullWidth
+                                />
+                            </Box>
+                            <Box sx={formStyle.boxStyle}>
+                                <Typography
+                                    variant="h6"
+                                    sx={formStyle.typographyStyle}
+                                >
+                                    Type *
+                                </Typography>
+
+                                <SelectInput
+                                    label="Type"
+                                    sx={formStyle.textInputStyle}
+                                    source="type"
+                                    name="type"
+                                    choices={[
+                                        { id: 0, name: "Admin" },
+                                        { id: 1, name: "Staff" }
+                                    ]}
+                                    optionText="name"
+                                    optionValue="name"
+                                    defaultValue={user.type}
                                 />
                             </Box>
                         </SimpleForm>

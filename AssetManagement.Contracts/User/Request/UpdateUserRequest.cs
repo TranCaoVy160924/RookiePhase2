@@ -7,13 +7,13 @@ namespace AssetManagement.Contracts.User.Request
         [Required(ErrorMessage = "Please select Date of Birth")]
         public DateTime Dob { get; set; }
 
-        [MaxLength(50)]
-        public Domain.Enums.AppUser.UserGender Gender { get; set; }
+        [Required]
+        public byte Gender { get; set; }
 
         [Required]
         public DateTime JoinedDate { get; set; }
 
-        [Required]
+        //[Required]
         public string Type { get; set; }
     }
 }
