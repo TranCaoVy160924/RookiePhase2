@@ -19,7 +19,7 @@ using AssetManagement.Application.Tests.TestHelper;
 
 namespace AssetManagement.Application.Tests
 {
-    public class AssignmentControllerTests : IDisposable
+    public class AssignmentControllerTests : IAsyncDisposable
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
@@ -915,9 +915,9 @@ namespace AssetManagement.Application.Tests
         #endregion
         #endregion
 
-        public void Dispose()
+        async ValueTask IAsyncDisposable.DisposeAsync()
         {
-            _context.Dispose();
+            await _context.DisposeAsync();
         }
     }
 }
