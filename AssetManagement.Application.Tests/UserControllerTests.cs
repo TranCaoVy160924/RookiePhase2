@@ -278,8 +278,8 @@ namespace AssetManagement.Application.Tests
 
             var result = await userController.GetAllUser(0, 2, "", "", "staffCode", "ASC");
             var okobjectResult = result.Result as OkObjectResult;
-            ViewList_ListResponse<ViewListUser_UserResponse> actualResult =
-                okobjectResult.Value as ViewList_ListResponse<ViewListUser_UserResponse>;
+            ViewListPageResult<ViewListUser_UserResponse> actualResult =
+                okobjectResult.Value as ViewListPageResult<ViewListUser_UserResponse>;
             #endregion
 
             // Assert
@@ -341,8 +341,8 @@ namespace AssetManagement.Application.Tests
 
             var result = await userController.GetAllUser(0, 2, "", searchString, "staffCode", "ASC");
             var okobjectResult = result.Result as OkObjectResult;
-            ViewList_ListResponse<ViewListUser_UserResponse> actualResult =
-                okobjectResult.Value as ViewList_ListResponse<ViewListUser_UserResponse>;
+            ViewListPageResult<ViewListUser_UserResponse> actualResult =
+                okobjectResult.Value as ViewListPageResult<ViewListUser_UserResponse>;
             #endregion
 
             // Assert
@@ -411,8 +411,8 @@ namespace AssetManagement.Application.Tests
 
             var result = await userController.GetAllUser(0, 2, filterState, "", "staffCode", "ASC");
             var okobjectResult = result.Result as OkObjectResult;
-            ViewList_ListResponse<ViewListUser_UserResponse> actualResult =
-                okobjectResult.Value as ViewList_ListResponse<ViewListUser_UserResponse>;
+            ViewListPageResult<ViewListUser_UserResponse> actualResult =
+                okobjectResult.Value as ViewListPageResult<ViewListUser_UserResponse>;
             #endregion
 
             // Assert
@@ -473,8 +473,8 @@ namespace AssetManagement.Application.Tests
 
             var result = await userController.GetAllUser(0, 2, "", "", sort, "ASC");
             var okobjectResult = result.Result as OkObjectResult;
-            ViewList_ListResponse<ViewListUser_UserResponse> actualResult =
-                okobjectResult.Value as ViewList_ListResponse<ViewListUser_UserResponse>;
+            ViewListPageResult<ViewListUser_UserResponse> actualResult =
+                okobjectResult.Value as ViewListPageResult<ViewListUser_UserResponse>;
             #endregion
 
             // Assert
@@ -535,8 +535,8 @@ namespace AssetManagement.Application.Tests
 
             var result = await userController.GetAllUser(0, 2, "", "", sort, "ASC");
             var okobjectResult = result.Result as OkObjectResult;
-            ViewList_ListResponse<ViewListUser_UserResponse> actualResult =
-                okobjectResult.Value as ViewList_ListResponse<ViewListUser_UserResponse>;
+            ViewListPageResult<ViewListUser_UserResponse> actualResult =
+                okobjectResult.Value as ViewListPageResult<ViewListUser_UserResponse>;
             #endregion
 
             // Assert
@@ -597,8 +597,8 @@ namespace AssetManagement.Application.Tests
 
             var result = await userController.GetAllUser(0, 2, "", "", sort, "ASC");
             var okobjectResult = result.Result as OkObjectResult;
-            ViewList_ListResponse<ViewListUser_UserResponse> actualResult =
-                okobjectResult.Value as ViewList_ListResponse<ViewListUser_UserResponse>;
+            ViewListPageResult<ViewListUser_UserResponse> actualResult =
+                okobjectResult.Value as ViewListPageResult<ViewListUser_UserResponse>;
             #endregion
 
             // Assert
@@ -664,8 +664,8 @@ namespace AssetManagement.Application.Tests
 
             var result = await userController.GetAllUser(0, 2, "", "", sort, "ASC");
             var okobjectResult = result.Result as OkObjectResult;
-            ViewList_ListResponse<ViewListUser_UserResponse> actualResult =
-                okobjectResult.Value as ViewList_ListResponse<ViewListUser_UserResponse>;
+            ViewListPageResult<ViewListUser_UserResponse> actualResult =
+                okobjectResult.Value as ViewListPageResult<ViewListUser_UserResponse>;
             #endregion
 
             // Assert
@@ -732,8 +732,8 @@ namespace AssetManagement.Application.Tests
 
             var result = await userController.GetAllUser(start, end, "", "", "staffCode", "ASC");
             var okobjectResult = result.Result as OkObjectResult;
-            ViewList_ListResponse<ViewListUser_UserResponse> actualResult =
-                okobjectResult.Value as ViewList_ListResponse<ViewListUser_UserResponse>;
+            ViewListPageResult<ViewListUser_UserResponse> actualResult =
+                okobjectResult.Value as ViewListPageResult<ViewListUser_UserResponse>;
             #endregion
 
             // Assert
@@ -833,6 +833,7 @@ namespace AssetManagement.Application.Tests
         }
         #endregion
 
+        #region Create user
         [Fact]
         public async Task CreateUser_SuccessAsync()
         {
@@ -906,9 +907,10 @@ namespace AssetManagement.Application.Tests
             Assert.Equal(userRequest.Dob, actualResult.Dob);
             Assert.Equal(userRequest.JoinedDate, actualResult.CreatedDate);
         }
+        #endregion
 
         #region EditUser
-        #nullable disable
+#nullable disable
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
@@ -1037,7 +1039,65 @@ namespace AssetManagement.Application.Tests
         }
         #endregion
 
-        public void DisposeAsync()
+        #region Delete user
+        [Fact]
+        public async Task DeleteUser_Failed_NotExistUser()
+        {
+            var store = new Mock<IUserStore<AppUser>>();
+            //store.Setup(x => x.FindByIdAsync("123", CancellationToken.None)).ReturnsAsync(new AppUser()
+            //    {
+            //        UserName = "test@email.com",
+            //        Id = new Guid("8D04DCE2-969A-435D-BBB4-DF3F325983DC")
+            //    });
+            UserController controller = new UserController(_context, _userManager.Object, _mapper);
+            string staffCode = "Invalid";
+            //controller.HttpContext.Request.Headers["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbmhjbUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJUb2FuIEJhY2giLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5oY20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTY2OTcyMzMxMywiaXNzIjoiMDEyMzQ1Njc4OUFCQ0RFRiIsImF1ZCI6IjAxMjM0NTY3ODlBQkNERUYifQ.J_t-YRZvRQOuZirjaC_lggwqtZW_SYa2-px4Id0YnW0";
+
+
+            var claimsIdentity = new ClaimsIdentity(authenticationType: "test");
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, "adminhn"));
+            var user = new ClaimsPrincipal(claimsIdentity);
+            controller.ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
+
+            var response = await controller.Delete(staffCode);
+            var result = ((BadRequestObjectResult)response).Value;
+
+            var expected = new BadRequestObjectResult(new ErrorResponseResult<string>("Can't find this user"));
+
+            Assert.Equal(((ErrorResponseResult<string>)expected.Value).Message, ((ErrorResponseResult<string>)result).Message);
+        }
+
+        [Fact]
+        public async Task DeleteUser_Failed_DeleteSelf()
+        {
+            var store = new Mock<IUserStore<AppUser>>();
+            //store.Setup(x => x.FindByIdAsync("123", CancellationToken.None)).ReturnsAsync(new AppUser()
+            //    {
+            //        UserName = "test@email.com",
+            //        Id = new Guid("8D04DCE2-969A-435D-BBB4-DF3F325983DC")
+            //    });
+            var controller = new UserController(_context, _userManager.Object, _mapper);
+            string staffCode = "SD0001";
+            //controller.HttpContext.Request.Headers["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbmhjbUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJUb2FuIEJhY2giLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5oY20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTY2OTcyMzMxMywiaXNzIjoiMDEyMzQ1Njc4OUFCQ0RFRiIsImF1ZCI6IjAxMjM0NTY3ODlBQkNERUYifQ.J_t-YRZvRQOuZirjaC_lggwqtZW_SYa2-px4Id0YnW0";
+
+
+            var claimsIdentity = new ClaimsIdentity(authenticationType: "test");
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, "adminhcm"));
+            var user = new ClaimsPrincipal(claimsIdentity);
+            controller.ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
+
+            var response = await controller.Delete(staffCode);
+            var result = ((BadRequestObjectResult)response).Value;
+
+            var expected = new BadRequestObjectResult(new ErrorResponseResult<string>("You can't delete yourself"));
+
+            Assert.Equal(((ErrorResponseResult<string>)expected.Value).Message, ((ErrorResponseResult<string>)result).Message);
+        }
+        #endregion
+
+        public void Dispose()
         {
             _context.Database.EnsureDeleted();
             _context.Dispose();
