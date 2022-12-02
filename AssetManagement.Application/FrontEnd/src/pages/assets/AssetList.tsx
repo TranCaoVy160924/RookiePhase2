@@ -57,7 +57,7 @@ export default () => {
             sx={{ width: "250px" }}
             statesList={[
                 { value: "0", text: "Available" },
-                { value: "1", text: "Not Available" },
+                { value: "1", text: "Not available" },
                 { value: "2", text: "Waiting for recycling" },
                 { value: "3", text: "Recycled" },
             ]}
@@ -72,7 +72,7 @@ export default () => {
     ];
 
     return (
-        <Container component="main" sx={{padding:"20px 10px"}}>
+        <Container component="main" sx={{ padding: "20px 10px" }}>
             <Title title="Manage Asset" />
             <ListBase
                 perPage={5}
@@ -137,7 +137,7 @@ export default () => {
                 </Datagrid>
                 <AssetsPagination />
             </ListBase>
-            {isOpened && <AssetShow isOpened={isOpened} toggle={toggle} record={record} /> }
+            {isOpened && <AssetShow isOpened={isOpened} toggle={toggle} record={record} />}
         </Container>
     );
 };
