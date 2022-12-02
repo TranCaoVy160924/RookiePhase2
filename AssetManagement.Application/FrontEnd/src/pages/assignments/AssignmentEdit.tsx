@@ -80,14 +80,16 @@ const AssignmentEdit = () => {
             note: "",
             assignedDate: ""
         };
-        let today = (new Date()).toISOString();
+        let today = new Date();
+        today.setDate(today.getDate() - 1);
+        let yesterday = today.toISOString();
         if (!values.note) {
             errors.note = "This is required";
             setIsInvalid(true);
         } else if (!values.assignedDate) {
             errors.assignedDate = "This is required";
             setIsInvalid(true);
-        } else if (values.assignedDate < today) {
+        } else if (values.assignedDate < yesterday) {
             errors.assignedDate = "Please select only current or future date";
             setIsInvalid(false);
         } else {
@@ -116,7 +118,6 @@ const AssignmentEdit = () => {
                     >
                         <SimpleForm
                             validate={requiredInput}
-                            reValidateMode="onBlur"
                             toolbar={<AssignmentEditToolbar isEnable={!isInvalid} />}
                         >
                             <Grid container>
