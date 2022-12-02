@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Datagrid,
     Title,
@@ -9,7 +9,9 @@ import {
     ListBase,
     FilterForm,
     CreateButton,
-    SearchInput
+    SearchInput,
+    DatagridRow,
+    useRecordContext
 } from "react-admin";
 import { ButtonGroup, Stack, Container } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -18,9 +20,10 @@ import StateFilterSelect from "../../components/select/StateFilterSelect";
 import DetailModal from '../../components/modal/userDetailModal/DetailModal';
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
 import { assetProvider } from '../../providers/assetProvider/assetProvider'
+import { useLocation } from "react-router-dom";
 
 export default () => {
-    const [openDetail, setOpenDetail] = useState({ status: false, data: {} });
+    const [openDetail, setOpenDetail] = useState({ status:false, data:{} });
     const refresh = useRefresh();
 
     const usersFilter = [
@@ -47,7 +50,7 @@ export default () => {
             <Title title="Manage User" />
             <ListBase
                 perPage={5}
-                sort={{ field: "staffCode", order: "DESC" }}
+                sort={{ field: "fullName", order: "DESC" }}
             >
                 <h2 style={{ color: "#cf2338" }}>User List</h2>
                 <Stack direction="row" justifyContent="start" alignContent="center">
@@ -86,14 +89,12 @@ export default () => {
                     {/* Button (Edit, Delete) */}
                     <ButtonGroup sx={{ border: null }}>
                         <EditButton variant="text" size="small" label="" />
-                        <FunctionField source="userName" render={data =>
-                            data.userName != localStorage.getItem("userName") ? <CustomDeleteWithConfirmButton
+                        <CustomDeleteWithConfirmButton
                             icon={<HighlightOffIcon />}
                             confirmTitle="Are you sure, bro?"
                             confirmContent="Do you want to disable this user, bro?"
                             mutationOptions={{ onSuccess: (data) => refresh() }}
-                            /> : <></>
-                        } />
+                        />
                     </ButtonGroup>
 
                 </Datagrid>

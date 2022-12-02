@@ -31,21 +31,21 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
 
-        // [HttpGet("{assetCodeId}")]
-        // //[Authorize]
-        // public IActionResult GetAssignmentsByAssetCodeId(int assetCodeId)
-        // {
-        //     var result = _dbContext.Assignments.Where(x => x.AssetId == assetCodeId).ToList();
-        //     var assignmentResponse = _mapper.Map<List<AssignmentResponse>>(result);
+        [HttpGet("assets/{assetCodeId}")]
+        [Authorize]
+        public IActionResult GetAssignmentsByAssetCodeId(int assetCodeId)
+        {
+            var result = _dbContext.Assignments.Where(x => x.AssetId == assetCodeId).ToList();
+            var assignmentResponse = _mapper.Map<List<AssignmentResponse>>(result);
 
-        //     foreach (var item in assignmentResponse)
-        //     {
-        //         item.AssignedTo = _dbContext.Users.Find(new Guid(item.AssignedTo)).UserName;
-        //         item.AssignedBy = _dbContext.Users.Find(new Guid(item.AssignedBy)).UserName;
-        //     }
+            foreach (var item in assignmentResponse)
+            {
+                item.AssignedTo = _dbContext.Users.Find(new Guid(item.AssignedTo)).UserName;
+                item.AssignedBy = _dbContext.Users.Find(new Guid(item.AssignedBy)).UserName;
+            }
 
-        //     return Ok(assignmentResponse);
-        // }
+            return Ok(assignmentResponse);
+        }
 
 
         [HttpGet("{id}")]
@@ -272,6 +272,24 @@ namespace AssetManagement.Application.Controllers
                 return false;
             }
             return true;
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            Assignment? assignment = await _dbContext.Assignments.FirstOrDefaultAsync(a => a.Id == id && !a.IsDeleted);
+            if(assignment != null)
+            {
+                try
+                {
+                    assignment.IsDeleted = true;
+                    await _dbContext.SaveChangesAsync();
+                    return Ok(_mapper.Map<AssignmentResponse>(assignment));
+                }
+                catch (Exception e) { return BadRequest(e.Message); }
+            }
+            return NotFound("Assignment does not exist");
         }
     }
 }

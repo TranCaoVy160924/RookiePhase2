@@ -1,5 +1,4 @@
 ﻿using AssetManagement.Application.Controllers;
-using AssetManagement.Contracts.Asset.Response;
 using AssetManagement.Contracts.Assignment.Response;
 using AssetManagement.Contracts.Common;
 using AssetManagement.Contracts.AutoMapper;
@@ -11,20 +10,16 @@ using Castle.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using Newtonsoft.Json;
 using static AssetManagement.Application.Tests.TestHelper.ConverterFromIActionResult;
 using FluentAssertions;
 using AssetManagement.Contracts.Assignment.Request;
+using AssetManagement.Application.Tests.TestHelper;
 
 namespace AssetManagement.Application.Tests
 {
-    public class AssignmentControllerTests : IDisposable
+    public class AssignmentControllerTests : IAsyncDisposable
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
@@ -35,7 +30,7 @@ namespace AssetManagement.Application.Tests
         {
             // Create InMemory dbcontext options
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
-                .UseInMemoryDatabase(databaseName: "AssetTestDb1").Options;
+                .UseInMemoryDatabase(databaseName: "AssignmentTestDb").Options;
 
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new UserProfile())).CreateMapper();
 
@@ -43,7 +38,6 @@ namespace AssetManagement.Application.Tests
             _context = new AssetManagementDbContext(_options);
             _context.Database.EnsureDeleted();
             //SeedData();
-
             _context.Database.EnsureCreated();
         }
 
@@ -166,59 +160,59 @@ namespace AssetManagement.Application.Tests
         //    _context.SaveChanges();
         //}
 
-        // [Fact]
-        // public void GetAssignmentListByAssetCodeId_ReturnResults()
-        // {
-        //     // Arrange 
-        //     var assignmentController = new AssignmentController(_context, _mapper);
+        [Fact]
+        public void GetAssignmentListByAssetCodeId_ReturnResults()
+        {
+            // Arrange 
+            var assignmentController = new AssignmentsController(_context, _mapper);
 
-        //     // Act 
-        //     var result = assignmentController.GetAssignmentsByAssetCodeId(1);
+            // Act 
+            var result = assignmentController.GetAssignmentsByAssetCodeId(1);
 
-        //     var list = _context.Assignments.Where(x => x.AssetId == 1).ToList();
+            var list = _context.Assignments.Where(x => x.AssetId == 1).ToList();
 
-        //     var expected = _mapper.Map<List<AssignmentResponse>>(list);
+            var expected = _mapper.Map<List<AssignmentResponse>>(list);
 
-        //     foreach (var item in expected)
-        //     {
-        //         item.AssignedTo = _context.Users.Find(new Guid(item.AssignedTo)).UserName;
-        //         item.AssignedBy = _context.Users.Find(new Guid(item.AssignedBy)).UserName;
-        //     }
+            foreach (var item in expected)
+            {
+                item.AssignedTo = _context.Users.Find(new Guid(item.AssignedTo)).UserName;
+                item.AssignedBy = _context.Users.Find(new Guid(item.AssignedBy)).UserName;
+            }
 
-        //     var okobjectResult = (OkObjectResult)result;
-        //     var resultValue = (List<AssignmentResponse>)okobjectResult.Value;
+            var okobjectResult = (OkObjectResult)result;
+            var resultValue = (List<AssignmentResponse>)okobjectResult.Value;
 
-        //     Assert.IsType<List<AssignmentResponse>>(resultValue);
-        //     Assert.NotEmpty(resultValue);
-        //     Assert.Equal(resultValue.Count(), expected.Count());
-        // }
+            Assert.IsType<List<AssignmentResponse>>(resultValue);
+            // Assert.NotEmpty(resultValue);
+            Assert.Equal(resultValue.Count(), expected.Count());
+        }
 
-        // [Fact]
-        // public void GetAssignmentListByAssetCodeId_ReturnEmptyResult()
-        // {
-        //     // Arrange 
-        //     var assignmentController = new AssignmentController(_context, _mapper);
+        [Fact]
+        public void GetAssignmentListByAssetCodeId_ReturnEmptyResult()
+        {
+            // Arrange 
+            var assignmentController = new AssignmentsController(_context, _mapper);
 
-        //     // Act 
-        //     var result = assignmentController.GetAssignmentsByAssetCodeId(2);
+            // Act 
+            var result = assignmentController.GetAssignmentsByAssetCodeId(-1);
 
-        //     var list = _context.Assignments.Where(x => x.AssetId == 2).ToList();
+            var list = _context.Assignments.Where(x => x.AssetId == -1).ToList();
 
-        //     var expected = _mapper.Map<List<AssignmentResponse>>(list);
+            var expected = _mapper.Map<List<AssignmentResponse>>(list);
 
-        //     foreach (var item in expected)
-        //     {
-        //         item.AssignedTo = _context.Users.Find(new Guid(item.AssignedTo)).UserName;
-        //         item.AssignedBy = _context.Users.Find(new Guid(item.AssignedBy)).UserName;
-        //     }
+            foreach (var item in expected)
+            {
+                item.AssignedTo = _context.Users.Find(new Guid(item.AssignedTo)).UserName;
+                item.AssignedBy = _context.Users.Find(new Guid(item.AssignedBy)).UserName;
+            }
 
-        //     var okobjectResult = (OkObjectResult)result;
-        //     var resultValue = (List<AssignmentResponse>)okobjectResult.Value;
+            var okobjectResult = (OkObjectResult)result;
+            var resultValue = (List<AssignmentResponse>)okobjectResult.Value;
 
-        //     Assert.IsType<List<AssignmentResponse>>(resultValue);
-        //     Assert.Empty(resultValue);
-        //     Assert.Equal(resultValue.Count(), expected.Count());
-        // }
+            Assert.IsType<List<AssignmentResponse>>(resultValue);
+            Assert.Empty(resultValue);
+            Assert.Equal(resultValue.Count(), expected.Count());
+        }
 
         #region GetList
         [Fact]
@@ -293,7 +287,7 @@ namespace AssetManagement.Application.Tests
         {
             // Arrange 
             AssignmentsController assignmentController = new AssignmentsController(_context, _mapper);
-            var searchString = "top 1";
+            var searchString = "SD";
             // Act 
             var result = await assignmentController.Get(1, 2, searchString);
 
@@ -821,7 +815,7 @@ namespace AssetManagement.Application.Tests
         }
 
 
-        [Fact]
+        //[Fact]
         //public async Task UpdateAssignment_NoChange_ReturnAssignment()
         //{
         //    // Arrange
@@ -850,9 +844,80 @@ namespace AssetManagement.Application.Tests
 
         #endregion
 
-        public void Dispose()
+        #region DeleteAssignment
+        #nullable disable
+        #region DeleteSuccess
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(9)]
+        [InlineData(10)]
+        public async Task Delete_SuccessAsync(int id)
         {
-            _context.Dispose();
+            //ARRANGE
+            AssignmentsController controller = new(_context, _mapper);
+
+            //ACT
+            IActionResult result = await controller.DeleteAsync(id);
+            string data = ConverterFromIActionResult.ConvertOkObject<AssignmentResponse>(result);
+            Assignment deleted = _context.Assignments.Find(id);
+            AssignmentResponse expected = _mapper.Map<AssignmentResponse>(deleted);
+            //ASSERT
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.True(deleted.IsDeleted);
+            Assert.Equal(JsonConvert.SerializeObject(expected), data);
+        }
+        #endregion
+
+        #region Delete_NotFound
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(11)]
+        [InlineData(999)]
+        public async Task Delete_NotFoundAsync(int id)
+        {
+            //ARRANGE
+            AssignmentsController controller = new(_context, _mapper);
+
+            //ACT
+            IActionResult result = await controller.DeleteAsync(id);
+            string data = ConverterFromIActionResult.ConvertStatusCode(result);
+
+            //ASSERT
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundObjectResult>(result);
+            
+            Assert.Equal("\"Assignment does not exist\"", data);
+        }
+        #endregion
+
+        #region DeleteException
+        [Fact]
+        public async Task Delete_ExceptionAsync()
+        {
+            //ARRANGE
+            //Use null mapper to cause exception
+            AssignmentsController controller = new(_context, null);
+
+            //ACT
+            IActionResult result = await controller.DeleteAsync(1);
+            string data = ConverterFromIActionResult.ConvertStatusCode(result);
+
+            //ASSERT
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("\"Object reference not set to an instance of an object.\"", data);
+        }
+        #endregion
+        #endregion
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            await _context.DisposeAsync();
         }
     }
 }
