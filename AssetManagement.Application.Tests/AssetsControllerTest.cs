@@ -10,17 +10,9 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static AssetManagement.Application.Tests.TestHelper.ConverterFromIActionResult;
 using Xunit;
-using AssetManagement.Contracts.Asset.Request;
-using AssetManagement.Application.Tests.TestHelper;
 using AssetManagement.Contracts.Common;
 using Microsoft.AspNetCore.Http;
 using System.Security.Principal;
@@ -28,7 +20,7 @@ using System.Security.Principal;
 #nullable disable
 namespace AssetManagement.Application.Tests
 {
-    public class AssetsControllerTest: IDisposable
+    public class AssetsControllerTest: IAsyncDisposable
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
@@ -43,7 +35,7 @@ namespace AssetManagement.Application.Tests
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
                 .UseInMemoryDatabase(databaseName: "AssetTestDb").Options;
 
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new UserProfile())).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new AssetProfile())).CreateMapper();
 
             // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
@@ -59,8 +51,8 @@ namespace AssetManagement.Application.Tests
             CreateAssetRequest request = new()
             {
                 CategoryId = 2,
-                Name = "Laptop 21",
-                Specification = "This is laptop #21",
+                Name = "Monitor 1",
+                Specification = "This is monitor #1",
                 InstalledDate = DateTime.Now,
                 State = (int)(State.Available)
             };
@@ -96,6 +88,10 @@ namespace AssetManagement.Application.Tests
             Assert.Equal(newAsset.Name, request.Name);
             Assert.Equal("MO000001", newAsset.AssetCode);
             Assert.Equal(user.Location, newAsset.Location);
+
+            //Re-create context for other tests
+            await _context.Database.EnsureDeletedAsync();
+            await _context.Database.EnsureCreatedAsync();
         }
 
         [Fact]
@@ -319,18 +315,16 @@ namespace AssetManagement.Application.Tests
 
             list.Insert(0, queryCreatedId);
 
-            var expected = _mapper.Map<List<ViewListAssets_AssetResponse>>(list);
+            var expected = JsonConvert.SerializeObject(
+                _mapper.Map<List<ViewListAssets_AssetResponse>>(list));
 
             var okobjectResult = (OkObjectResult)result.Result;
 
             var resultValue = (ViewList_ListResponse<ViewListAssets_AssetResponse>)okobjectResult.Value;
 
-            var assetsList = resultValue.Data;
+            var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
-            var isSorted = assetsList.SequenceEqual(expected);
-            // Assert
-            Assert.True(isSorted);
-            Assert.Equal(assetsList.Count(), expected.Count());
+            Assert.Equal(expected, assignmentsList);
         }
 
         [Fact]
@@ -614,9 +608,10 @@ namespace AssetManagement.Application.Tests
         }
         #endregion
 
-        public void Dispose()
+        async ValueTask IAsyncDisposable.DisposeAsync()
         {
-            _context.Dispose();
+            await _context.Database.EnsureDeletedAsync();
+            await _context.DisposeAsync();
         }
     }
 }
