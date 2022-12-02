@@ -91,7 +91,7 @@ const AssignmentEdit = () => {
             setIsInvalid(true);
         } else if (values.assignedDate < yesterday) {
             errors.assignedDate = "Please select only current or future date";
-            setIsInvalid(false);
+            setIsInvalid(true);
         } else {
             setIsInvalid(false);
             return {};
@@ -117,7 +117,9 @@ const AssignmentEdit = () => {
                         mutationMode="pessimistic"
                     >
                         <SimpleForm
+                            mode="onChange"
                             validate={requiredInput}
+                            reValidateMode="onChange"
                             toolbar={<AssignmentEditToolbar isEnable={!isInvalid} />}
                         >
                             <Grid container>
