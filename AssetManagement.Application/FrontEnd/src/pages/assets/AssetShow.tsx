@@ -27,7 +27,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   display: "flex",
   flexDirection: "column",
-  width: 650,
+  width: 750,
   bgcolor: "background.paper",
   border: "0px solid white",
   borderRadius: "10px",
