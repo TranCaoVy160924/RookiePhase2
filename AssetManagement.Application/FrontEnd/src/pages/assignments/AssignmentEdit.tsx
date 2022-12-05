@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { TextInput, DateInput, SimpleForm, Title, EditBase } from "react-admin";
-import { useParams } from "react-router-dom";
+import { TextInput, DateInput, SimpleForm, Title, EditBase, useRecordContext, FunctionField } from "react-admin";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, Typography, Container, Grid } from "@mui/material";
 import {
     createTheme,
@@ -37,6 +37,7 @@ const AssignmentEdit = () => {
     const { innerWidth: width, innerHeight: height } = window;
     let appTheme = createTheme(theme);
     appTheme = unstable_createMuiStrictModeTheme(appTheme);
+    const navigate = useNavigate();
 
     const toggleUserChoice = () => {
         setUserChoiceOpen(!userChoiceOpen);
@@ -125,6 +126,19 @@ const AssignmentEdit = () => {
                             reValidateMode="onChange"
                             toolbar={<AssignmentEditToolbar isEnable={!isInvalid} />}
                         >
+                            <FunctionField render={(record) => {
+                                console.log(record);
+                                if (record.state !== 1) {
+                                    navigate("/assignments");
+                                }
+                                // else {
+                                //     let today = (new Date()).toISOString()
+                                //     console.log(record.assignedDate < today);
+                                //     if (record.assignedDate < today) {
+                                //         record.assignedDate = new Date();
+                                //     }
+                                // }
+                            }} />
                             <Grid container>
                                 <Box sx={formStyle.boxStyle}>
                                     <Grid item xs={4}>
