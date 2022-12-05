@@ -50,15 +50,16 @@ export const CustomDeleteAssetWithConfirmButton = <RecordType extends RaRecord =
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const [assignementsCount, setAssignementsCount] = useState({});
-    useEffect(() => {
+    function getCount() {
         if (record) {
             getHistoricalAssignmentsCount(record.id)
             .then((response) => {
                 setAssignementsCount(response.data);
+                console.log(response.data);
             })
             .catch(() => {});
         }
-     }, [record]);
+    }
     const {
         open,
         isLoading,
@@ -118,7 +119,7 @@ export const CustomDeleteAssetWithConfirmButton = <RecordType extends RaRecord =
         <Fragment>
             <StyledButton
                 variant="text"
-                onClick={handleDialogOpen}
+                onClick={(e) => { getCount(); handleDialogOpen(e)}}
                 label={label}
                 className={clsx('ra-delete-button', className)}
                 key="button"
