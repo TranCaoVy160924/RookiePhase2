@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AssetManagement.Domain.Enums.AppUser;
 using System.Collections.Generic;
+using Diacritics.Extensions;
 
 namespace AssetManagement.Application.Controllers
 {
@@ -96,11 +97,12 @@ namespace AssetManagement.Application.Controllers
             {
                 if (slice.Length > 0)
                 {
-                    fullLastName += slice.ToString().ToLower();
+                    fullLastName += slice[0].ToString().ToLower();
                 }
             }
 
             string username = fullFirstName + fullLastName;
+            username = username.RemoveDiacritics();
 
             var duplicatename = await _userManager.FindByNameAsync(username);
 
@@ -122,6 +124,7 @@ namespace AssetManagement.Application.Controllers
                 StaffCode = staffCode,
                 FirstName = userRequest.FirstName,
                 LastName = userRequest.LastName,
+                IsLoginFirstTime = true,
                 Dob = userRequest.Dob,
                 CreatedDate = userRequest.JoinedDate,
                 Gender = Enum.Parse<UserGender>(userRequest.Gender),
@@ -249,7 +252,7 @@ namespace AssetManagement.Application.Controllers
                 }
                 mapResultWithCreatedIdParam.Reverse();
 
-                return Ok(new ViewListPageResult<ViewListUser_UserResponse> { Data = mapResultWithCreatedIdParam, Total = users.Count() });
+                return Ok(new ViewListPageResult<ViewListUser_UserResponse> { Data = mapResultWithCreatedIdParam, Total = users.Count() + 1 });
             }
 
             List<AppUser> sortedUsers = StaticFunctions<AppUser>.Paging(users, start, end);

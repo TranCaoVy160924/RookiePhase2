@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { TextInput, DateInput, SimpleForm, Title, EditBase, useListContext } from "react-admin";
-import { useParams } from "react-router-dom";
-import { Box, Typography, Container, Button, ButtonGroup, Grid } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import { TextInput, DateInput, SimpleForm, Title, EditBase, useRecordContext, FunctionField } from "react-admin";
+import { useNavigate, useParams } from "react-router-dom";
+import { Box, Typography, Container, Grid } from "@mui/material";
 import {
     createTheme,
     ThemeProvider,
@@ -13,7 +13,7 @@ import AssignmentEditToolbar from "../../components/toolbar/AssignmentEditToolba
 import { formStyle } from "../../styles/formStyle";
 import SelectAssetModal from "../../components/modal/selectAssetModal/SelectAssetModal";
 import SelectUserModal from "../../components/modal/selectUserModal/SelectUserModal";
-import SearchIcon from '@mui/icons-material/Search';
+import InputWithSelectModal from "../../components/custom/InputWithSelectModal";
 
 const AssignmentEdit = () => {
     const [isInvalid, setIsInvalid] = useState(false);
@@ -30,10 +30,14 @@ const AssignmentEdit = () => {
         top: 0,
         height: 0
     })
+    const assetRef = useRef<HTMLElement>(null);
+    const userRef = useRef<HTMLElement>(null);
     const [selectedUser, setSelectedUser] = useState("");
     const { id } = useParams();
+    const { innerWidth: width, innerHeight: height } = window;
     let appTheme = createTheme(theme);
     appTheme = unstable_createMuiStrictModeTheme(appTheme);
+    const navigate = useNavigate();
 
     const toggleUserChoice = () => {
         setUserChoiceOpen(!userChoiceOpen);
@@ -44,8 +48,8 @@ const AssignmentEdit = () => {
     }
 
     useEffect(() => {
-        var assetTextBox = document.getElementById("edit_assignment_asset_choice");
-        var userTextBox = document.getElementById("edit_assignment_user_choice");
+        let assetTextBox = assetRef.current;
+        let userTextBox = userRef.current;
 
         if (assetTextBox) {
             let assetTextBoxPos = assetTextBox.getBoundingClientRect()
@@ -61,7 +65,7 @@ const AssignmentEdit = () => {
                 left: userTextBoxPos.left,
                 top: userTextBoxPos.top,
                 height: userTextBox.offsetHeight
-            })
+            });
         }
     }, [])
 
@@ -122,6 +126,19 @@ const AssignmentEdit = () => {
                             reValidateMode="onChange"
                             toolbar={<AssignmentEditToolbar isEnable={!isInvalid} />}
                         >
+                            <FunctionField render={(record) => {
+                                console.log(record);
+                                if (record.state !== 1) {
+                                    navigate("/assignments");
+                                }
+                                // else {
+                                //     let today = (new Date()).toISOString()
+                                //     console.log(record.assignedDate < today);
+                                //     if (record.assignedDate < today) {
+                                //         record.assignedDate = new Date();
+                                //     }
+                                // }
+                            }} />
                             <Grid container>
                                 <Box sx={formStyle.boxStyle}>
                                     <Grid item xs={4}>
@@ -132,38 +149,20 @@ const AssignmentEdit = () => {
                                             User *
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={7}>
-                                        <TextInput
-                                            id="edit_assignment_user_choice"
-                                            fullWidth
-                                            label={false}
-                                            name="assignToAppUserStaffCode"
-                                            source="assignToAppUserStaffCode"
-                                            disabled
-                                            helperText={false}
-                                            InputLabelProps={{ shrink: false }}
-                                        />
-                                    </Grid>
-                                    <Grid item>
-                                        <Button
-                                            onClick={() => { toggleUserChoice() }}
-                                            sx={{
-                                                color: "black",
-                                                border: "1px solid",
-                                                borderColor: "gray",
-                                                height: assetChoicePos.height
-                                            }}
-                                        >
-                                            <SearchIcon />
-                                        </Button>
-                                    </Grid>
+
+                                    <InputWithSelectModal
+                                        handleClick={toggleUserChoice}
+                                        source="assignToAppUserStaffCode"
+                                        innerRef={userRef}
+                                    />
 
                                     <SelectUserModal
                                         setSelectedUser={setSelectedUser}
                                         selectedUser={selectedUser}
                                         isOpened={userChoiceOpen}
                                         toggle={toggleUserChoice}
-                                        pos={userChoicePos} />
+                                        pos={userChoicePos}
+                                    />
                                 </Box>
                                 <Box sx={formStyle.boxStyle}>
                                     <Grid item xs={4}>
@@ -175,32 +174,11 @@ const AssignmentEdit = () => {
                                         </Typography>
                                     </Grid>
 
-                                    <Grid item xs={7}>
-                                        <TextInput
-                                            id="edit_assignment_asset_choice"
-                                            fullWidth
-                                            label={false}
-                                            name="assetCode"
-                                            source="assetCode"
-                                            disabled
-                                            onClick={() => { toggleAssetChoice() }}
-                                            helperText={false}
-                                            InputLabelProps={{ shrink: false }}
-                                        />
-                                    </Grid>
-                                    <Grid item>
-                                        <Button
-                                            onClick={() => { toggleAssetChoice() }}
-                                            sx={{
-                                                color: "black",
-                                                border: "1px solid",
-                                                borderColor: "gray",
-                                                height: assetChoicePos.height
-                                            }}
-                                        >
-                                            <SearchIcon />
-                                        </Button>
-                                    </Grid>
+                                    <InputWithSelectModal
+                                        handleClick={toggleAssetChoice}
+                                        source="assetCode"
+                                        innerRef={assetRef}
+                                    />
 
                                     <SelectAssetModal
                                         setSelectedAsset={setSelectedAsset}
