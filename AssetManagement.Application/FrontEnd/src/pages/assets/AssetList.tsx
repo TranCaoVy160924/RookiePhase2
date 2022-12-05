@@ -29,6 +29,7 @@ import { listStyle } from "../../styles/listStyle";
 
 export default () => {
     const [isOpened, setIsOpened] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const [record, setRecord] = useState();
     // const { data } = useGetList("category", { pagination: { page: 1, perPage: 99 } })
     const dataProvider = useDataProvider();
@@ -151,6 +152,8 @@ export default () => {
                                         confirmTitle="Are you sure?"
                                         confirmContent="Do you want to delete this asset?"
                                         mutationOptions={{ onSuccess: (data) => refresh() }}
+                                        isOpen={deleting}
+                                        setDeleting={setDeleting}
                                     />
                                 )
                             }
@@ -162,6 +165,8 @@ export default () => {
                                         confirmContent="Do you want to delete this asset?"
                                         mutationOptions={{ onSuccess: (data) => refresh() }}
                                         disabled={true}
+                                        isOpen={deleting}
+                                        setDeleting={setDeleting}
                                     />
                                 )
                             }
