@@ -361,10 +361,6 @@ namespace AssetManagement.Application.Tests
 
             var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
-            //var isSorted = assignmentsList.SequenceEqual(expected);
-            // Assert
-            //Assert.True(isSorted);
-            //Assert.Equal(assignmentsList.Count(), expected.Count());
             Assert.Equal(expected, assignmentsList);
         }
 

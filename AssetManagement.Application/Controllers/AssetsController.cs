@@ -244,13 +244,13 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet("{id}/assignmentCount")]
         [Authorize(Roles = "Admin")]
-        public async Task<int> GetHistoricalAssignmentsCount(int id) {
+        public async Task<IActionResult> GetHistoricalAssignmentsCount(int id) {
             var historicalAssignmentsCount = _dbContext.Assets
                 .Where(a => !a.IsDeleted && a.Id == id)
                 .SelectMany(a => a.Assignments)
                 .Count();
 
-                return historicalAssignmentsCount;
+            return Ok(historicalAssignmentsCount);
         }
     }
 }
