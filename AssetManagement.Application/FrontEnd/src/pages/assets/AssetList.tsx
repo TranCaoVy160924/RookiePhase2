@@ -107,7 +107,7 @@ export default () => {
                 </Stack>
 
                 <Datagrid
-                    // rowClick={postRowClick}
+                    rowClick={postRowClick}
                     empty={
                         <p>
                             <h2>No Data found</h2>
