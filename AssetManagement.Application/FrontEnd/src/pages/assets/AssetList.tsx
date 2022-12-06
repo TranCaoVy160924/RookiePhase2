@@ -108,7 +108,7 @@ export default () => {
                 </Stack>
 
                 <Datagrid
-                    rowClick={postRowClick}
+                    rowClick={!deleting ? postRowClick : (id, resource) => ""}
                     empty={
                         <p>
                             <h2>No Data found</h2>
@@ -125,25 +125,25 @@ export default () => {
                         render={(record) =>
                             record.state == "NotAvailable"
                                 ? "Not available"
-                                : record.state == "WaitingForRecycling" 
-                                ? "Waiting for recycling" 
-                                : record.state
+                                : record.state == "WaitingForRecycling"
+                                    ? "Waiting for recycling"
+                                    : record.state
                         }
                     />
                     <ButtonGroup sx={{ border: null }}>
                         <FunctionField render={(record) => {
                             if (!(record.state == "WaitingForRecycling" || record.state == "Assigned")) {
                                 return (
-                                    <EditButton variant="text" size="small" label="" sx={listStyle.buttonToolbar}/>
+                                    <EditButton variant="text" size="small" label="" sx={listStyle.buttonToolbar} />
                                 )
                             }
                             else {
                                 return (
-                                    <EditButton disabled variant="text" size="small" label="" sx={listStyle.buttonToolbar}/>
+                                    <EditButton disabled variant="text" size="small" label="" sx={listStyle.buttonToolbar} />
                                 )
                             }
                         }} />
-                        
+
                         <FunctionField render={(record) => {
                             if (!(record.state == "Assigned")) {
                                 return (
@@ -171,7 +171,7 @@ export default () => {
                                 )
                             }
                         }} />
-                        
+
                     </ButtonGroup>
                 </Datagrid>
                 <AssetsPagination />

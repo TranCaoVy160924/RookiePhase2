@@ -98,7 +98,7 @@ export default () => {
                 </Stack>
 
                 <Datagrid
-                    rowClick={ !deleting? postRowClick : (id, resource) => "" }
+                    rowClick={!deleting ? postRowClick : (id, resource) => ""}
                     empty={
                         <p>
                             <h2>No Data found</h2>
