@@ -31,7 +31,7 @@ const SidebarMenu = () => {
             {permissions === 'Admin' ? <li onClick={() => setCurrentPage("user")}><Menu.Item to="/user" primaryText="Manage User" /></li> : null}
             {permissions === 'Admin' ? <li onClick={() => setCurrentPage("assets")}><Menu.Item to="/assets" primaryText="Manage Asset" /></li> : null}
             {permissions === 'Admin' ? <li onClick={() => setCurrentPage("assignments")}><Menu.Item to="/assignments" primaryText="Manage Assignment" /></li> : null}
-            {permissions === 'Admin' ? <li><Menu.Item to="/returning" primaryText="Request for Returning" /></li> : null}
+            {permissions === 'Admin' ? <li><Menu.Item to="/returnRequest" primaryText="Request for Returning" /></li> : null}
             {permissions === 'Admin' ? <li><Menu.Item to="/report" primaryText="Report" /></li> : null}
         </Menu >
     )

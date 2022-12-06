@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.Contracts.ReturnRequest.Response
 {
-    public class ViewListReturnRequestResponse
+    public class ViewListReturnRequestResponse: IEquatable<ViewListReturnRequestResponse>
     {
         public int Id { get; set; }
 
@@ -17,7 +17,7 @@ namespace AssetManagement.Contracts.ReturnRequest.Response
 
         public string AssetName { get; set; }
 
-        public string RequestBy { get; set; }
+        public string RequestedBy { get; set; }
 
         public DateTime AssignedDate { get; set; }
         
@@ -26,5 +26,14 @@ namespace AssetManagement.Contracts.ReturnRequest.Response
         public DateTime ReturnedDate { get; set; }
 
         public State State { get; set; }
+
+        public bool Equals(ViewListReturnRequestResponse? other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            return this.Id == other.Id;
+        }
     }
 }

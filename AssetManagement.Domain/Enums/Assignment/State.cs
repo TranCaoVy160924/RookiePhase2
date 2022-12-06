@@ -11,6 +11,7 @@ namespace AssetManagement.Domain.Enums.Assignment
         Accepted,
         WaitingForAcceptance,
         Completed,
-        Returned
+        Returned,
+        WaitingForReturning
     }
 }

@@ -5,10 +5,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AssetManagement.Application.Controllers
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ReturnRequestController : ControllerBase
     {
@@ -24,7 +25,7 @@ namespace AssetManagement.Application.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<ViewListPageResult<ViewListReturnRequestResponse>>> Get(
             [FromQuery] int start,
             [FromQuery] int end,
@@ -36,14 +37,16 @@ namespace AssetManagement.Application.Controllers
             [FromQuery] string? createdId = "")
         {
             var list = _dbContext.Assignments
-                .Where(x => !x.IsDeleted)
+                .Where(x => !x.IsDeleted &&
+                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
+                    || x.State == Domain.Enums.Assignment.State.Completed))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    RequestBy = x.AssignedToAppUser.UserName,
+                    RequestedBy = x.AssignedToAppUser.UserName,
                     AcceptedBy = x.AssignedByAppUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
@@ -52,11 +55,11 @@ namespace AssetManagement.Application.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => x.AssetCode.ToUpper().Contains(searchString.ToUpper()) || x.AssetName.ToUpper().Contains(searchString.ToUpper()) || x.RequestBy.ToUpper().Contains(searchString.ToUpper()));
+                list = list.Where(x => x.AssetCode.ToUpper().Contains(searchString.ToUpper()) || x.AssetName.ToUpper().Contains(searchString.ToUpper()) || x.RequestedBy.ToUpper().Contains(searchString.ToUpper()));
             }
             if (!string.IsNullOrEmpty(returnedDateFilter))
             {
-                list = list.Where(x => x.AssignedDate.Date == DateTime.Parse(returnedDateFilter).Date);
+                list = list.Where(x => x.ReturnedDate.Date == DateTime.Parse(returnedDateFilter).Date);
             }
             if (!string.IsNullOrEmpty(stateFilter))
             {
@@ -94,19 +97,24 @@ namespace AssetManagement.Application.Controllers
                         list = list.OrderBy(x => x.AssetName);
                         break;
                     }
-                case "assignedTo":
+                case "requestedBy":
                     {
-                        list = list.OrderBy(x => x.AssignedTo);
+                        list = list.OrderBy(x => x.RequestedBy);
                         break;
                     }
-                case "assignedBy":
+                case "acceptedBy":
                     {
-                        list = list.OrderBy(x => x.AssignedBy);
+                        list = list.OrderBy(x => x.AcceptedBy);
                         break;
                     }
                 case "assignedDate":
                     {
                         list = list.OrderBy(x => x.AssignedDate);
+                        break;
+                    }
+                case "returnedDate":
+                    {
+                        list = list.OrderBy(x => x.ReturnedDate);
                         break;
                     }
                 case "state":
@@ -128,19 +136,19 @@ namespace AssetManagement.Application.Controllers
 
             if (!string.IsNullOrEmpty(createdId))
             {
-                ViewListAssignmentResponse recentlyCreatedItem = list.Where(item => item.Id == int.Parse(createdId)).AsNoTracking().FirstOrDefault();
+                ViewListReturnRequestResponse recentlyCreatedItem = list.Where(item => item.Id == int.Parse(createdId)).AsNoTracking().FirstOrDefault();
                 list = list.Where(item => item.Id != int.Parse(createdId));
 
-                var sortedResultWithCreatedIdParam = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end - 1);
+                var sortedResultWithCreatedIdParam = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, start, end - 1);
 
                 sortedResultWithCreatedIdParam.Insert(0, recentlyCreatedItem);
 
-                return Ok(new ViewListPageResult<ViewListAssignmentResponse> { Data = sortedResultWithCreatedIdParam, Total = list.Count() + 1 });
+                return Ok(new ViewListPageResult<ViewListReturnRequestResponse> { Data = sortedResultWithCreatedIdParam, Total = list.Count() + 1 });
             }
 
-            var sortedResult = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end);
+            var sortedResult = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, start, end);
 
-            return Ok(new ViewListPageResult<ViewListAssignmentResponse> { Data = sortedResult, Total = list.Count() });
+            return Ok(new ViewListPageResult<ViewListReturnRequestResponse> { Data = sortedResult, Total = list.Count() });
         }
     }
 }
