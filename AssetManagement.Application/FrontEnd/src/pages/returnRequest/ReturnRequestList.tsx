@@ -116,22 +116,18 @@ export default () => {
                         switch(record.state) {
                             case 0: {
                                 return "Accepted";
-                                break;
                             }
                             case 1: {
                                 return "Waiting for acceptance";
-                                break;
                             }
                             case 2: {
                                 return "Completed";
-                                break;
                             }
                             case 3: {
                                 return "Returned";
-                                break;
                             }
                             case 4: {
-                                return "Waiting for returning"
+                                return "Waiting for returning";
                             }
                         }
                     }} />
