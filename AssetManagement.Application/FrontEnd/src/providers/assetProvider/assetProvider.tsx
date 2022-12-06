@@ -52,7 +52,6 @@ export const assetProvider: DataProvider = {
         const { states, searchString, categories, assignedDateFilter, returnedDateFilter, noNumber } = params.filter;
         const { field, order } = params.sort;
         let tmp = "";
-        console.log(resource, field);
         for (const key in states) {
             if (Object.prototype.hasOwnProperty.call(states, key)) {
                 const element = states[key];
@@ -77,15 +76,15 @@ export const assetProvider: DataProvider = {
             assignedDateFilter: assignedDateFilter,
             returnedDateFilter: returnedDateFilter,
             categoryFilter: tmp1 ? tmp1 : null,
-            createdId: localStorage.getItem("item")!=null ? 
-                JSON.stringify(JSON.parse(localStorage.getItem("item") as string)["id"]) : 
+            createdId: localStorage.getItem("item") != null ?
+                JSON.stringify(JSON.parse(localStorage.getItem("item") as string)["id"]) :
                 null,
             userName: localStorage.getItem("userName") ? localStorage.getItem("userName") : null
         };
         const url = `/api/${resource}?${stringify(query)}`;
-        if (localStorage.getItem("item") != null && query.end != '99') {
-            localStorage.removeItem("item");
-        }
+        // if (localStorage.getItem("item") != null && query.end != '99') {
+        //     localStorage.removeItem("item");
+        // }
 
         return axiosInstance(url).then(res => {
             return Promise.resolve({ data: res.data.data, total: res.data.total });

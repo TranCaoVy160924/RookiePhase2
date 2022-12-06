@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Datagrid,
     List,
@@ -36,6 +36,11 @@ export default () => {
     const [assignment, setAssignment] = useState();
     const [deleting, setDeleting] = useState(false);
 
+    useEffect(() => {
+        window.addEventListener("beforeunload", () => localStorage.removeItem("item"));
+        window.addEventListener("click", () => localStorage.removeItem("item"));
+    }, [])
+
     const toggle = () => {
         setIsOpened(!isOpened);
     };
@@ -62,6 +67,7 @@ export default () => {
                 { value: 0, text: "Accepted" },
                 { value: 1, text: "Waiting for acceptance" },
             ]}
+            defaultSelect={[0, 1]}
             alwaysOn
         />,
         <DateAssignedFilterSelect source="assignedDateFilter" alwaysOn id="DateAssignedFilterAssignment" />,
@@ -74,6 +80,7 @@ export default () => {
             <ListBase
                 perPage={5}
                 sort={{ field: "noNumber", order: "ASC" }}
+                filterDefaultValues={{ states: [0, 1] }}
             >
                 <h2 style={{ color: "#cf2338" }}>Assignment List</h2>
                 <Stack direction="row" justifyContent="end" alignContent="center">

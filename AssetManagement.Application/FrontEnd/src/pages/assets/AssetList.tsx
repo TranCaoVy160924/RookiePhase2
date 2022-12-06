@@ -42,7 +42,8 @@ export default () => {
         .then((res) => res.data);
 
     useEffect(() => {
-        localStorage.removeItem("RaStore.assets.listParams");
+        window.addEventListener("beforeunload", () => localStorage.removeItem("item"));
+        window.addEventListener("click", () => localStorage.removeItem("item"));
     }, [])
 
     const toggle = () => {
@@ -69,6 +70,7 @@ export default () => {
                 { value: "3", text: "Recycled" },
 
             ]}
+            defaultSelect={["0", "1", "4"]}
             alwaysOn
         />,
         <CategoryFilterSelect source="categories" statesList={data} alwaysOn />,
