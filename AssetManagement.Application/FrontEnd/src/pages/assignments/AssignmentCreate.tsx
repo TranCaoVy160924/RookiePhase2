@@ -169,6 +169,7 @@ const AssignmentCreate = () => {
                                     isOpened={userChoiceOpen}
                                     toggle={toggleUserChoice}
                                     pos={userChoicePos}
+                                    setChanged={() => {}}
                                 />
                             </Box>
                             <Box sx={formStyle.boxStyle}>
@@ -206,6 +207,7 @@ const AssignmentCreate = () => {
                                     isOpened={assetChoiceOpen}
                                     toggle={toggleAssetChoice}
                                     pos={assetChoicePos}
+                                    setChanged={() => {}}
                                 />
                             </Box>
                             <Box sx={formStyle.boxStyle}>
