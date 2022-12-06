@@ -17,6 +17,7 @@ using FluentAssertions;
 using AssetManagement.Contracts.Assignment.Request;
 using AssetManagement.Application.Tests.TestHelper;
 using Microsoft.AspNetCore.Identity;
+using AssetManagement.Contracts.ReturnRequest.Response;
 
 namespace AssetManagement.Application.Tests
 {
@@ -55,23 +56,25 @@ namespace AssetManagement.Application.Tests
 
             var list = _context.Assignments
                 .Where(x => !x.IsDeleted)
-                .Select(x => new ViewListAssignmentResponse
+                .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
+                    NoNumber = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    AssignedTo = x.AssignedToAppUser.UserName,
-                    AssignedBy = x.AssignedByAppUser.UserName,
+                    RequestedBy = x.AssignedToAppUser.UserName,
+                    AcceptedBy = x.AssignedByAppUser.UserName,
                     AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
                     State = x.State,
                 })
                 .OrderBy(x => x.Id);
 
-            var expected = StaticFunctions<ViewListAssignmentResponse>.Paging(list, 1, 2);
+            var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2);
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListPageResult<ViewListAssignmentResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
             var assignmentsList = resultValue.Data;
 
@@ -92,23 +95,25 @@ namespace AssetManagement.Application.Tests
 
             var list = _context.Assignments
                 .Where(x => !x.IsDeleted && (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString)))
-                .Select(x => new ViewListAssignmentResponse
+                .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
+                    NoNumber = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    AssignedTo = x.AssignedToAppUser.UserName,
-                    AssignedBy = x.AssignedByAppUser.UserName,
+                    RequestedBy = x.AssignedToAppUser.UserName,
+                    AcceptedBy = x.AssignedByAppUser.UserName,
                     AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
                     State = x.State,
                 })
                 .OrderBy(x => x.Id);
 
-            var expected = JsonConvert.SerializeObject(StaticFunctions<ViewListAssignmentResponse>.Paging(list, 1, 2));
+            var expected = JsonConvert.SerializeObject(StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListPageResult<ViewListAssignmentResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
             var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
@@ -129,23 +134,25 @@ namespace AssetManagement.Application.Tests
 
             var list = _context.Assignments
                 .Where(x => !x.IsDeleted && (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString)))
-                .Select(x => new ViewListAssignmentResponse
+                .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
+                    NoNumber = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    AssignedTo = x.AssignedToAppUser.UserName,
-                    AssignedBy = x.AssignedByAppUser.UserName,
+                    RequestedBy = x.AssignedToAppUser.UserName,
+                    AcceptedBy = x.AssignedByAppUser.UserName,
                     AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
                     State = x.State,
                 })
                 .OrderBy(x => x.Id);
 
-            var expected = StaticFunctions<ViewListAssignmentResponse>.Paging(list, 1, 2);
+            var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2);
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListPageResult<ViewListAssignmentResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
             var assignmentsList = resultValue.Data;
 
@@ -166,25 +173,26 @@ namespace AssetManagement.Application.Tests
 
             var list = _context.Assignments
                 .Where(x => !x.IsDeleted && (int)x.State == state)
-                .Select(x => new ViewListAssignmentResponse
+                .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    AssignedTo = x.AssignedToAppUser.UserName,
-                    AssignedBy = x.AssignedByAppUser.UserName,
+                    RequestedBy = x.AssignedToAppUser.UserName,
+                    AcceptedBy = x.AssignedByAppUser.UserName,
                     AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
                     State = x.State,
                 })
                 .OrderBy(x => x.Id);
 
             var expected = JsonConvert.SerializeObject(
-                StaticFunctions<ViewListAssignmentResponse>.Paging(list, 1, 2));
+                StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListPageResult<ViewListAssignmentResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
             var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
@@ -202,24 +210,25 @@ namespace AssetManagement.Application.Tests
 
             var list = _context.Assignments
                 .Where(x => !x.IsDeleted && x.AssignedDate.Date == DateTime.Parse(assignedDateFilter).Date)
-                .Select(x => new ViewListAssignmentResponse
+                .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    AssignedTo = x.AssignedToAppUser.UserName,
-                    AssignedBy = x.AssignedByAppUser.UserName,
+                    RequestedBy = x.AssignedToAppUser.UserName,
+                    AcceptedBy = x.AssignedByAppUser.UserName,
                     AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
                     State = x.State,
                 })
                 .OrderBy(x => x.Id);
             var expected = JsonConvert.SerializeObject(
-                StaticFunctions<ViewListAssignmentResponse>.Paging(list, 1, 2));
+                StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListPageResult<ViewListAssignmentResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
             var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
@@ -237,24 +246,25 @@ namespace AssetManagement.Application.Tests
 
             var list = _context.Assignments
                 .Where(x => !x.IsDeleted)
-                .Select(x => new ViewListAssignmentResponse
+                .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    AssignedTo = x.AssignedToAppUser.UserName,
-                    AssignedBy = x.AssignedByAppUser.UserName,
+                    RequestedBy = x.AssignedToAppUser.UserName,
+                    AcceptedBy = x.AssignedByAppUser.UserName,
                     AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
                     State = x.State,
                 }).OrderBy(x => x.AssetCode);
 
             var expected = JsonConvert.SerializeObject(
-                StaticFunctions<ViewListAssignmentResponse>.Paging(list, 1, 2));
+                StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListPageResult<ViewListAssignmentResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
             var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
@@ -272,23 +282,25 @@ namespace AssetManagement.Application.Tests
 
             var list = _context.Assignments
                 .Where(x => !x.IsDeleted)
-                .Select(x => new ViewListAssignmentResponse
+                .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
+                    NoNumber = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    AssignedTo = x.AssignedToAppUser.UserName,
-                    AssignedBy = x.AssignedByAppUser.UserName,
+                    RequestedBy = x.AssignedToAppUser.UserName,
+                    AcceptedBy = x.AssignedByAppUser.UserName,
                     AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
                     State = x.State,
                 })
                 .OrderBy(x => x.Id);
 
-            var expected = StaticFunctions<ViewListAssignmentResponse>.Paging(list, -1, 2);
+            var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, -1, 2);
 
             var okobjectResult = (OkObjectResult)result.Result;
 
-            var resultValue = (ViewListPageResult<ViewListAssignmentResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
             var assignmentsList = resultValue.Data;
 
