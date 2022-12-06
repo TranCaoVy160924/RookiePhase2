@@ -137,13 +137,15 @@ namespace AssetManagement.Application.Controllers
             [FromQuery] string? searchString = "",
             [FromQuery] string? categoryFilter = "",
             [FromQuery] string? stateFilter = "0&1&4&",
-            [FromQuery] string? sort = "name",
+            [FromQuery] string? sort = "assetCode",
             [FromQuery] string? order = "ASC",
             [FromQuery] string? createdId = "")
         {
+            var username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+            var user = _dbContext.Users.FirstOrDefault(x => x.UserName == username);
             var list = _dbContext.Assets
                 .Include(x => x.Category)
-                .Where(x => !x.IsDeleted);
+                .Where(x => !x.IsDeleted && x.Location == user.Location);
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper()) || x.AssetCode.ToUpper().Contains(searchString.ToUpper()));
