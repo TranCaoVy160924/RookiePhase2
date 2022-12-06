@@ -32,11 +32,14 @@ namespace AssetManagement.Application.Controllers
             [FromQuery] string? searchString = "",
             [FromQuery] string? returnedDateFilter = "",
             [FromQuery] string? stateFilter = "",
-            [FromQuery] string? sort = "noNumber",
+            [FromQuery] string? sort = "id",
             [FromQuery] string? order = "ASC",
             [FromQuery] string? createdId = "")
         {
             var list = _dbContext.Assignments
+                .Include(x => x.Asset)
+                .Include(x => x.AssignedToAppUser)
+                .Include(x => x.AssignedByAppUser)
                 .Where(x => !x.IsDeleted &&
                     (x.State == Domain.Enums.Assignment.State.WaitingForReturning
                     || x.State == Domain.Enums.Assignment.State.Completed))

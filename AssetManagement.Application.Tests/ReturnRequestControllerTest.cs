@@ -55,7 +55,12 @@ namespace AssetManagement.Application.Tests
             var result = await returnRequestController.Get(1, 2);
 
             var list = _context.Assignments
-                .Where(x => !x.IsDeleted)
+                .Include(x => x.Asset)
+                .Include(x => x.AssignedToAppUser)
+                .Include(x => x.AssignedByAppUser)
+                .Where(x => !x.IsDeleted &&
+                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
+                    || x.State == Domain.Enums.Assignment.State.Completed))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -94,7 +99,13 @@ namespace AssetManagement.Application.Tests
             var result = await returnRequestController.Get(1, 2, searchString);
 
             var list = _context.Assignments
-                .Where(x => !x.IsDeleted && (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString)))
+                .Include(x => x.Asset)
+                .Include(x => x.AssignedToAppUser)
+                .Include(x => x.AssignedByAppUser)
+                .Where(x => !x.IsDeleted &&
+                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
+                    || x.State == Domain.Enums.Assignment.State.Completed) &&
+                    (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString)))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -128,12 +139,18 @@ namespace AssetManagement.Application.Tests
         {
             // Arrange 
             ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
-            var searchString = "top 1";
+            var searchString = "9haha blabla";
             // Act 
             var result = await returnRequestController.Get(1, 2, searchString);
 
             var list = _context.Assignments
-                .Where(x => !x.IsDeleted && (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString)))
+                .Include(x => x.Asset)
+                .Include(x => x.AssignedToAppUser)
+                .Include(x => x.AssignedByAppUser)
+                .Where(x => !x.IsDeleted &&
+                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
+                    || x.State == Domain.Enums.Assignment.State.Completed) &&
+                    (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString) || x.AssignedToAppUser.UserName.Contains(searchString)))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -172,7 +189,13 @@ namespace AssetManagement.Application.Tests
             var result = await returnRequestController.Get(1, 2, stateFilter: state.ToString());
 
             var list = _context.Assignments
-                .Where(x => !x.IsDeleted && (int)x.State == state)
+                .Include(x => x.Asset)
+                .Include(x => x.AssignedToAppUser)
+                .Include(x => x.AssignedByAppUser)
+                .Where(x => !x.IsDeleted &&
+                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
+                    || x.State == Domain.Enums.Assignment.State.Completed) &&
+                    (int)x.State == state)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -209,7 +232,13 @@ namespace AssetManagement.Application.Tests
             var result = await returnRequestController.Get(1, 2, assignedDateFilter);
 
             var list = _context.Assignments
-                .Where(x => !x.IsDeleted && x.AssignedDate.Date == DateTime.Parse(assignedDateFilter).Date)
+                .Include(x => x.Asset)
+                .Include(x => x.AssignedToAppUser)
+                .Include(x => x.AssignedByAppUser)
+                .Where(x => !x.IsDeleted &&
+                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
+                    || x.State == Domain.Enums.Assignment.State.Completed) &&
+                    x.AssignedDate.Date == DateTime.Parse(assignedDateFilter).Date)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -245,7 +274,12 @@ namespace AssetManagement.Application.Tests
             var result = await returnRequestController.Get(1, 2, sort: sortType);
 
             var list = _context.Assignments
-                .Where(x => !x.IsDeleted)
+                .Include(x => x.Asset)
+                .Include(x => x.AssignedToAppUser)
+                .Include(x => x.AssignedByAppUser)
+                .Where(x => !x.IsDeleted &&
+                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
+                    || x.State == Domain.Enums.Assignment.State.Completed))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -281,7 +315,12 @@ namespace AssetManagement.Application.Tests
             var result = await returnRequestController.Get(-1, 2);
 
             var list = _context.Assignments
-                .Where(x => !x.IsDeleted)
+                .Include(x => x.Asset)
+                .Include(x => x.AssignedToAppUser)
+                .Include(x => x.AssignedByAppUser)
+                .Where(x => !x.IsDeleted &&
+                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
+                    || x.State == Domain.Enums.Assignment.State.Completed))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
