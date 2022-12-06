@@ -51,7 +51,7 @@ export default () => {
 
     const refresh = useRefresh();
 
-    const assignmentsFilter = [
+    const returnRequestFilter = [
         <StateFilterSelect
             source="states"
             label="State"
@@ -60,6 +60,7 @@ export default () => {
                 { value: 2, text: "Completed" },
                 { value: 4, text: "Waiting for returning" },
             ]}
+            defaultSelect={[2, 4]}
             alwaysOn
         />,
         <DateAssignedFilterSelect source="returnedDateFilter" alwaysOn id="ReturnedDateFilterReturnRequest" />,
@@ -83,7 +84,7 @@ export default () => {
                                     marginRight: "auto"
                                 }
                             }
-                        }}><FilterForm filters={assignmentsFilter} /></Typography>
+                        }}><FilterForm filters={returnRequestFilter} /></Typography>
                     {/* <div style={{ display: "flex", alignItems: "end" }}>
                         <CreateButton
                             size="large"
