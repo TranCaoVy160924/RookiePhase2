@@ -15,7 +15,7 @@ import {
     Button,
     SearchInput,
 } from "react-admin";
-import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
+import { CustomDeleteAssetWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteAssetWithConfirm";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AssetsPagination from "../../components/pagination/AssetsPagination";
 import StateFilterSelect from "../../components/select/StateFilterSelect";
@@ -147,7 +147,7 @@ export default () => {
                         <FunctionField render={(record) => {
                             if (!(record.state == "Assigned")) {
                                 return (
-                                    <CustomDeleteWithConfirmButton
+                                    <CustomDeleteAssetWithConfirmButton
                                         icon={<HighlightOffIcon />}
                                         confirmTitle="Are you sure?"
                                         confirmContent="Do you want to delete this asset?"
@@ -159,7 +159,7 @@ export default () => {
                             }
                             else {
                                 return (
-                                    <CustomDeleteWithConfirmButton
+                                    <CustomDeleteAssetWithConfirmButton
                                         icon={<HighlightOffIcon />}
                                         confirmTitle="Are you sure?"
                                         confirmContent="Do you want to delete this asset?"
