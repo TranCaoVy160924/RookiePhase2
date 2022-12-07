@@ -114,7 +114,7 @@ export default () => {
                     <TextField label="Accepted By" source="acceptedBy" />
                     <DateField label="Returned Date" source="returnedDate" locales="en-GB" />
                     <FunctionField source="state" render={(record) => {
-                        switch(record.state) {
+                        switch (record.state) {
                             case 0: {
                                 return "Accepted";
                             }
@@ -146,18 +146,17 @@ export default () => {
                                 )
                             }
                         }} />
-                        <CustomDeleteWithConfirmButton
-                            icon={<HighlightOffIcon />}
-                            confirmTitle="Are you sure?"
-                            confirmContent="Do you want to delete this assignment?"
-                            mutationOptions={{ onSuccess: (data) => refresh() }}
-                            isOpen={deleting}
-                            setDeleting={setDeleting}
-                        />
-                        {/* <Button variant="text" size="small"
-                            sx={listStyle.returningButtonToolbar}>
-                            <ReplayIcon />
-                        </Button> */}
+                        <FunctionField render={record => (
+                            <CustomDeleteWithConfirmButton
+                                icon={<HighlightOffIcon />}
+                                confirmTitle="Are you sure?"
+                                confirmContent="Do you want to cancel this returning request?"
+                                mutationOptions={{ onSuccess: (data) => refresh() }}
+                                isOpen={deleting}
+                                setDeleting={setDeleting}
+                                disabled={record.state == 4? false: true}
+                            />
+                        )} />
                     </ButtonGroup>
                 </Datagrid>
                 <AssetsPagination />

@@ -1,6 +1,8 @@
-﻿using AssetManagement.Contracts.Common;
+﻿using AssetManagement.Contracts.Assignment.Response;
+using AssetManagement.Contracts.Common;
 using AssetManagement.Contracts.ReturnRequest.Response;
 using AssetManagement.Data.EF;
+using AssetManagement.Domain.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,8 +26,28 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReturnRequest(int id)
+        {
+            Assignment? assignment = await _dbContext.Assignments
+                .Where(a => a.Id == id && !a.IsDeleted &&
+                    a.State == Domain.Enums.Assignment.State.WaitingForReturning)
+                .FirstOrDefaultAsync();
+            if (assignment != null)
+            {
+                try
+                {
+                    assignment.State = Domain.Enums.Assignment.State.Accepted;
+                    await _dbContext.SaveChangesAsync();
+                    return Ok(_mapper.Map<AssignmentResponse>(assignment));
+                }
+                catch (Exception e) { return BadRequest(e.Message); }
+            }
+            return NotFound("Return request does not exist");
+        }
+
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ViewListPageResult<ViewListReturnRequestResponse>>> Get(
             [FromQuery] int start,
             [FromQuery] int end,
