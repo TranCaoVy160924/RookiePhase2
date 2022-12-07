@@ -117,13 +117,31 @@ namespace AssetManagement.Application.Controllers
 
             //auto generate password
             string dateOfBirth = userRequest.Dob.ToString("ddMMyyyy");
-            string password = $"{username}@{dateOfBirth}";
+            string password = $"{newUsername}@{dateOfBirth}";
 
+
+            fullFirstName = "";
+            foreach (string slice in splitFirstName)
+            {
+                if (slice.Length > 0)
+                {
+                    fullFirstName += slice.ToString();
+                }
+            }
+
+            fullLastName = "";
+            foreach (string slice in splitlastname)
+            {
+                if (slice.Length > 0)
+                {
+                    fullLastName += slice.ToString();
+                }
+            }
             var user = new AppUser
             {
                 StaffCode = staffCode,
-                FirstName = userRequest.FirstName,
-                LastName = userRequest.LastName,
+                FirstName = fullFirstName,
+                LastName = fullLastName,
                 IsLoginFirstTime = true,
                 Dob = userRequest.Dob,
                 CreatedDate = userRequest.JoinedDate,
@@ -174,8 +192,8 @@ namespace AssetManagement.Application.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                users = users.Where(x => (x.FirstName + ' ' + x.LastName).Contains(searchString)
-                                        || x.StaffCode.Contains(searchString));
+                users = users.Where(x => (x.FirstName.ToUpper() + ' ' + x.LastName.ToUpper()).Contains(searchString.ToUpper())
+                                        || x.StaffCode.ToUpper().Contains(searchString.ToUpper()));
             }
 
             switch (sort)
@@ -340,8 +358,8 @@ namespace AssetManagement.Application.Controllers
                         if(roleKey.RoleId != role.Id)
                         {
                             _dbContext.UserRoles.Remove(roleKey);
-                            roleKey = new() { UserId = user.Id, RoleId = role.Id };
-                            _dbContext.UserRoles.Add(roleKey);
+                            IdentityUserRole<Guid> newRoleKey = new() { UserId = user.Id, RoleId = role.Id };
+                            await _dbContext.UserRoles.AddAsync(newRoleKey);
                         }
 
                         await _dbContext.SaveChangesAsync();
