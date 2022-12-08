@@ -2,8 +2,11 @@
 using AssetManagement.Data.EF;
 using AssetManagement.Domain.Models;
 using AutoMapper;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace AssetManagement.Application.Controllers
 {
@@ -21,7 +24,8 @@ namespace AssetManagement.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ReportResponse>> GetAsync()
+        public async Task<List<ReportResponse>> GetAsync([FromQuery] string? sort = "category",
+            [FromQuery] string? order = "ASC")
         {
             //Paging by category
             List<Category> categories = await _dbContext.Categories.Include(c => c.Assets)
