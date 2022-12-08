@@ -349,5 +349,43 @@ namespace AssetManagement.Application.Tests
             Assert.Equal(assignmentsList.Count(), expected.Count());
         }
         #endregion
+
+        #region CancelReturnRequest
+        [Fact]
+        public async Task CancelReturnRequest_Success_ReturnDeletedAsset()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            var canceledRequest = _mapper
+                .Map<AssignmentResponse>(await _context.Assignments
+                    .Where(a => a.Id == 1 && !a.IsDeleted &&
+                        a.State == Domain.Enums.Assignment.State.WaitingForReturning)
+                    .FirstOrDefaultAsync());
+            //canceledRequest = Domain.Enums.Assignment.State.Accepted;
+
+            // Act 
+            var result = await assetController.DeleteAsset(1);
+
+            string resultObject = ConvertOkObject<DeleteAssetReponse>(result);
+            string expectedObject = JsonConvert.SerializeObject(deletedAsset);
+
+            // Assert
+            Assert.Equal(resultObject, expectedObject);
+        }
+
+        [Fact]
+        public async Task CancelReturnRequest_Invalid_ReturnBadRequest()
+        {
+            // Arrange 
+            AssetsController assetController = new AssetsController(_context, _mapper);
+
+            // Act 
+            var result = await assetController.DeleteAsset(0);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+        }
+        #endregion
     }
 }

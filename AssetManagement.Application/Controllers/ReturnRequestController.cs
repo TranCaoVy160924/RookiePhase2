@@ -27,7 +27,7 @@ namespace AssetManagement.Application.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReturnRequest(int id)
+        public async Task<IActionResult> CancelReturnRequest(int id)
         {
             Assignment? assignment = await _dbContext.Assignments
                 .Where(a => a.Id == id && !a.IsDeleted &&
