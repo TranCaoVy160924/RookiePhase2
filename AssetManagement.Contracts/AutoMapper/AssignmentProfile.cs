@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AssetManagement.Contracts.ReturnRequest.Response;
 
 namespace AssetManagement.Contracts.AutoMapper
 {
@@ -49,6 +50,12 @@ namespace AssetManagement.Contracts.AutoMapper
             CreateMap<CreateAssignmentRequest, Domain.Models.Assignment>()
                 .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Note.Trim()));
             CreateMap<Domain.Models.Assignment, CreateAssignmentResponse>();
+
+            CreateMap<AssetManagement.Domain.Models.Assignment, ViewListReturnRequestResponse>()
+                .ForMember(dest => dest.AssetCode, opt => opt.MapFrom(src => src.Asset.AssetCode))
+                .ForMember(dest => dest.AssetName, opt => opt.MapFrom(src => src.Asset.Name))
+                .ForMember(dest => dest.RequestedBy, opt => opt.MapFrom(src => src.AssignedToAppUser.UserName))
+                .ForMember(dest => dest.AcceptedBy, opt => opt.MapFrom(src => src.AssignedByAppUser.UserName));
         }
     }
 }
