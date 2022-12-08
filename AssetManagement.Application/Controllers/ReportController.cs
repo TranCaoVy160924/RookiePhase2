@@ -31,8 +31,8 @@ namespace AssetManagement.Application.Controllers
         {
             //Paging by category
             List<Category> categories = await _dbContext.Categories.Include(c => c.Assets)
-                                                                   .Skip(0)
-                                                                   .Take(3)
+                                                                   //.Skip(0)
+                                                                   //.Take(3)
                                                                    .ToListAsync();
             //Map to report
             List<ReportResponse> reports = _mapper.Map<List<ReportResponse>>(categories);
