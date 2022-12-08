@@ -29,57 +29,57 @@ namespace AssetManagement.Application.Controllers
         public async Task<ActionResult<ViewListPageResult<ReportResponse>>> GetAsync([FromQuery] string? sort = "category",
             [FromQuery] string? order = "ASC")
         {
-            //Paging by category
-            List<Category> categories = await _dbContext.Categories.Include(c => c.Assets)
-                                                                   //.Skip(0)
-                                                                   //.Take(3)
-                                                                   .ToListAsync();
-            //Map to report
-            List<ReportResponse> reports = _mapper.Map<List<ReportResponse>>(categories);
-            //Sort report
+            //Get all
+            IQueryable<Category> categories = _dbContext.Categories.Where(c => !c.IsDeleted);
+            
+            //Sort categories
             switch (sort)
             {
                 case "total":
                     {
-                        if (order == "ASC") reports = reports.OrderBy(r => r.Total).ToList();
-                        else reports = reports.OrderByDescending(r => r.Total).ToList();
+                        if (order == "ASC") categories = categories.OrderBy(c => c.Assets.Count());
+                        else categories = categories.OrderByDescending(c => c.Assets.Count());
                     }
                     break;
                 case "available":
                     {
-                        if (order == "ASC") reports = reports.OrderBy(r => r.Available).ToList();
-                        else reports = reports.OrderByDescending(r => r.Available).ToList();
+                        if (order == "ASC") categories = categories.OrderBy(c => c.Assets.Count(a => !a.IsDeleted && a.State == Domain.Enums.Asset.State.Available));
+                        else categories = categories.OrderByDescending(c => c.Assets.Count(a => !a.IsDeleted &&  a.State == Domain.Enums.Asset.State.Available));
                     }
                     break;
                 case "notAvailable":
                     {
-                        if (order == "ASC") reports = reports.OrderBy(r => r.NotAvailable).ToList();
-                        else reports = reports.OrderByDescending(r => r.NotAvailable).ToList();
+                        if (order == "ASC") categories = categories.OrderBy(c => c.Assets.Count(a => !a.IsDeleted &&  a.State == Domain.Enums.Asset.State.NotAvailable));
+                        else categories = categories.OrderByDescending(c => c.Assets.Count(a => !a.IsDeleted && a.State == Domain.Enums.Asset.State.NotAvailable));
                     }
                     break;
                 case "recycled":
                     {
-                        if (order == "ASC") reports = reports.OrderBy(r => r.Recycled).ToList();
-                        else reports = reports.OrderByDescending(r => r.Recycled).ToList();
+                        if (order == "ASC") categories = categories.OrderBy(c => c.Assets.Count(a => !a.IsDeleted && a.State == Domain.Enums.Asset.State.Recycled));
+                        else categories = categories.OrderByDescending(c => c.Assets.Count(a => !a.IsDeleted && a.State == Domain.Enums.Asset.State.Recycled));
                     }
                     break;
                 case "waitingForRecycling":
                     {
-                        if (order == "ASC") reports = reports.OrderBy(r => r.WaitingForRecycling).ToList();
-                        else reports = reports.OrderByDescending(r => r.WaitingForRecycling).ToList();
+                        if (order == "ASC") categories = categories.OrderBy(c => c.Assets.Count(a => !a.IsDeleted && a.State == Domain.Enums.Asset.State.WaitingForRecycling));
+                        else categories = categories.OrderByDescending(c => c.Assets.Count(a => !a.IsDeleted && a.State == Domain.Enums.Asset.State.WaitingForRecycling));
                     }
                     break;
                 default:
                     {
-                        if (order == "ASC") reports = reports.OrderBy(r => r.Category).ToList();
-                        else reports = reports.OrderByDescending(r => r.Category).ToList();
+                        if (order == "ASC") categories = categories.OrderBy(c => c.Name);
+                        else categories = categories.OrderByDescending(c => c.Name);
                     }
                     break;
             }
-
+            //Get sorted list (skip & take if paging)
+            List<Category> sortedCategories = await categories.Include(c => c.Assets).ToListAsync();
+            //Map to report
+            List<ReportResponse> reports = _mapper.Map<List<ReportResponse>>(sortedCategories);
             return Ok(new ViewListPageResult<ReportResponse>
             {
-                Data = reports,
+                //Paging
+                Data = reports.ToList(),
                 Total = reports.Count
             });
         }
