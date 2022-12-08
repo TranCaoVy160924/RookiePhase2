@@ -174,8 +174,8 @@ namespace AssetManagement.Application.Controllers
         {
             string userName = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
             AppUser currentUser = await _dbContext.AppUsers.FirstAsync(x => x.UserName == userName);
-            IQueryable<AppUser> users = _dbContext.AppUsers
-                                            .Where(x => x.IsDeleted == false && x.Location == currentUser.Location);
+            IQueryable<AppUser> users = _dbContext.AppUsers.Include(u => u.AssignedToAssignments.Where(a => !a.IsDeleted && a.State != Domain.Enums.Assignment.State.Returned))
+                                                           .Where(x => x.IsDeleted == false && x.Location == currentUser.Location);
 
             if (!string.IsNullOrEmpty(stateFilter))
             {
@@ -381,7 +381,8 @@ namespace AssetManagement.Application.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string staffCode)
         {
-            var deletingUser = await _dbContext.AppUsers.FirstOrDefaultAsync(x => x.StaffCode == staffCode);
+            var deletingUser = await _dbContext.AppUsers.Include(u => u.AssignedToAssignments)
+                                                        .FirstOrDefaultAsync(x => x.StaffCode == staffCode);
             var userName = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
             if (deletingUser != null)
             {
@@ -391,6 +392,10 @@ namespace AssetManagement.Application.Controllers
                 }
                 deletingUser.IsDeleted = true;
                 await _dbContext.SaveChangesAsync();
+            }
+            else if(deletingUser.AssignedToAssignments.Count(a => a.State != Domain.Enums.Assignment.State.Returned) > 0)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Can not delete user with valid assignments"));
             }
             else
             {
