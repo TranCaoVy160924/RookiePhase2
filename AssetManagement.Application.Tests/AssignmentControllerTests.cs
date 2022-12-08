@@ -483,7 +483,7 @@ namespace AssetManagement.Application.Tests
             var updatingAssignment = await _context.Assignments
                 .Include(a => a.Asset)
                 .Include(a => a.AssignedToAppUser)
-                .Where(a => a.Id == 9)
+                .Where(a => a.Id == 7)
                 .FirstOrDefaultAsync();
             DateTime updatedDate = DateTime.Now;
 
@@ -501,7 +501,7 @@ namespace AssetManagement.Application.Tests
             updatedAssignment.AssignedDate = updatedDate;
             updatedAssignment.Note = "haha";
 
-            var response = await assignmentController.UpdateAssignment(9, updateRequest);
+            var response = await assignmentController.UpdateAssignment(7, updateRequest);
             string result = ConvertOkObject<UpdateAssignmentResponse>(response);
             string expected = JsonConvert.SerializeObject(updatedAssignment);
 
@@ -620,10 +620,8 @@ namespace AssetManagement.Application.Tests
         #region DeleteSuccess
         [Theory]
         [InlineData(1)]
-        [InlineData(3)]
         [InlineData(5)]
         [InlineData(7)]
-        [InlineData(9)]
         public async Task Delete_SuccessAsync(int id)
         {
             //ARRANGE

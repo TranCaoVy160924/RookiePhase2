@@ -219,7 +219,9 @@ namespace AssetManagement.Data.Extensions
                     AssignedDate = DateTime.Today,
                     ReturnedDate = DateTime.Today.AddDays(i),
                     AssetId = i,
-                    State = i % 2 == 0 ? Domain.Enums.Assignment.State.Accepted : Domain.Enums.Assignment.State.WaitingForAcceptance,
+                    State = i % 2 == 0 ? Domain.Enums.Assignment.State.Accepted :
+                            i % 3 == 0 ? Domain.Enums.Assignment.State.Returned :
+                            Domain.Enums.Assignment.State.WaitingForAcceptance,
                     AssignedTo = staffAbleId1,
                     AssignedBy = adminHcmId,
                 });

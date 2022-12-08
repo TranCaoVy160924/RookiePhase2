@@ -1062,6 +1062,32 @@ namespace AssetManagement.Application.Tests
 
             Assert.Equal(((ErrorResponseResult<string>)expected.Value).Message, ((ErrorResponseResult<string>)result).Message);
         }
+
+        [Fact]
+        public async Task DeleteUser_Failed_AvailableAssignment()
+        {
+            var store = new Mock<IUserStore<AppUser>>();
+            //store.Setup(x => x.FindByIdAsync("123", CancellationToken.None)).ReturnsAsync(new AppUser()
+            //    {
+            //        UserName = "test@email.com",
+            //        Id = new Guid("8D04DCE2-969A-435D-BBB4-DF3F325983DC")
+            //    });
+            var controller = new UserController(_context, _userManager.Object, _mapper);
+            string staffCode = "SD0003";
+            //controller.HttpContext.Request.Headers["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbmhjbUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJUb2FuIEJhY2giLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5oY20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTY2OTcyMzMxMywiaXNzIjoiMDEyMzQ1Njc4OUFCQ0RFRiIsImF1ZCI6IjAxMjM0NTY3ODlBQkNERUYifQ.J_t-YRZvRQOuZirjaC_lggwqtZW_SYa2-px4Id0YnW0";
+
+
+            var claimsIdentity = new ClaimsIdentity(authenticationType: "test");
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, "adminhcm"));
+            var user = new ClaimsPrincipal(claimsIdentity);
+            controller.ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
+
+            IActionResult response = await controller.Delete(staffCode);
+            string message = ConvertStatusCode(response);
+            Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Equal("\"Can not delete user with valid assignments\"", message);
+        }
         #endregion
 
         async ValueTask IAsyncDisposable.DisposeAsync()

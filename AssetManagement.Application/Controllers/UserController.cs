@@ -381,7 +381,7 @@ namespace AssetManagement.Application.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string staffCode)
         {
-            var deletingUser = await _dbContext.AppUsers.Include(u => u.AssignedToAssignments)
+            var deletingUser = await _dbContext.AppUsers.Include(u => u.AssignedToAssignments.Where(a => a.State != Domain.Enums.Assignment.State.Returned))
                                                         .FirstOrDefaultAsync(x => x.StaffCode == staffCode);
             var userName = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
             if (deletingUser != null)
@@ -390,12 +390,12 @@ namespace AssetManagement.Application.Controllers
                 {
                     return BadRequest(new ErrorResponseResult<string>("You can't delete yourself"));
                 }
+                if (deletingUser.AssignedToAssignments.Count() > 0)
+                {
+                    return BadRequest("Can not delete user with valid assignments");
+                }
                 deletingUser.IsDeleted = true;
                 await _dbContext.SaveChangesAsync();
-            }
-            else if(deletingUser.AssignedToAssignments.Count(a => a.State != Domain.Enums.Assignment.State.Returned) > 0)
-            {
-                return BadRequest(new ErrorResponseResult<string>("Can not delete user with valid assignments"));
             }
             else
             {
