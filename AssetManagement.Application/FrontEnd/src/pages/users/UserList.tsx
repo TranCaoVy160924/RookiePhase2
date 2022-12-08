@@ -29,11 +29,6 @@ export default () => {
     const [deleting, setDeleting] = useState(false);
     const refresh = useRefresh();
 
-    useEffect(() => {
-        window.addEventListener("beforeunload", () => localStorage.removeItem("item"));
-        window.addEventListener("click", () => localStorage.removeItem("item"));
-    }, [])
-
     const usersFilter = [
         <StateFilterSelect
             source="type"

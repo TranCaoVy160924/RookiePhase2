@@ -15,7 +15,7 @@ const AssetCreateToolbar = ({ disable }) => {
                 label="Save"
                 mutationOptions={{
                     onSuccess: () => {
-                        localStorage.removeItem("RaStore.assets.listParams");
+                        localStorage.setItem("RaStore.assets.listParams", `{"displayedFilters":{},"filter":{"categories":[1,2,3],"states":["0","1","4"]},"order":"ASC","page":1,"perPage":5,"sort":"assetCode"}`);
                         notify('Asset created successfully!');
                         navigate("/assets")
                     }}
@@ -29,7 +29,7 @@ const AssetCreateToolbar = ({ disable }) => {
             <Button
                 variant="outlined"
                 onClick={(e) => {
-                    localStorage.removeItem("RaStore.assets.listParams");
+                    localStorage.setItem("RaStore.assets.listParams", `{"displayedFilters":{},"filter":{"categories":[1,2,3],"states":["0","1","4"]},"order":"ASC","page":1,"perPage":5,"sort":"assetCode"}`);
                     navigate("/assets")
                 }}
                 color="secondary"

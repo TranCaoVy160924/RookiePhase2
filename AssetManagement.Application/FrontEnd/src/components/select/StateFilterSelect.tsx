@@ -40,7 +40,6 @@ export default (props) => {
             handleSelectAll();
          }
       } else {
-         console.log(value);
          setStates(
             // On autofill we get a stringified value.
             // typeof value === 'string' ? value.split(',') : value,
@@ -56,9 +55,6 @@ export default (props) => {
 
    useEffect(() => {
       setPerPage(5);
-      console.log(props.defaultSelect);
-      setStates(props.defaultSelect);
-      var tmp = filterValues.categories;
    }, [])
 
    const handleSelectAll = () => {
@@ -75,6 +71,7 @@ export default (props) => {
             labelId="demo-multiple-name-label"
             {...field}
             multiple
+            defaultValue={props.defaultSelect}
             value={states}
             renderValue={(selected) => ""}
             onChange={handleChange}

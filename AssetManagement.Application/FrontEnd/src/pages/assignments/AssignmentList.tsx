@@ -36,11 +36,6 @@ export default () => {
     const [assignment, setAssignment] = useState();
     const [deleting, setDeleting] = useState(false);
 
-    useEffect(() => {
-        window.addEventListener("beforeunload", () => localStorage.removeItem("item"));
-        window.addEventListener("click", () => localStorage.removeItem("item"));
-    }, [])
-
     const toggle = () => {
         setIsOpened(!isOpened);
     };

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { SaveButton, Toolbar, useRedirect, useNotify, ThemeProvider } from 'react-admin';
-import {Button} from '@mui/material';
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import {theme} from '../../theme';
+import { theme } from '../../theme';
 import { formToolbarStyle } from "../../styles/formToolbarStyle";
 
 const UserCreateToolbar = ({ disable }) => {
@@ -15,7 +15,7 @@ const UserCreateToolbar = ({ disable }) => {
                 label="Save"
                 mutationOptions={{
                     onSuccess: () => {
-                        localStorage.removeItem("RaStore.user.listParams")
+                        localStorage.setItem("RaStore.user.listParams", `{"displayedFilters":{},"filter":{"states":["Admin","Staff"]},"order":"ASC","page":1,"perPage":5,"sort":"staffCode"}`)
                         notify('User created successfully!');
                         navigate("/user")
                     }}
@@ -29,7 +29,7 @@ const UserCreateToolbar = ({ disable }) => {
             <Button
                 variant="outlined"
                 onClick={(e) => {
-                    localStorage.removeItem("RaStore.user.listParams")
+                    localStorage.setItem("RaStore.user.listParams", `{"displayedFilters":{},"filter":{"states":["Admin","Staff"]},"order":"ASC","page":1,"perPage":5,"sort":"staffCode"}`)
                     navigate("/user")
                 }}
                 color="secondary"

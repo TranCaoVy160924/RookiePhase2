@@ -47,6 +47,8 @@ export default (props) => {
       }
    };
 
+   console.log(states)
+
    useEffect(() => {
       var tmp = filterValues.states;
       setFilters({ categories: states, states: tmp }, displayedFilters);
@@ -54,10 +56,11 @@ export default (props) => {
 
    useEffect(() => {
       setPerPage(5)
-      props.statesList.then(res => {
-         var mappedId = res.map(s => s.id);
-         setStates(mappedId);
-      })
+      // props.statesList.then(res => {
+      //    var mappedId = res.map(s => s.id);
+      //    console.log(mappedId)
+      //    setStates(mappedId);
+      // })
    }, [])
 
    const handleSelectAll = (list) => {
@@ -70,6 +73,7 @@ export default (props) => {
    useEffect(() => {
       props.statesList.then(res => {
          setCategoriesList(res);
+         // console.log(res.map(s => s.id))
 
          var tmp = (<FormControl variant='standard' sx={{ m: 1, width: 250 }}>
             <InputLabel id="demo-multiple-name" shrink={false}>Category</InputLabel>
@@ -78,6 +82,7 @@ export default (props) => {
                labelId="demo-multiple-name"
                {...field}
                multiple
+               defaultValue={res.map(s => s.id)}
                value={states}
                renderValue={(selected) => ""}
                onChange={(e) => handleChange(e, res)}

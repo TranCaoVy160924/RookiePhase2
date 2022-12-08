@@ -41,11 +41,6 @@ export default () => {
         })
         .then((res) => res.data);
 
-    useEffect(() => {
-        window.addEventListener("beforeunload", () => localStorage.removeItem("item"));
-        window.addEventListener("click", () => localStorage.removeItem("item"));
-    }, [])
-
     const toggle = () => {
         setIsOpened(!isOpened);
     };

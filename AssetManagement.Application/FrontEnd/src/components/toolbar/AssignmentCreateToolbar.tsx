@@ -18,7 +18,7 @@ export default ({ isEnable }) => {
                         label="Save"
                         mutationOptions={{
                             onSuccess: () => {
-                                localStorage.removeItem("RaStore.assignments.listParams");
+                                localStorage.setItem("RaStore.assignments.listParams", `{"displayedFilters":{},"filter":{"states":[0,1]},"order":"ASC","page":1,"perPage":5,"sort":"noNumber"}`);
                                 notify('Assignment created successfully!');
                                 navigate("/assignments")
                             }
@@ -35,7 +35,7 @@ export default ({ isEnable }) => {
                         label="Save"
                         mutationOptions={{
                             onSuccess: () => {
-                                localStorage.removeItem("RaStore.assignments.listParams");
+                                localStorage.setItem("RaStore.assignments.listParams", `{"displayedFilters":{},"filter":{"states":[0,1]},"order":"ASC","page":1,"perPage":5,"sort":"noNumber"}`);
                                 notify('Assignment created successfully!');
                                 navigate("/assignments")
                             }
@@ -51,7 +51,7 @@ export default ({ isEnable }) => {
                 <Button
                     variant="outlined"
                     onClick={(e) => {
-                        localStorage.removeItem("RaStore.assignments.listParams");
+                        localStorage.setItem("RaStore.assignments.listParams", `{"displayedFilters":{},"filter":{"states":[0,1]},"order":"ASC","page":1,"perPage":5,"sort":"noNumber"}`);
                         navigate("/assignments")
                     }}
                     color="secondary"
