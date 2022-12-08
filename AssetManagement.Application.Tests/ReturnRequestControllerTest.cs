@@ -364,10 +364,10 @@ namespace AssetManagement.Application.Tests
             //canceledRequest = Domain.Enums.Assignment.State.Accepted;
 
             // Act 
-            var result = await assetController.DeleteAsset(1);
+            var result = await returnRequestController.CancelReturnRequest(1);
 
-            string resultObject = ConvertOkObject<DeleteAssetReponse>(result);
-            string expectedObject = JsonConvert.SerializeObject(deletedAsset);
+            string resultObject = ConvertOkObject<AssignmentResponse>(result);
+            string expectedObject = JsonConvert.SerializeObject(canceledRequest);
 
             // Assert
             Assert.Equal(resultObject, expectedObject);
@@ -377,13 +377,13 @@ namespace AssetManagement.Application.Tests
         public async Task CancelReturnRequest_Invalid_ReturnBadRequest()
         {
             // Arrange 
-            AssetsController assetController = new AssetsController(_context, _mapper);
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
 
             // Act 
-            var result = await assetController.DeleteAsset(0);
+            var result = await returnRequestController.CancelReturnRequest(0);
 
             // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+            result.Should().BeOfType<NotFoundObjectResult>();
 
         }
         #endregion
