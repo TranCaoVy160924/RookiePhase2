@@ -101,7 +101,7 @@ namespace AssetManagement.Application.Controllers
                             updatingAssignment.AssignedTo = assignedToUser.Id;
                             updatingAssignment.AssetId = asset.Id;
                             updatingAssignment.AssignedDate = request.AssignedDate;
-                            updatingAssignment.Note = request.Note;
+                            updatingAssignment.Note = request.Note.Trim();
                             await _dbContext.SaveChangesAsync();
                         }
                         else
@@ -228,13 +228,16 @@ namespace AssetManagement.Application.Controllers
             if (!string.IsNullOrEmpty(createdId))
             {
                 ViewListAssignmentResponse recentlyCreatedItem = list.Where(item => item.Id == int.Parse(createdId)).AsNoTracking().FirstOrDefault();
-                list = list.Where(item => item.Id != int.Parse(createdId));
+                if (recentlyCreatedItem != null)
+                {
+                    list = list.Where(item => item.Id != int.Parse(createdId));
 
-                var sortedResultWithCreatedIdParam = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end - 1);
+                    var sortedResultWithCreatedIdParam = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end - 1);
 
-                sortedResultWithCreatedIdParam.Insert(0, recentlyCreatedItem);
+                    sortedResultWithCreatedIdParam.Insert(0, recentlyCreatedItem);
 
-                return Ok(new ViewListPageResult<ViewListAssignmentResponse> { Data = sortedResultWithCreatedIdParam, Total = list.Count() + 1 });
+                    return Ok(new ViewListPageResult<ViewListAssignmentResponse> { Data = sortedResultWithCreatedIdParam, Total = list.Count() + 1 });
+                }
             }
 
             var sortedResult = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end);
