@@ -155,6 +155,8 @@ export default () => {
                                 isOpen={deleting}
                                 setDeleting={setDeleting}
                                 disabled={record.state == 4? false: true}
+                                acceptButtonLabel="Yes"
+                                cancelButtonLabel="No"
                             />
                         )} />
                     </ButtonGroup>
