@@ -84,7 +84,7 @@ namespace AssetManagement.Application.Controllers
             }
             if (!string.IsNullOrEmpty(returnedDateFilter))
             {
-                list = list.Where(x => x.ReturnedDate.Date == DateTime.Parse(returnedDateFilter).Date);
+                list = list.Where(x => x.ReturnedDate.Value.Date == DateTime.Parse(returnedDateFilter).Date);
             }
             if (!string.IsNullOrEmpty(stateFilter))
             {
