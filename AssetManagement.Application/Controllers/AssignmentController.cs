@@ -13,7 +13,7 @@ using AssetManagement.Domain.Enums.Assignment;
 using AssetManagement.Contracts.Assignment.Request;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-// using System;
+using System;
 // using System.Globalization;
 
 namespace AssetManagement.Application.Controllers
@@ -312,6 +312,82 @@ namespace AssetManagement.Application.Controllers
             _dbContext.SaveChanges();
             var mappedResult = _mapper.Map<CreateAssignmentResponse>(assignment);
             return Ok(mappedResult);
+        }
+
+        [HttpGet("/api/home")]
+        [Authorize]
+        public async Task<ActionResult<ViewListPageResult<ViewListAssignmentResponse>>> GetHome(
+            [FromQuery] int start,
+            [FromQuery] int end,
+            [FromQuery] string? sort = "assetCode",
+            [FromQuery] string? order = "ASC")
+        {
+            // var username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+            var userName = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
+            var list = _dbContext.Assignments
+                .Where(x => !x.IsDeleted && x.AssignedTo == Guid.Parse(userName))
+                .Select(x => new ViewListAssignmentResponse
+                {
+                    Id = x.Id,
+                    AssetCode = x.Asset.AssetCode,
+                    AssetName = x.Asset.Name,
+                    AssignedTo = x.AssignedToAppUser.UserName,
+                    AssignedBy = x.AssignedByAppUser.UserName,
+                    AssignedDate = x.AssignedDate,
+                    State = x.State,
+                });
+            switch (sort)
+            {
+                case "id":
+                    {
+                        list = list.OrderBy(x => x.Id);
+                        break;
+                    }
+                case "assetCode":
+                    {
+                        list = list.OrderBy(x => x.AssetCode);
+                        break;
+                    }
+                case "assetName":
+                    {
+                        list = list.OrderBy(x => x.AssetName);
+                        break;
+                    }
+                case "assignedTo":
+                    {
+                        list = list.OrderBy(x => x.AssignedTo);
+                        break;
+                    }
+                case "assignedBy":
+                    {
+                        list = list.OrderBy(x => x.AssignedBy);
+                        break;
+                    }
+                case "assignedDate":
+                    {
+                        list = list.OrderBy(x => x.AssignedDate);
+                        break;
+                    }
+                case "state":
+                    {
+                        list = list.OrderBy(x => x.State);
+                        break;
+                    }
+                default:
+                    {
+                        list = list.OrderBy(x => x.AssetCode);
+                        break;
+                    }
+            }
+
+            if (order == "DESC")
+            {
+                list = list.Reverse();
+            }
+
+            var sortedResult = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end);
+
+            return Ok(new ViewListPageResult<ViewListAssignmentResponse> { Data = sortedResult, Total = list.Count() });
         }
     }
 }
