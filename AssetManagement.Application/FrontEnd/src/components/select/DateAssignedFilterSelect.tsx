@@ -12,15 +12,15 @@ export const DateAssignedFilterSelect = (props: SearchInputProps) => {
 
     return (
         <DateInput
-            // hiddenLabel
-            label={"Assigned Date"}
+            hiddenLabel
+            label={false}
             resettable
-            // placeholder={""}
-            // InputLabelProps={{ shrink: false }}
+            placeholder={""}
+            InputLabelProps={{ shrink: false }}
             size="small"
             {...props}
         />
-    ); 
+    );
 };
 
 export type SearchInputProps = CommonInputProps & TextInputProps;

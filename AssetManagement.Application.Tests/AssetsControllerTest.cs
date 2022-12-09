@@ -21,7 +21,7 @@ using System.Security.Claims;
 #nullable disable
 namespace AssetManagement.Application.Tests
 {
-    public class AssetsControllerTest : IAsyncDisposable
+    public class AssetsControllerTest: IAsyncDisposable
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
@@ -171,7 +171,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => !x.IsDeleted)
                 .OrderBy(x => x.Name);
 
@@ -208,9 +207,7 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await assetController.Get(1, 2, searchString);
 
-            var query = _context.Assets
-                .Include(x => x.Category)
-                .Include(x => x.Assignments)
+            var query = _context.Assets.Include(x => x.Category)
                 .Where(x => (x.Name.Contains(searchString) || x.AssetCode.Contains(searchString))
                     && !x.IsDeleted)
                 .OrderBy(x => x.Name);
@@ -250,7 +247,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => (x.Name.Contains(searchString) || x.AssetCode.Contains(searchString))
                     && !x.IsDeleted)
                 .OrderBy(x => x.Name);
@@ -288,7 +284,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => (int)x.State == state && !x.IsDeleted)
                 .OrderBy(x => x.Name);
 
@@ -325,16 +320,14 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => x.Id != int.Parse(createdId) && !x.IsDeleted)
                 .OrderBy(x => x.Name).AsQueryable();
             var queryCreatedId = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => x.Id == int.Parse(createdId) && !x.IsDeleted)
                 .AsNoTracking().FirstOrDefault();
 
-            var list = StaticFunctions<Asset>.Paging(query, 0, 3 - 1);
+            var list = StaticFunctions<Asset>.Paging(query, 0, 3-1);
 
             list.Insert(0, queryCreatedId);
 
@@ -368,7 +361,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => !x.IsDeleted)
                 .OrderBy(x => x.Id);
 
@@ -406,7 +398,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => !x.IsDeleted)
                 .OrderBy(x => x.AssetCode);
 
@@ -444,7 +435,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => !x.IsDeleted)
                 .OrderBy(x => x.State);
 
@@ -482,7 +472,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => !x.IsDeleted)
                 .OrderBy(x => x.Name);
 
@@ -520,7 +509,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => !x.IsDeleted)
                 .OrderByDescending(x => x.Id);
 
@@ -557,7 +545,6 @@ namespace AssetManagement.Application.Tests
 
             var query = _context.Assets
                 .Include(x => x.Category)
-                .Include(x => x.Assignments)
                 .Where(x => !x.IsDeleted)
                 .OrderBy(x => x.Name);
 

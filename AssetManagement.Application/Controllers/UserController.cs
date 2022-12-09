@@ -125,7 +125,7 @@ namespace AssetManagement.Application.Controllers
             {
                 if (slice.Length > 0)
                 {
-                    fullFirstName += slice.ToString() + " ";
+                    fullFirstName += slice.ToString();
                 }
             }
 
@@ -134,14 +134,14 @@ namespace AssetManagement.Application.Controllers
             {
                 if (slice.Length > 0)
                 {
-                    fullLastName += slice.ToString() + " ";
+                    fullLastName += slice.ToString();
                 }
             }
             var user = new AppUser
             {
                 StaffCode = staffCode,
-                FirstName = fullFirstName.Trim(),
-                LastName = fullLastName.Trim(),
+                FirstName = fullFirstName,
+                LastName = fullLastName,
                 IsLoginFirstTime = true,
                 Dob = userRequest.Dob,
                 CreatedDate = userRequest.JoinedDate,
@@ -246,35 +246,31 @@ namespace AssetManagement.Application.Controllers
             {
                 createdId = createdId.Substring(1, 36);
                 AppUser recentlyCreatedItem = users.Where(item => item.Id == Guid.Parse(createdId)).AsNoTracking().FirstOrDefault();
-                if (recentlyCreatedItem != null)
+                users = users.Where(item => item.Id != Guid.Parse(createdId));
+
+                var sortedResultWithCreatedIdParam = StaticFunctions<AppUser>.Paging(users, start, end - 1);
+
+                sortedResultWithCreatedIdParam.Insert(0, recentlyCreatedItem);
+
+                List<ViewListUser_UserResponse> mapResultWithCreatedIdParam = new List<ViewListUser_UserResponse>();
+
+                //int tempCount = 0;
+                foreach (AppUser user in sortedResultWithCreatedIdParam)
                 {
-                    users = users.Where(item => item.Id != Guid.Parse(createdId));
-
-                    var sortedResultWithCreatedIdParam = StaticFunctions<AppUser>.Paging(users, start, end - 1);
-
-                    sortedResultWithCreatedIdParam.Insert(0, recentlyCreatedItem);
-
-                    List<ViewListUser_UserResponse> mapResultWithCreatedIdParam = new List<ViewListUser_UserResponse>();
-
-                    //int tempCount = 0;
-                    foreach (AppUser user in sortedResultWithCreatedIdParam)
+                    ViewListUser_UserResponse userData = _mapper.Map<ViewListUser_UserResponse>(user);
+                    //userData.Id = tempCount;
+                    string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+                    if (string.IsNullOrEmpty(userRole))
                     {
-                        ViewListUser_UserResponse userData = _mapper.Map<ViewListUser_UserResponse>(user);
-                        //userData.Id = tempCount;
-                        string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
-                        if (string.IsNullOrEmpty(userRole))
-                        {
-                            continue;
-                        }
-                        userData.Type = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
-                        mapResultWithCreatedIdParam.Insert(0, userData);
-                        //tempCount += 1;
+                        continue;
                     }
-                    mapResultWithCreatedIdParam.Reverse();
-
-                    return Ok(new ViewListPageResult<ViewListUser_UserResponse> { Data = mapResultWithCreatedIdParam, Total = users.Count() + 1 });
+                    userData.Type = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+                    mapResultWithCreatedIdParam.Insert(0, userData);
+                    //tempCount += 1;
                 }
-                
+                mapResultWithCreatedIdParam.Reverse();
+
+                return Ok(new ViewListPageResult<ViewListUser_UserResponse> { Data = mapResultWithCreatedIdParam, Total = users.Count() + 1 });
             }
 
             List<AppUser> sortedUsers = StaticFunctions<AppUser>.Paging(users, start, end);

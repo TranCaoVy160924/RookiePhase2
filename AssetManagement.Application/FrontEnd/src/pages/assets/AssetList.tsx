@@ -137,9 +137,9 @@ export default () => {
                     />
                     <ButtonGroup sx={{ border: null }}>
                         <FunctionField render={(record) => {
-                            if (record.isEditable == true) {
+                            if (!(record.state == "Assigned")) {
                                 return (
-                                    <EditButton variant="text" size="small" label="" sx={listStyle.buttonToolbar}/>
+                                    <EditButton variant="text" size="small" label="" sx={listStyle.buttonToolbar} />
                                 )
                             }
                             else {

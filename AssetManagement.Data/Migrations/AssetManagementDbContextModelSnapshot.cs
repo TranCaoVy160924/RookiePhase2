@@ -348,7 +348,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Assets", (string)null);
+                    b.ToTable("Assets");
 
                     b.HasData(
                         new
@@ -514,7 +514,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasIndex("AssignedTo");
 
-                    b.ToTable("Assignments", (string)null);
+                    b.ToTable("Assignments");
 
                     b.HasData(
                         new
@@ -660,7 +660,7 @@ namespace AssetManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
