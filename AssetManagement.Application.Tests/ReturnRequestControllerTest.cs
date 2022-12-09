@@ -54,21 +54,20 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await returnRequestController.Get(1, 2);
 
-            var list = _context.Assignments
-                .Include(x => x.Asset)
-                .Include(x => x.AssignedToAppUser)
-                .Include(x => x.AssignedByAppUser)
-                .Where(x => !x.IsDeleted &&
-                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-                    || x.State == Domain.Enums.Assignment.State.Completed))
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
-                    AssetCode = x.Asset.AssetCode,
-                    AssetName = x.Asset.Name,
-                    RequestedBy = x.AssignedToAppUser.UserName,
-                    AcceptedBy = x.AssignedByAppUser.UserName,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
                     State = x.State,
@@ -98,22 +97,22 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await returnRequestController.Get(1, 2, searchString);
 
-            var list = _context.Assignments
-                .Include(x => x.Asset)
-                .Include(x => x.AssignedToAppUser)
-                .Include(x => x.AssignedByAppUser)
-                .Where(x => !x.IsDeleted &&
-                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-                    || x.State == Domain.Enums.Assignment.State.Completed) &&
-                    (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString)))
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted && (x.Assignment.Asset.Name.Contains(searchString) ||
+                    x.Assignment.Asset.AssetCode.Contains(searchString) ||
+                    x.AssignedByUser.UserName.Contains(searchString)))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
-                    AssetCode = x.Asset.AssetCode,
-                    AssetName = x.Asset.Name,
-                    RequestedBy = x.AssignedToAppUser.UserName,
-                    AcceptedBy = x.AssignedByAppUser.UserName,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
                     State = x.State,
@@ -143,22 +142,22 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await returnRequestController.Get(1, 2, searchString);
 
-            var list = _context.Assignments
-                .Include(x => x.Asset)
-                .Include(x => x.AssignedToAppUser)
-                .Include(x => x.AssignedByAppUser)
-                .Where(x => !x.IsDeleted &&
-                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-                    || x.State == Domain.Enums.Assignment.State.Completed) &&
-                    (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString) || x.AssignedToAppUser.UserName.Contains(searchString)))
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted && (x.Assignment.Asset.Name.Contains(searchString) ||
+                    x.Assignment.Asset.AssetCode.Contains(searchString) ||
+                    x.AssignedByUser.UserName.Contains(searchString)))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
-                    AssetCode = x.Asset.AssetCode,
-                    AssetName = x.Asset.Name,
-                    RequestedBy = x.AssignedToAppUser.UserName,
-                    AcceptedBy = x.AssignedByAppUser.UserName,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
                     State = x.State,
@@ -188,22 +187,20 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await returnRequestController.Get(1, 2, stateFilter: state.ToString());
 
-            var list = _context.Assignments
-                .Include(x => x.Asset)
-                .Include(x => x.AssignedToAppUser)
-                .Include(x => x.AssignedByAppUser)
-                .Where(x => !x.IsDeleted &&
-                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-                    || x.State == Domain.Enums.Assignment.State.Completed) &&
-                    (int)x.State == state)
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted && (int)x.State == state)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
-                    AssetCode = x.Asset.AssetCode,
-                    AssetName = x.Asset.Name,
-                    RequestedBy = x.AssignedToAppUser.UserName,
-                    AcceptedBy = x.AssignedByAppUser.UserName,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
                     State = x.State,
@@ -223,35 +220,35 @@ namespace AssetManagement.Application.Tests
         }
 
         [Fact]
-        public async Task GetList_FilterAssignedDate()
+        public async Task GetList_FilterReturnedDate()
         {
             // Arrange 
             ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
-            var assignedDateFilter = "2022-11-28";
+            var returnedDateFilter = "2022-12-09";
             // Act 
-            var result = await returnRequestController.Get(1, 2, assignedDateFilter);
+            var result = await returnRequestController.Get(1, 2, returnedDateFilter: returnedDateFilter);
 
-            var list = _context.Assignments
-                .Include(x => x.Asset)
-                .Include(x => x.AssignedToAppUser)
-                .Include(x => x.AssignedByAppUser)
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
                 .Where(x => !x.IsDeleted &&
-                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-                    || x.State == Domain.Enums.Assignment.State.Completed) &&
-                    x.AssignedDate.Date == DateTime.Parse(assignedDateFilter).Date)
+                    x.ReturnedDate.Value.Date == DateTime.Parse(returnedDateFilter).Date)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
-                    AssetCode = x.Asset.AssetCode,
-                    AssetName = x.Asset.Name,
-                    RequestedBy = x.AssignedToAppUser.UserName,
-                    AcceptedBy = x.AssignedByAppUser.UserName,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
                     State = x.State,
                 })
                 .OrderBy(x => x.Id);
+
             var expected = JsonConvert.SerializeObject(
                 StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
@@ -273,25 +270,25 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await returnRequestController.Get(1, 2, sort: sortType);
 
-            var list = _context.Assignments
-                .Include(x => x.Asset)
-                .Include(x => x.AssignedToAppUser)
-                .Include(x => x.AssignedByAppUser)
-                .Where(x => !x.IsDeleted &&
-                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-                    || x.State == Domain.Enums.Assignment.State.Completed))
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
-                    AssetCode = x.Asset.AssetCode,
-                    AssetName = x.Asset.Name,
-                    RequestedBy = x.AssignedToAppUser.UserName,
-                    AcceptedBy = x.AssignedByAppUser.UserName,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
                     State = x.State,
-                }).OrderBy(x => x.AssetCode);
+                })
+                .OrderBy(x => x.AssetCode);
 
             var expected = JsonConvert.SerializeObject(
                 StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
@@ -314,21 +311,20 @@ namespace AssetManagement.Application.Tests
             // Act 
             var result = await returnRequestController.Get(-1, 2);
 
-            var list = _context.Assignments
-                .Include(x => x.Asset)
-                .Include(x => x.AssignedToAppUser)
-                .Include(x => x.AssignedByAppUser)
-                .Where(x => !x.IsDeleted &&
-                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-                    || x.State == Domain.Enums.Assignment.State.Completed))
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
-                    AssetCode = x.Asset.AssetCode,
-                    AssetName = x.Asset.Name,
-                    RequestedBy = x.AssignedToAppUser.UserName,
-                    AcceptedBy = x.AssignedByAppUser.UserName,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
                     State = x.State,

@@ -57,10 +57,10 @@ export default () => {
             label="State"
             sx={{ width: "250px" }}
             statesList={[
-                { value: 2, text: "Completed" },
-                { value: 4, text: "Waiting for returning" },
+                { value: 0, text: "Waiting for returning" },
+                { value: 1, text: "Completed" },
             ]}
-            defaultSelect={[2, 4]}
+            defaultSelect={[0, 1]}
             alwaysOn
         />,
         <DateAssignedFilterSelect source="returnedDateFilter" alwaysOn id="ReturnedDateFilterReturnRequest" />,
@@ -116,19 +116,10 @@ export default () => {
                     <FunctionField source="state" render={(record) => {
                         switch (record.state) {
                             case 0: {
-                                return "Accepted";
+                                return "Waiting for returning";
                             }
                             case 1: {
-                                return "Waiting for acceptance";
-                            }
-                            case 2: {
                                 return "Completed";
-                            }
-                            case 3: {
-                                return "Returned";
-                            }
-                            case 4: {
-                                return "Waiting for returning";
                             }
                         }
                     }} />

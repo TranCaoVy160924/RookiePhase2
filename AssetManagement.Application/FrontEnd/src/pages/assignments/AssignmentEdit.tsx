@@ -89,10 +89,13 @@ const AssignmentEdit = () => {
         let today = new Date();
         today.setDate(today.getDate() - 1);
         let yesterday = today.toISOString();
-        if (!values.note) {
+        if (!values.note || values.note.trim().length === 0) {
             errors.note = "This is required";
             setIsInvalid(true);
-        } else if (!values.assignedDate) {
+        } else if (values.note.trim().length > 500) {
+            errors.note = "This is field must be least than 500 characters";
+        }
+        else if (!values.assignedDate) {
             errors.assignedDate = "This is required";
             setIsInvalid(true);
         } else if (values.assignedDate < yesterday) {
@@ -103,10 +106,10 @@ const AssignmentEdit = () => {
             return {};
         }
         if (errors.note) {
-            displayErrors = {...displayErrors, note: errors.note}
+            displayErrors = { ...displayErrors, note: errors.note }
         }
         if (errors.assignedDate) {
-            displayErrors = {...displayErrors, assignedDate: errors.assignedDate}
+            displayErrors = { ...displayErrors, assignedDate: errors.assignedDate }
         }
         return displayErrors;
     };

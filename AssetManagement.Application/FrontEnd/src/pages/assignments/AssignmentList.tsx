@@ -66,8 +66,10 @@ export default () => {
             statesList={[
                 { value: 0, text: "Accepted" },
                 { value: 1, text: "Waiting for acceptance" },
+                { value: 3, text: "Waiting For Returning" },
+                { value: 4, text: "Declined" }
             ]}
-            defaultSelect={[0, 1]}
+            defaultSelect={[0, 1, 3, 4]}
             alwaysOn
         />,
         <DateAssignedFilterSelect source="assignedDateFilter" alwaysOn id="DateAssignedFilterAssignment" />,
@@ -120,37 +122,53 @@ export default () => {
                     <TextField label="Assigned to" source="assignedTo" />
                     <TextField label="Assigned by" source="assignedBy" />
                     <DateField label="Assigned Date" source="assignedDate" locales="en-GB" />
-                    <FunctionField source="state" render={(record) => record.state == "0" ? "Accepted" : "Waiting for acceptance"} />
+                    <FunctionField source="state" render={(record) => {
+                        console.log(record.state);
+                        switch (record.state) {
+                            case 0: {
+                                return "Accepted";
+                            }
+                            case 1: {
+                                return "Waiting For Acceptance";
+                            }
+                            case 2: {
+                                return "Returned";
+                            }
+                            case 3: {
+                                return "Waiting For Returning";
+                            }
+                        }
+                    }} />
                     <ButtonGroup sx={{ border: null }}>
                         <FunctionField render={(record) => {
                             if (record.state === 1) {
                                 return (
                                     <ButtonGroup>
-                                        <EditButton variant="text" size="small" label="" sx={listStyle.buttonToolbar}/>
+                                        <EditButton variant="text" size="small" label="" sx={listStyle.buttonToolbar} />
                                         <CustomDeleteWithConfirmButton
                                             icon={<HighlightOffIcon />}
                                             confirmTitle="Are you sure?"
                                             confirmContent="Do you want to delete this asset?"
-                                            mutationOptions={{ onSuccess: () => refresh() }} isOpen={deleting} setDeleting={setDeleting}/>
+                                            mutationOptions={{ onSuccess: () => refresh() }} isOpen={deleting} setDeleting={setDeleting} />
                                     </ButtonGroup>
-                                    
+
                                 )
                             }
                             else {
                                 return (
                                     <ButtonGroup>
-                                        <EditButton disabled variant="text" size="small" label="" 
-                                        sx={listStyle.buttonToolbar}/>
-                                        <DeleteButton icon={<HighlightOffIcon />} disabled variant="text" size="small" label="" 
-                                        sx={listStyle.buttonToolbar}/>
+                                        <EditButton disabled variant="text" size="small" label=""
+                                            sx={listStyle.buttonToolbar} />
+                                        <DeleteButton icon={<HighlightOffIcon />} disabled variant="text" size="small" label=""
+                                            sx={listStyle.buttonToolbar} />
                                     </ButtonGroup>
                                 )
                             }
                         }} />
-                        
-                        <Button variant="text" size="small" 
-                        sx={listStyle.returningButtonToolbar}>
-                            <ReplayIcon/>
+
+                        <Button variant="text" size="small"
+                            sx={listStyle.returningButtonToolbar}>
+                            <ReplayIcon />
                         </Button>
                     </ButtonGroup>
                 </Datagrid>
