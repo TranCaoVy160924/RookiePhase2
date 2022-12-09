@@ -1,7 +1,6 @@
-import React, { Fragment, ReactEventHandler, ReactElement, useEffect, useState } from 'react';
+import React, { Fragment, ReactEventHandler, ReactElement, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
 import ActionDelete from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -17,15 +16,10 @@ import {
     useDeleteWithConfirmController,
     useRecordContext,
     useResourceContext,
-    useTranslate,
     RedirectionSideEffect,
 } from 'ra-core';
-import { Button as MUIButton, ButtonGroup } from '@mui/material';
-import { Confirm, DeleteButton } from 'react-admin';
+import { Button as MUIButton } from '@mui/material';
 import { Button, ButtonProps } from 'react-admin';
-import { Padding } from '@mui/icons-material';
-import { getHistoricalAssignmentsCount } from "../../../services/assets";
-import axios, { AxiosResponse } from "axios";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -48,7 +42,6 @@ export const CustomDeleteUserWithConfirmButton = <RecordType extends RaRecord = 
         setDeleting,
         ...rest
     } = props;
-    const translate = useTranslate();
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const [assignementsCount, setAssignementsCount] = useState({});
@@ -59,7 +52,6 @@ export const CustomDeleteUserWithConfirmButton = <RecordType extends RaRecord = 
     }
     const {
         open,
-        isLoading,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
