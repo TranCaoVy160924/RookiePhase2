@@ -58,21 +58,21 @@ namespace AssetManagement.Application.Controllers
             [FromQuery] string? order = "ASC",
             [FromQuery] string? createdId = "")
         {
-            var list = _dbContext.Assignments
-                .Include(x => x.Asset)
-                .Include(x => x.AssignedToAppUser)
-                .Include(x => x.AssignedByAppUser)
-                .Where(x => !x.IsDeleted &&
-                    (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-                    || x.State == Domain.Enums.Assignment.State.Completed))
+            //var tempList = _dbContext.ReturnRequests.ToList();
+            var list = _dbContext.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
                     NoNumber = x.Id,
-                    AssetCode = x.Asset.AssetCode,
-                    AssetName = x.Asset.Name,
-                    RequestedBy = x.AssignedToAppUser.UserName,
-                    AcceptedBy = x.AssignedByAppUser.UserName,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
                     AssignedDate = x.AssignedDate,
                     ReturnedDate = x.ReturnedDate,
                     State = x.State,
