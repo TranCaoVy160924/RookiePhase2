@@ -57,119 +57,119 @@ namespace AssetManagement.Data.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
                 column: "ConcurrencyStamp",
-                value: "34aac5ab-2ab9-4aa2-9ad4-c6b75e61ebf9");
+                value: "4a97a439-2f79-4342-8a7f-b71d713f1a43");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                 column: "ConcurrencyStamp",
-                value: "41822771-f85c-4a03-b195-4f377bc3fc8c");
+                value: "2e5b24f5-62ed-47d7-881a-78eb23843cdd");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00bf"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "6f2771dd-512a-4d9a-871e-47fed931df55", new DateTime(2022, 12, 9, 10, 33, 23, 471, DateTimeKind.Local).AddTicks(8294), "AQAAAAEAACcQAAAAELr1HnjYWt9lrC/E5Mtq2trzECYhj6JybtroQ4ylW1ceVyD3wH4bGdtryi+fm4/azQ==" });
+                values: new object[] { "c2508d97-f190-4469-9c18-551376338181", new DateTime(2022, 12, 9, 11, 42, 4, 739, DateTimeKind.Local).AddTicks(6670), "AQAAAAEAACcQAAAAEBZiGcrOw9olMHc/R4dbZQ5PikYOU/tOWQFQkyZyVdQ8WaIMjBfF+TYImxA3BUOyiA==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "09766ecc-1fb8-4230-85cc-e8aff5253828", new DateTime(2022, 12, 9, 10, 33, 23, 464, DateTimeKind.Local).AddTicks(9819), "AQAAAAEAACcQAAAAEK9l3PsJvY39VnBtM+qEx+wUWGpabZiRp9RgZuJozUEQjgiw4khIwXG5qAzhjuO3gQ==" });
+                values: new object[] { "1cb5e9ab-199d-4a33-a593-c695621acb8f", new DateTime(2022, 12, 9, 11, 42, 4, 733, DateTimeKind.Local).AddTicks(2260), "AQAAAAEAACcQAAAAEBkzrANreNLBJMzEnCEHbG9AS4v8Xg15kHzSXQvJrIm82C19eA5IpRhtE30RvADFSQ==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "5441c5bb-432a-46cc-a5c6-fe21b70bb1a5", new DateTime(2022, 12, 9, 10, 33, 23, 478, DateTimeKind.Local).AddTicks(3968), "AQAAAAEAACcQAAAAEBYLlYNUJ1J/lU6DM4UNBxxZfHJWMxzm7iuE9Ey1XpAK2+ksD7BDeYsDaJ+xEt0DSg==" });
+                values: new object[] { "751a93aa-5c0e-4b3f-85f2-83df318a5870", new DateTime(2022, 12, 9, 11, 42, 4, 745, DateTimeKind.Local).AddTicks(5708), "AQAAAAEAACcQAAAAEFBCeRZX4WoBso0NdFYz31da6UaYz4FffbxDpMPkAUWbPdtbhCi2ZElWkAYVk2poVw==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("70bd814f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "2c6f2561-00a8-463f-8dc5-a6c82bc44240", new DateTime(2022, 12, 9, 10, 33, 23, 486, DateTimeKind.Local).AddTicks(2003), "AQAAAAEAACcQAAAAEJoYaxiVc+1EUCtl60CdDS9eL5ufTWDVKTioxB9+21w0ZjGSZzZJ7sg9M2DC0qL7Ow==" });
+                values: new object[] { "2741f28f-55c8-4a49-8a23-5df37988d8f8", new DateTime(2022, 12, 9, 11, 42, 4, 751, DateTimeKind.Local).AddTicks(9559), "AQAAAAEAACcQAAAAEFrAB4gkh35v5L3zAzlUxlvhwa9tebK1AQLG0+EM3JVtSF2+hPYCuxqbwGiV/VYDdQ==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("73bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "fb77de2e-6c0a-4c17-b6d9-f67dc45fe9b2", new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9380), "AQAAAAEAACcQAAAAEGhI9VC91m0k6YMNl1jrAp0mADTjsg7K5AsX93nYe0psiDGp7/chL9v+2CNTEXhmWA==" });
+                values: new object[] { "1788c929-2042-4516-bce0-9e843500f97a", new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3522), "AQAAAAEAACcQAAAAEAefH9KFnKOPiWi53WS2qJRFK/ShGwOgFxf8wThggUzkdXCxmcMv7l4H5dRqqTUzkg==" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9723));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3770));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9737));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3787));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9747));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3797));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9867));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3806));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9878));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3815));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 6,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9887));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3825));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 7,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9895));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3834));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 8,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9904));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3843));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 9,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9912));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3852));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 10,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9946));
+                value: new DateTime(2022, 12, 9, 11, 42, 4, 758, DateTimeKind.Local).AddTicks(3943));
 
             migrationBuilder.UpdateData(
                 table: "Assignments",
