@@ -64,6 +64,7 @@ namespace AssetManagement.Application.Controllers
                 .Include(x => x.AcceptedByUser)
                 .Include(x => x.Assignment)
                     .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,

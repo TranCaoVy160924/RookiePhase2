@@ -59,6 +59,7 @@ namespace AssetManagement.Application.Tests
                 .Include(x => x.AcceptedByUser)
                 .Include(x => x.Assignment)
                     .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -101,9 +102,9 @@ namespace AssetManagement.Application.Tests
                 .Include(x => x.AcceptedByUser)
                 .Include(x => x.Assignment)
                     .ThenInclude(a => a.Asset)
-                .Where(x => x.Assignment.Asset.Name.Contains(searchString) ||
+                .Where(x => !x.IsDeleted && (x.Assignment.Asset.Name.Contains(searchString) ||
                     x.Assignment.Asset.AssetCode.Contains(searchString) ||
-                    x.AssignedByUser.UserName.Contains(searchString))
+                    x.AssignedByUser.UserName.Contains(searchString)))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -146,9 +147,9 @@ namespace AssetManagement.Application.Tests
                 .Include(x => x.AcceptedByUser)
                 .Include(x => x.Assignment)
                     .ThenInclude(a => a.Asset)
-                .Where(x => x.Assignment.Asset.Name.Contains(searchString) ||
+                .Where(x => !x.IsDeleted && (x.Assignment.Asset.Name.Contains(searchString) ||
                     x.Assignment.Asset.AssetCode.Contains(searchString) ||
-                    x.AssignedByUser.UserName.Contains(searchString))
+                    x.AssignedByUser.UserName.Contains(searchString)))
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -191,7 +192,7 @@ namespace AssetManagement.Application.Tests
                 .Include(x => x.AcceptedByUser)
                 .Include(x => x.Assignment)
                     .ThenInclude(a => a.Asset)
-                .Where(x => (int)x.State == state)
+                .Where(x => !x.IsDeleted && (int)x.State == state)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -232,7 +233,8 @@ namespace AssetManagement.Application.Tests
                 .Include(x => x.AcceptedByUser)
                 .Include(x => x.Assignment)
                     .ThenInclude(a => a.Asset)
-                .Where(x => x.ReturnedDate.Value.Date == DateTime.Parse(returnedDateFilter).Date)
+                .Where(x => !x.IsDeleted &&
+                    x.ReturnedDate.Value.Date == DateTime.Parse(returnedDateFilter).Date)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -273,6 +275,7 @@ namespace AssetManagement.Application.Tests
                 .Include(x => x.AcceptedByUser)
                 .Include(x => x.Assignment)
                     .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
@@ -313,6 +316,7 @@ namespace AssetManagement.Application.Tests
                 .Include(x => x.AcceptedByUser)
                 .Include(x => x.Assignment)
                     .ThenInclude(a => a.Asset)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new ViewListReturnRequestResponse
                 {
                     Id = x.Id,
