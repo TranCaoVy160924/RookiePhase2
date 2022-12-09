@@ -26,6 +26,8 @@ namespace AssetManagement.Domain.Models
 
         public Enums.ReturnRequest.State State { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
+
         [ForeignKey(nameof(AssignmentId))]
         public virtual Assignment Assignment { get; set; }
         [ForeignKey(nameof(AssignedBy))]

@@ -27,8 +27,6 @@ namespace AssetManagement.Contracts.ReturnRequest.Response
 
         public State State { get; set; }
 
-        public bool IsDeleted { get; set; } = false;
-
         public bool Equals(ViewListReturnRequestResponse? other)
         {
             if (other == null)
