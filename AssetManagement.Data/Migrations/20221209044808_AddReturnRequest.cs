@@ -28,7 +28,8 @@ namespace AssetManagement.Data.Migrations
                     AcceptedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ReturnedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AssignedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    State = table.Column<int>(type: "int", nullable: false)
+                    State = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,119 +58,119 @@ namespace AssetManagement.Data.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
                 column: "ConcurrencyStamp",
-                value: "34aac5ab-2ab9-4aa2-9ad4-c6b75e61ebf9");
+                value: "f5d28e74-9b61-48ce-9ec7-8c4db58bf8ab");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                 column: "ConcurrencyStamp",
-                value: "41822771-f85c-4a03-b195-4f377bc3fc8c");
+                value: "1af65bcc-db13-4462-872a-241384e3438c");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00bf"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "6f2771dd-512a-4d9a-871e-47fed931df55", new DateTime(2022, 12, 9, 10, 33, 23, 471, DateTimeKind.Local).AddTicks(8294), "AQAAAAEAACcQAAAAELr1HnjYWt9lrC/E5Mtq2trzECYhj6JybtroQ4ylW1ceVyD3wH4bGdtryi+fm4/azQ==" });
+                values: new object[] { "d64debda-4362-461e-88f8-551c22d243c3", new DateTime(2022, 12, 9, 11, 48, 8, 168, DateTimeKind.Local).AddTicks(9781), "AQAAAAEAACcQAAAAED+hQUmiL5h+BBcybB/CaYtxeDFvvtdHPupBN4KIWAXL8FDJa/NNkJ0mk0A+UZPe2A==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "09766ecc-1fb8-4230-85cc-e8aff5253828", new DateTime(2022, 12, 9, 10, 33, 23, 464, DateTimeKind.Local).AddTicks(9819), "AQAAAAEAACcQAAAAEK9l3PsJvY39VnBtM+qEx+wUWGpabZiRp9RgZuJozUEQjgiw4khIwXG5qAzhjuO3gQ==" });
+                values: new object[] { "39fc69a9-43e2-4053-bf83-3fd2e5b52ef3", new DateTime(2022, 12, 9, 11, 48, 8, 162, DateTimeKind.Local).AddTicks(204), "AQAAAAEAACcQAAAAENcljPTAt7W8CtlyfHapZsBbTRN34rfRUiplerdaozWxNZh2eexytlW3mBnwpMEFLA==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "5441c5bb-432a-46cc-a5c6-fe21b70bb1a5", new DateTime(2022, 12, 9, 10, 33, 23, 478, DateTimeKind.Local).AddTicks(3968), "AQAAAAEAACcQAAAAEBYLlYNUJ1J/lU6DM4UNBxxZfHJWMxzm7iuE9Ey1XpAK2+ksD7BDeYsDaJ+xEt0DSg==" });
+                values: new object[] { "0123728f-9383-4ec9-a1fa-bf971167d607", new DateTime(2022, 12, 9, 11, 48, 8, 175, DateTimeKind.Local).AddTicks(476), "AQAAAAEAACcQAAAAECxkmzBRBZ5FV66pPLTAcmJMp4g5UgUOtXO4K9DO+iGut7ChYBisItTt0YNmJhyyNw==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("70bd814f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "2c6f2561-00a8-463f-8dc5-a6c82bc44240", new DateTime(2022, 12, 9, 10, 33, 23, 486, DateTimeKind.Local).AddTicks(2003), "AQAAAAEAACcQAAAAEJoYaxiVc+1EUCtl60CdDS9eL5ufTWDVKTioxB9+21w0ZjGSZzZJ7sg9M2DC0qL7Ow==" });
+                values: new object[] { "02b883f5-7329-4b90-b889-e5f1cafb2115", new DateTime(2022, 12, 9, 11, 48, 8, 180, DateTimeKind.Local).AddTicks(9606), "AQAAAAEAACcQAAAAEIp8lkEoZo/ObvgSHOwAGyM2YllWsf4o3JywwLR/PZfv5bZ9h/aZ07Am92tm627TYQ==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("73bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "fb77de2e-6c0a-4c17-b6d9-f67dc45fe9b2", new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9380), "AQAAAAEAACcQAAAAEGhI9VC91m0k6YMNl1jrAp0mADTjsg7K5AsX93nYe0psiDGp7/chL9v+2CNTEXhmWA==" });
+                values: new object[] { "2a760cea-b9d6-4d56-bad2-60576b2019f3", new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7330), "AQAAAAEAACcQAAAAEP/ZWQHI4PZBZ7sAlYah21IGwkcpSirB0OemT74sOOBJJQNnGcFZchiu5vlDVpgDHA==" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9723));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7711));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9737));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7727));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9747));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7854));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9867));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7865));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9878));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7874));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 6,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9887));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7885));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 7,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9895));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7894));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 8,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9904));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7904));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 9,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9912));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7913));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 10,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 9, 10, 33, 23, 492, DateTimeKind.Local).AddTicks(9946));
+                value: new DateTime(2022, 12, 9, 11, 48, 8, 187, DateTimeKind.Local).AddTicks(7944));
 
             migrationBuilder.UpdateData(
                 table: "Assignments",
@@ -243,19 +244,19 @@ namespace AssetManagement.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "ReturnRequests",
-                columns: new[] { "Id", "AcceptedBy", "AssignedBy", "AssignedDate", "AssignmentId", "ReturnedDate", "State" },
+                columns: new[] { "Id", "AcceptedBy", "AssignedBy", "AssignedDate", "AssignmentId", "IsDeleted", "ReturnedDate", "State" },
                 values: new object[,]
                 {
-                    { 1, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 1, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 2, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 2, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 3, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 3, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 4, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 4, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 5, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 5, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 6, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 6, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 7, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 7, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 8, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 8, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 9, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 9, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 10, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 10, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 }
+                    { 1, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 1, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 2, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 2, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 3, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 3, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 4, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 4, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 5, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 5, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 6, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 6, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 7, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 7, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 8, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 8, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 9, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 9, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 10, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 10, false, new DateTime(2022, 12, 9, 0, 0, 0, 0, DateTimeKind.Local), 0 }
                 });
 
             migrationBuilder.CreateIndex(
