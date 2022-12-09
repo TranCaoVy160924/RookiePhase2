@@ -224,6 +224,19 @@ namespace AssetManagement.Data.Extensions
                     AssignedBy = adminHcmId,
                 });
             }
+
+            for (int i = 1; i <= 10; i++)
+            {
+                modelBuilder.Entity<ReturnRequest>().HasData(new ReturnRequest
+                {
+                    Id = i,
+                    AssignedBy = staffAbleId1,
+                    AssignedDate = DateTime.Today,
+                    ReturnedDate = DateTime.Today,
+                    State = Domain.Enums.ReturnRequest.State.WaitingForReturning,
+                    AssignmentId = i,
+                });
+            }
         }
     }
 }

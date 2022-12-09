@@ -31,7 +31,7 @@ var currentDay = yyyy + "-" + mm + "-" + dd;
 function NewCategoryCreate() {
     const [category, setCategory] = useState([]);
     const [isValid, setIsValid] = useState(true);
-    const [create, {}] = useCreate();
+    const [create, { }] = useCreate();
     const navigate = useNavigate();
     let theme = createTheme();
     theme = unstable_createMuiStrictModeTheme(theme);
@@ -44,33 +44,40 @@ function NewCategoryCreate() {
     }, []);
 
     const requiredInput = (values) => {
-        const errors = {
-            name: "",
-            categoryId: "",
-            specification: "",
-            installedDate: "",
-            state: "",
-        };
-        if (!values.name) {
+        const errors: Record<string, any> = {};
+        if (!values.name || values.name.trim().length === 0) {
             errors.name = "This is required";
-            setIsValid(true);
-        } else if (!values.categoryId) {
+        } else if (values.name.trim().length > 100) {
+            errors.name = "This field must be least than 100 characters";
+        }
+
+        if (!values.categoryId) {
             errors.categoryId = "This is required";
-            setIsValid(true);
-        } else if (values.installedDate == null) {
+        }
+        if (values.installedDate == null) {
             errors.installedDate = "This is required";
-            setIsValid(true);
-        } else if (!values.specification) {
+        }
+        if (!values.specification || values.specification.trim().length === 0) {
             errors.specification = "This is required";
-            setIsValid(true);
-        } else if (!values.state) {
+        } else if (values.specification.trim().length > 500) {
+            errors.specification = "This field must be least than 500 characters";
+        }
+
+        if (!values.state) {
             errors.state = "This is required";
-            setIsValid(true);
-        } else {
+        }
+        if (Object.keys(errors).length === 0) {
             setIsValid(false);
+        } else {
+            setIsValid(true);
+        }
+        if (errors.name == "This field must be least than 100 characters") {
+            return { name: "This field must be least than 100 characters" };
+        } else if (errors.specification == "This field must be least than 500 characters") {
+            return { specification: "This field must be least than 500 characters" }
+        } else {
             return {};
         }
-        return errors;
     };
 
     return (
@@ -89,116 +96,117 @@ function NewCategoryCreate() {
                     <CreateBase
                         redirect="show">
                         <SimpleForm
+                            mode="onBlur"
                             validate={requiredInput}
                             toolbar={<AssetCreateToolbar disable={isValid} />}
                         >
-                                <Box sx={formStyle.boxStyle}>
-                                    <Typography
-                                        variant="h6"
-                                        sx={formStyle.typographyStyle}
-                                    >
-                                        Name *
-                                    </Typography>
-                                    <TextInput
-                                        fullWidth
-                                        label=""
-                                        name="name"
-                                        source="name"
-                                        InputLabelProps={{ shrink: false }}
-                                        sx={formStyle.textInputStyle}
-                                        helperText={false}
-                                    />
-                                </Box>
+                            <Box sx={formStyle.boxStyle}>
+                                <Typography
+                                    variant="h6"
+                                    sx={formStyle.typographyStyle}
+                                >
+                                    Name *
+                                </Typography>
+                                <TextInput
+                                    fullWidth
+                                    label=""
+                                    name="name"
+                                    source="name"
+                                    InputLabelProps={{ shrink: false }}
+                                    sx={formStyle.textInputStyle}
+                                    helperText={false}
+                                />
+                            </Box>
 
-                                <Box sx={formStyle.boxStyle}>
-                                    <Typography
-                                        variant="h6"
-                                        sx={formStyle.typographyStyle}
-                                    >
-                                        Category *
-                                    </Typography>
-                                    {/* Custom Dropdown Selection (Category) */}
-                                    <SelectBoxWithFormInside
-                                        // category={category}
-                                        source="categoryId"
-                                        format={(formValue) =>
-                                            Array.prototype.filter.bind(
-                                                category
-                                            )((item) => item.id === formValue)[
-                                                "name"
-                                            ]
-                                        }
-                                        parse=""
-                                    />
-                                </Box>
+                            <Box sx={formStyle.boxStyle}>
+                                <Typography
+                                    variant="h6"
+                                    sx={formStyle.typographyStyle}
+                                >
+                                    Category *
+                                </Typography>
+                                {/* Custom Dropdown Selection (Category) */}
+                                <SelectBoxWithFormInside
+                                    // category={category}
+                                    source="categoryId"
+                                    format={(formValue) =>
+                                        Array.prototype.filter.bind(
+                                            category
+                                        )((item) => item.id === formValue)[
+                                        "name"
+                                        ]
+                                    }
+                                    parse=""
+                                />
+                            </Box>
 
-                                <Box sx={formStyle.boxStyle}>
-                                    <Typography
-                                        variant="h6"
-                                        sx={formStyle.typographyStyle}
-                                    >
-                                        Specification *
-                                    </Typography>
-                                    <TextInput
-                                        fullWidth
-                                        multiline
-                                        label=""
-                                        rows="3"
-                                        InputLabelProps={{ shrink: false }}
-                                        sx={formStyle.textInputStyle}
-                                        name="specification"
-                                        source="specification"
-                                        helperText={false}
-                                    />
-                                </Box>
+                            <Box sx={formStyle.boxStyle}>
+                                <Typography
+                                    variant="h6"
+                                    sx={formStyle.typographyStyle}
+                                >
+                                    Specification *
+                                </Typography>
+                                <TextInput
+                                    fullWidth
+                                    multiline
+                                    label=""
+                                    rows="3"
+                                    InputLabelProps={{ shrink: false }}
+                                    sx={formStyle.textInputStyle}
+                                    name="specification"
+                                    source="specification"
+                                    helperText={false}
+                                />
+                            </Box>
 
-                                <Box sx={formStyle.boxStyle}>
-                                    <Typography
-                                        variant="h6"
-                                        sx={formStyle.typographyStyle}
-                                    >
-                                        Installed Date *
-                                    </Typography>
-                                    <DateInput
-                                        fullWidth
-                                        label=""
-                                        name="installedDate"
-                                        source="installedDate"
-                                        InputLabelProps={{ shrink: false }}
-                                        validate={minValue(currentDay)}
-                                        onBlur={(e) => e.stopPropagation()}
-                                        sx={formStyle.textInputStyle}
-                                        helperText={false}
-                                    />
-                                </Box>
+                            <Box sx={formStyle.boxStyle}>
+                                <Typography
+                                    variant="h6"
+                                    sx={formStyle.typographyStyle}
+                                >
+                                    Installed Date *
+                                </Typography>
+                                <DateInput
+                                    fullWidth
+                                    label=""
+                                    name="installedDate"
+                                    source="installedDate"
+                                    InputLabelProps={{ shrink: false }}
+                                    validate={minValue(currentDay)}
+                                    onBlur={(e) => e.stopPropagation()}
+                                    sx={formStyle.textInputStyle}
+                                    helperText={false}
+                                />
+                            </Box>
 
-                                <Box sx={formStyle.boxStyle}>
-                                    <Typography
-                                        variant="h6"
-                                        sx={formStyle.typographyStyle}
-                                    >
-                                        State *
-                                    </Typography>
-                                    <RadioButtonGroup
-                                        label=""
-                                        source="state"
-                                        choices={[
-                                            {
-                                                state_id: "0",
-                                                state: "Available",
-                                            },
-                                            {
-                                                state_id: "1",
-                                                state: "Not available",
-                                            },
-                                        ]}
-                                        row={false}
-                                        sx={formStyle.textInputStyle}
-                                        optionText="state"
-                                        optionValue="state_id"
-                                        helperText={false}
-                                    />
-                                </Box>
+                            <Box sx={formStyle.boxStyle}>
+                                <Typography
+                                    variant="h6"
+                                    sx={formStyle.typographyStyle}
+                                >
+                                    State *
+                                </Typography>
+                                <RadioButtonGroup
+                                    label=""
+                                    source="state"
+                                    choices={[
+                                        {
+                                            state_id: "0",
+                                            state: "Available",
+                                        },
+                                        {
+                                            state_id: "1",
+                                            state: "Not available",
+                                        },
+                                    ]}
+                                    row={false}
+                                    sx={formStyle.textInputStyle}
+                                    optionText="state"
+                                    optionValue="state_id"
+                                    helperText={false}
+                                />
+                            </Box>
                         </SimpleForm>
                     </CreateBase>
                 </Box>
