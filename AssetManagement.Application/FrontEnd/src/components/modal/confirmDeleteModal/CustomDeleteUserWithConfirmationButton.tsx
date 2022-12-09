@@ -151,7 +151,6 @@ export const CustomDeleteUserWithConfirmButton = <RecordType extends RaRecord = 
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title" sx={titleStype}>
-                        
                         {!(assignementsCount > 0) ? confirmTitle : 
                         <>Can not disable user <IconButton
                             aria-label="close"
@@ -194,7 +193,6 @@ export const CustomDeleteUserWithConfirmButton = <RecordType extends RaRecord = 
                             </DialogContentText>
                             </> 
                         }
-                        
                     </DialogContent>
                 </Dialog>
         </Fragment>
