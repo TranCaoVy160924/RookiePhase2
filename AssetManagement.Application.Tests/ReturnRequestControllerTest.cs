@@ -44,310 +44,302 @@ namespace AssetManagement.Application.Tests
             _context.Database.EnsureCreated();
         }
 
-        //#region GetList
-        //[Fact]
-        //public async Task GetList_ForDefault()
-        //{
-        //    // Arrange 
-        //    ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+        #region GetList
+        [Fact]
+        public async Task GetList_ForDefault()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
 
-        //    // Act 
-        //    var result = await returnRequestController.Get(1, 2);
+            // Act 
+            var result = await returnRequestController.Get(1, 2);
 
-        //    var list = _context.Assignments
-        //        .Include(x => x.Asset)
-        //        .Include(x => x.AssignedToAppUser)
-        //        .Include(x => x.AssignedByAppUser)
-        //        .Where(x => !x.IsDeleted &&
-        //            (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-        //            || x.State == Domain.Enums.Assignment.State.Completed))
-        //        .Select(x => new ViewListReturnRequestResponse
-        //        {
-        //            Id = x.Id,
-        //            NoNumber = x.Id,
-        //            AssetCode = x.Asset.AssetCode,
-        //            AssetName = x.Asset.Name,
-        //            RequestedBy = x.AssignedToAppUser.UserName,
-        //            AcceptedBy = x.AssignedByAppUser.UserName,
-        //            AssignedDate = x.AssignedDate,
-        //            ReturnedDate = x.ReturnedDate,
-        //            State = x.State,
-        //        })
-        //        .OrderBy(x => x.Id);
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Select(x => new ViewListReturnRequestResponse
+                {
+                    Id = x.Id,
+                    NoNumber = x.Id,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
+                    AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
+                    State = x.State,
+                })
+                .OrderBy(x => x.Id);
 
-        //    var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2);
+            var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2);
 
-        //    var okobjectResult = (OkObjectResult)result.Result;
+            var okobjectResult = (OkObjectResult)result.Result;
 
-        //    var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
-        //    var assignmentsList = resultValue.Data;
+            var assignmentsList = resultValue.Data;
 
-        //    var isSorted = assignmentsList.SequenceEqual(expected);
-        //    // Assert
-        //    Assert.True(isSorted);
-        //    Assert.Equal(assignmentsList.Count(), expected.Count());
-        //}
+            var isSorted = assignmentsList.SequenceEqual(expected);
+            // Assert
+            Assert.True(isSorted);
+            Assert.Equal(assignmentsList.Count(), expected.Count());
+        }
 
-        //[Fact]
-        //public async Task GetList_SearchString_WithData()
-        //{
-        //    // Arrange 
-        //    ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
-        //    var searchString = "SD";
-        //    // Act 
-        //    var result = await returnRequestController.Get(1, 2, searchString);
+        [Fact]
+        public async Task GetList_SearchString_WithData()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            var searchString = "SD";
+            // Act 
+            var result = await returnRequestController.Get(1, 2, searchString);
 
-        //    var list = _context.Assignments
-        //        .Include(x => x.Asset)
-        //        .Include(x => x.AssignedToAppUser)
-        //        .Include(x => x.AssignedByAppUser)
-        //        .Where(x => !x.IsDeleted &&
-        //            (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-        //            || x.State == Domain.Enums.Assignment.State.Completed) &&
-        //            (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString)))
-        //        .Select(x => new ViewListReturnRequestResponse
-        //        {
-        //            Id = x.Id,
-        //            NoNumber = x.Id,
-        //            AssetCode = x.Asset.AssetCode,
-        //            AssetName = x.Asset.Name,
-        //            RequestedBy = x.AssignedToAppUser.UserName,
-        //            AcceptedBy = x.AssignedByAppUser.UserName,
-        //            AssignedDate = x.AssignedDate,
-        //            ReturnedDate = x.ReturnedDate,
-        //            State = x.State,
-        //        })
-        //        .OrderBy(x => x.Id);
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => x.Assignment.Asset.Name.Contains(searchString) ||
+                    x.Assignment.Asset.AssetCode.Contains(searchString) ||
+                    x.AssignedByUser.UserName.Contains(searchString))
+                .Select(x => new ViewListReturnRequestResponse
+                {
+                    Id = x.Id,
+                    NoNumber = x.Id,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
+                    AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
+                    State = x.State,
+                })
+                .OrderBy(x => x.Id);
 
-        //    var expected = JsonConvert.SerializeObject(StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
+            var expected = JsonConvert.SerializeObject(StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
-        //    var okobjectResult = (OkObjectResult)result.Result;
+            var okobjectResult = (OkObjectResult)result.Result;
 
-        //    var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
-        //    var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
+            var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
-        //    var isSorted = assignmentsList.SequenceEqual(expected);
-        //    // Assert
-        //    Assert.True(isSorted);
-        //    Assert.Equal(assignmentsList.Count(), expected.Count());
-        //}
+            var isSorted = assignmentsList.SequenceEqual(expected);
+            // Assert
+            Assert.True(isSorted);
+            Assert.Equal(assignmentsList.Count(), expected.Count());
+        }
 
-        //[Fact]
-        //public async Task GetList_SearchString_WithOutData()
-        //{
-        //    // Arrange 
-        //    ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
-        //    var searchString = "9haha blabla";
-        //    // Act 
-        //    var result = await returnRequestController.Get(1, 2, searchString);
+        [Fact]
+        public async Task GetList_SearchString_WithOutData()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            var searchString = "9haha blabla";
+            // Act 
+            var result = await returnRequestController.Get(1, 2, searchString);
 
-        //    var list = _context.Assignments
-        //        .Include(x => x.Asset)
-        //        .Include(x => x.AssignedToAppUser)
-        //        .Include(x => x.AssignedByAppUser)
-        //        .Where(x => !x.IsDeleted &&
-        //            (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-        //            || x.State == Domain.Enums.Assignment.State.Completed) &&
-        //            (x.Asset.Name.Contains(searchString) || x.Asset.AssetCode.Contains(searchString) || x.AssignedToAppUser.UserName.Contains(searchString)))
-        //        .Select(x => new ViewListReturnRequestResponse
-        //        {
-        //            Id = x.Id,
-        //            NoNumber = x.Id,
-        //            AssetCode = x.Asset.AssetCode,
-        //            AssetName = x.Asset.Name,
-        //            RequestedBy = x.AssignedToAppUser.UserName,
-        //            AcceptedBy = x.AssignedByAppUser.UserName,
-        //            AssignedDate = x.AssignedDate,
-        //            ReturnedDate = x.ReturnedDate,
-        //            State = x.State,
-        //        })
-        //        .OrderBy(x => x.Id);
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => x.Assignment.Asset.Name.Contains(searchString) ||
+                    x.Assignment.Asset.AssetCode.Contains(searchString) ||
+                    x.AssignedByUser.UserName.Contains(searchString))
+                .Select(x => new ViewListReturnRequestResponse
+                {
+                    Id = x.Id,
+                    NoNumber = x.Id,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
+                    AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
+                    State = x.State,
+                })
+                .OrderBy(x => x.Id);
 
-        //    var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2);
+            var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2);
 
-        //    var okobjectResult = (OkObjectResult)result.Result;
+            var okobjectResult = (OkObjectResult)result.Result;
 
-        //    var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
-        //    var assignmentsList = resultValue.Data;
+            var assignmentsList = resultValue.Data;
 
-        //    var isSorted = assignmentsList.SequenceEqual(expected);
-        //    // Assert
-        //    Assert.True(isSorted);
-        //    Assert.Equal(assignmentsList.Count(), expected.Count());
-        //}
+            var isSorted = assignmentsList.SequenceEqual(expected);
+            // Assert
+            Assert.True(isSorted);
+            Assert.Equal(assignmentsList.Count(), expected.Count());
+        }
 
-        //[Fact]
-        //public async Task GetList_FilterState()
-        //{
-        //    // Arrange 
-        //    ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
-        //    var state = (int)AssetManagement.Domain.Enums.Assignment.State.Accepted;
-        //    // Act 
-        //    var result = await returnRequestController.Get(1, 2, stateFilter: state.ToString());
+        [Fact]
+        public async Task GetList_FilterState()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            var state = (int)AssetManagement.Domain.Enums.Assignment.State.Accepted;
+            // Act 
+            var result = await returnRequestController.Get(1, 2, stateFilter: state.ToString());
 
-        //    var list = _context.Assignments
-        //        .Include(x => x.Asset)
-        //        .Include(x => x.AssignedToAppUser)
-        //        .Include(x => x.AssignedByAppUser)
-        //        .Where(x => !x.IsDeleted &&
-        //            (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-        //            || x.State == Domain.Enums.Assignment.State.Completed) &&
-        //            (int)x.State == state)
-        //        .Select(x => new ViewListReturnRequestResponse
-        //        {
-        //            Id = x.Id,
-        //            NoNumber = x.Id,
-        //            AssetCode = x.Asset.AssetCode,
-        //            AssetName = x.Asset.Name,
-        //            RequestedBy = x.AssignedToAppUser.UserName,
-        //            AcceptedBy = x.AssignedByAppUser.UserName,
-        //            AssignedDate = x.AssignedDate,
-        //            ReturnedDate = x.ReturnedDate,
-        //            State = x.State,
-        //        })
-        //        .OrderBy(x => x.Id);
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => (int)x.State == state)
+                .Select(x => new ViewListReturnRequestResponse
+                {
+                    Id = x.Id,
+                    NoNumber = x.Id,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
+                    AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
+                    State = x.State,
+                })
+                .OrderBy(x => x.Id);
 
-        //    var expected = JsonConvert.SerializeObject(
-        //        StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
+            var expected = JsonConvert.SerializeObject(
+                StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
-        //    var okobjectResult = (OkObjectResult)result.Result;
+            var okobjectResult = (OkObjectResult)result.Result;
 
-        //    var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
-        //    var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
+            var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
-        //    Assert.Equal(expected, assignmentsList);
-        //}
+            Assert.Equal(expected, assignmentsList);
+        }
 
-        //[Fact]
-        //public async Task GetList_FilterAssignedDate()
-        //{
-        //    // Arrange 
-        //    ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
-        //    var assignedDateFilter = "2022-11-28";
-        //    // Act 
-        //    var result = await returnRequestController.Get(1, 2, assignedDateFilter);
+        [Fact]
+        public async Task GetList_FilterReturnedDate()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            var returnedDateFilter = "2022-12-09";
+            // Act 
+            var result = await returnRequestController.Get(1, 2, returnedDateFilter: returnedDateFilter);
 
-        //    var list = _context.Assignments
-        //        .Include(x => x.Asset)
-        //        .Include(x => x.AssignedToAppUser)
-        //        .Include(x => x.AssignedByAppUser)
-        //        .Where(x => !x.IsDeleted &&
-        //            (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-        //            || x.State == Domain.Enums.Assignment.State.Completed) &&
-        //            x.AssignedDate.Date == DateTime.Parse(assignedDateFilter).Date)
-        //        .Select(x => new ViewListReturnRequestResponse
-        //        {
-        //            Id = x.Id,
-        //            NoNumber = x.Id,
-        //            AssetCode = x.Asset.AssetCode,
-        //            AssetName = x.Asset.Name,
-        //            RequestedBy = x.AssignedToAppUser.UserName,
-        //            AcceptedBy = x.AssignedByAppUser.UserName,
-        //            AssignedDate = x.AssignedDate,
-        //            ReturnedDate = x.ReturnedDate,
-        //            State = x.State,
-        //        })
-        //        .OrderBy(x => x.Id);
-        //    var expected = JsonConvert.SerializeObject(
-        //        StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Where(x => x.ReturnedDate.Value.Date == DateTime.Parse(returnedDateFilter).Date)
+                .Select(x => new ViewListReturnRequestResponse
+                {
+                    Id = x.Id,
+                    NoNumber = x.Id,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
+                    AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
+                    State = x.State,
+                })
+                .OrderBy(x => x.Id);
 
-        //    var okobjectResult = (OkObjectResult)result.Result;
+            var expected = JsonConvert.SerializeObject(
+                StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
-        //    var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
+            var okobjectResult = (OkObjectResult)result.Result;
 
-        //    var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
-        //    Assert.Equal(expected, assignmentsList);
-        //}
+            var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
-        //[Fact]
-        //public async Task GetList_ForDefaultSortedByAssetCode()
-        //{
-        //    // Arrange 
-        //    ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
-        //    var sortType = "assetCode";
-        //    // Act 
-        //    var result = await returnRequestController.Get(1, 2, sort: sortType);
+            Assert.Equal(expected, assignmentsList);
+        }
 
-        //    var list = _context.Assignments
-        //        .Include(x => x.Asset)
-        //        .Include(x => x.AssignedToAppUser)
-        //        .Include(x => x.AssignedByAppUser)
-        //        .Where(x => !x.IsDeleted &&
-        //            (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-        //            || x.State == Domain.Enums.Assignment.State.Completed))
-        //        .Select(x => new ViewListReturnRequestResponse
-        //        {
-        //            Id = x.Id,
-        //            NoNumber = x.Id,
-        //            AssetCode = x.Asset.AssetCode,
-        //            AssetName = x.Asset.Name,
-        //            RequestedBy = x.AssignedToAppUser.UserName,
-        //            AcceptedBy = x.AssignedByAppUser.UserName,
-        //            AssignedDate = x.AssignedDate,
-        //            ReturnedDate = x.ReturnedDate,
-        //            State = x.State,
-        //        }).OrderBy(x => x.AssetCode);
+        [Fact]
+        public async Task GetList_ForDefaultSortedByAssetCode()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            var sortType = "assetCode";
+            // Act 
+            var result = await returnRequestController.Get(1, 2, sort: sortType);
 
-        //    var expected = JsonConvert.SerializeObject(
-        //        StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Select(x => new ViewListReturnRequestResponse
+                {
+                    Id = x.Id,
+                    NoNumber = x.Id,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
+                    AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
+                    State = x.State,
+                })
+                .OrderBy(x => x.AssetCode);
 
-        //    var okobjectResult = (OkObjectResult)result.Result;
+            var expected = JsonConvert.SerializeObject(
+                StaticFunctions<ViewListReturnRequestResponse>.Paging(list, 1, 2));
 
-        //    var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
+            var okobjectResult = (OkObjectResult)result.Result;
 
-        //    var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
-        //    Assert.Equal(expected, assignmentsList);
-        //}
+            var assignmentsList = JsonConvert.SerializeObject(resultValue.Data);
 
-        //[Fact]
-        //public async Task GetList_ForDefault_InvalidPaging()
-        //{
-        //    // Arrange 
-        //    ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            Assert.Equal(expected, assignmentsList);
+        }
 
-        //    // Act 
-        //    var result = await returnRequestController.Get(-1, 2);
+        [Fact]
+        public async Task GetList_ForDefault_InvalidPaging()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
 
-        //    var list = _context.Assignments
-        //        .Include(x => x.Asset)
-        //        .Include(x => x.AssignedToAppUser)
-        //        .Include(x => x.AssignedByAppUser)
-        //        .Where(x => !x.IsDeleted &&
-        //            (x.State == Domain.Enums.Assignment.State.WaitingForReturning
-        //            || x.State == Domain.Enums.Assignment.State.Completed))
-        //        .Select(x => new ViewListReturnRequestResponse
-        //        {
-        //            Id = x.Id,
-        //            NoNumber = x.Id,
-        //            AssetCode = x.Asset.AssetCode,
-        //            AssetName = x.Asset.Name,
-        //            RequestedBy = x.AssignedToAppUser.UserName,
-        //            AcceptedBy = x.AssignedByAppUser.UserName,
-        //            AssignedDate = x.AssignedDate,
-        //            ReturnedDate = x.ReturnedDate,
-        //            State = x.State,
-        //        })
-        //        .OrderBy(x => x.Id);
+            // Act 
+            var result = await returnRequestController.Get(-1, 2);
 
-        //    var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, -1, 2);
+            var list = _context.ReturnRequests
+                .Include(x => x.AssignedByUser)
+                .Include(x => x.AcceptedByUser)
+                .Include(x => x.Assignment)
+                    .ThenInclude(a => a.Asset)
+                .Select(x => new ViewListReturnRequestResponse
+                {
+                    Id = x.Id,
+                    NoNumber = x.Id,
+                    AssetCode = x.Assignment.Asset.AssetCode,
+                    AssetName = x.Assignment.Asset.Name,
+                    RequestedBy = x.AssignedByUser.UserName,
+                    AcceptedBy = x.AcceptedByUser.UserName,
+                    AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
+                    State = x.State,
+                })
+                .OrderBy(x => x.Id);
 
-        //    var okobjectResult = (OkObjectResult)result.Result;
+            var expected = StaticFunctions<ViewListReturnRequestResponse>.Paging(list, -1, 2);
 
-        //    var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
+            var okobjectResult = (OkObjectResult)result.Result;
 
-        //    var assignmentsList = resultValue.Data;
+            var resultValue = (ViewListPageResult<ViewListReturnRequestResponse>)okobjectResult.Value;
 
-        //    var isSorted = assignmentsList.SequenceEqual(expected);
-        //    // Assert
-        //    Assert.True(isSorted);
-        //    Assert.Equal(assignmentsList.Count(), expected.Count());
-        //}
-        //#endregion
+            var assignmentsList = resultValue.Data;
+
+            var isSorted = assignmentsList.SequenceEqual(expected);
+            // Assert
+            Assert.True(isSorted);
+            Assert.Equal(assignmentsList.Count(), expected.Count());
+        }
+        #endregion
     }
 }

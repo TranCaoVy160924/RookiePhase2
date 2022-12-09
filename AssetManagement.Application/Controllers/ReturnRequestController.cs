@@ -58,6 +58,7 @@ namespace AssetManagement.Application.Controllers
             [FromQuery] string? order = "ASC",
             [FromQuery] string? createdId = "")
         {
+            //var tempList = _dbContext.ReturnRequests.ToList();
             var list = _dbContext.ReturnRequests
                 .Include(x => x.AssignedByUser)
                 .Include(x => x.AcceptedByUser)
