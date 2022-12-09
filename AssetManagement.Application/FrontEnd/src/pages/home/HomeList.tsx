@@ -81,7 +81,22 @@ export default () => {
                     <TextField label="Asset Name" source="assetName" />
                     <TextField label="Category" source="categoryName" />
                     <DateField label="Assigned Date" source="assignedDate" locales="en-GB" />
-                    <FunctionField source="state" render={(record) => record.state == "0" ? "Accepted" : "Waiting for acceptance"} />
+                    <FunctionField source="state" render={(record) => {
+                        switch (record.state) {
+                            case 0: {
+                                return "Accepted";
+                            }
+                            case 1: {
+                                return "Waiting For Acceptance";
+                            }
+                            case 2: {
+                                return "Returned";
+                            }
+                            case 3: {
+                                return "Waiting For Returning";
+                            }
+                        }
+                    }} />
                     <ButtonGroup sx={{ border: null }}>
                         <FunctionField render={(record) => {
                             if (record.state === 1) {
