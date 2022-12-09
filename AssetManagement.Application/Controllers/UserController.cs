@@ -396,7 +396,7 @@ namespace AssetManagement.Application.Controllers
                 }
                 if (deletingUser.AssignedToAssignments.Count() > 0)
                 {
-                    return BadRequest("Can not delete user with valid assignments");
+                    return BadRequest(new ErrorResponseResult<string>("There are valid assignments belonging to this user. Please close all assignments before disabling user."));
                 }
                 deletingUser.IsDeleted = true;
                 await _dbContext.SaveChangesAsync();
