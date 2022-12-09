@@ -50,8 +50,10 @@ export default (props) => {
    };
 
    useEffect(() => {
-      var tmp = filterValues.categories;
-      setFilters({ states: states, categories: tmp }, displayedFilters);
+      var categories = filterValues.categories;
+      var searchString = filterValues.searchString;
+      var assignedDate = filterValues.assignedDateFilter;
+      setFilters({ states: states, categories: categories, searchString: searchString, assignedDateFilter: assignedDate }, displayedFilters);
    }, [states])
 
    useEffect(() => {

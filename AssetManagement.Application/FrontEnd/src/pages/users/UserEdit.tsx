@@ -121,6 +121,9 @@ const UserEdit = () => {
       .update("user", { id: user.staffCode, data: changes, previousData: user })
       .then((response) => {
         localStorage.setItem("item", JSON.stringify(response.data));
+        if (response.data.username == localStorage.getItem("userName")) {
+          localStorage.clear();
+        }
         navigate("/user");
         notify("User edited successfully!");
       })

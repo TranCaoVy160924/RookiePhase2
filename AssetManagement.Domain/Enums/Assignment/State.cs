@@ -6,6 +6,7 @@
         WaitingForAcceptance,
         Completed,
         Returned,
-        WaitingForReturning
+        WaitingForReturning,
+        Assigned
     }
 }
