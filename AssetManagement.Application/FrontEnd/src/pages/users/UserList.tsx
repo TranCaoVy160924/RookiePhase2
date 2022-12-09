@@ -15,7 +15,7 @@ import {
     Button,
     DeleteButton
 } from "react-admin";
-import { ButtonGroup, Stack, Container, Typography } from "@mui/material";
+import { ButtonGroup, Stack, Container, Typography, ButtonBase } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AssetsPagination from "../../components/pagination/AssetsPagination";
 import StateFilterSelect from "../../components/select/StateFilterSelect";
@@ -122,8 +122,6 @@ export default () => {
                                     setDeleting={setDeleting}
                                 />
                             }
-                            else return <DeleteButton icon={<HighlightOffIcon />} disabled variant="text" size="small" label="" 
-                            sx={listStyle.buttonToolbar}/>
                         }} />
 
                     </ButtonGroup>
