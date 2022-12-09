@@ -4,9 +4,8 @@
     {
         Accepted,
         WaitingForAcceptance,
-        Completed,
         Returned,
         WaitingForReturning,
-        Assigned
+        Declined, 
     }
 }
