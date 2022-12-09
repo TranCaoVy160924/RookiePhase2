@@ -319,7 +319,7 @@ namespace AssetManagement.Application.Controllers
 
         [HttpGet("/api/home")]
         [Authorize]
-        public async Task<ActionResult<ViewListPageResult<ViewListAssignmentResponse>>> GetHome(
+        public async Task<ActionResult<ViewListPageResult<MyAssignmentResponse>>> GetHome(
             [FromQuery] int start,
             [FromQuery] int end,
             [FromQuery] string? sort = "assetCode",
@@ -328,14 +328,15 @@ namespace AssetManagement.Application.Controllers
             // var username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
             var userName = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
             var list = _dbContext.Assignments
-                .Where(x => !x.IsDeleted && x.AssignedTo == Guid.Parse(userName))
-                .Select(x => new ViewListAssignmentResponse
+                .Include(x => x.AssignedToAppUser)
+                .Where(x => !x.IsDeleted && x.AssignedToAppUser.UserName.Equals(userName) &&
+                    x.AssignedDate.Date <= DateTime.Today.Date)
+                .Select(x => new MyAssignmentResponse
                 {
                     Id = x.Id,
                     AssetCode = x.Asset.AssetCode,
                     AssetName = x.Asset.Name,
-                    AssignedTo = x.AssignedToAppUser.UserName,
-                    AssignedBy = x.AssignedByAppUser.UserName,
+                    CategoryName = x.Asset.Category.Name,
                     AssignedDate = x.AssignedDate,
                     State = x.State,
                 });
@@ -356,14 +357,9 @@ namespace AssetManagement.Application.Controllers
                         list = list.OrderBy(x => x.AssetName);
                         break;
                     }
-                case "assignedTo":
+                case "categoryName":
                     {
-                        list = list.OrderBy(x => x.AssignedTo);
-                        break;
-                    }
-                case "assignedBy":
-                    {
-                        list = list.OrderBy(x => x.AssignedBy);
+                        list = list.OrderBy(x => x.CategoryName);
                         break;
                     }
                 case "assignedDate":
@@ -388,9 +384,9 @@ namespace AssetManagement.Application.Controllers
                 list = list.Reverse();
             }
 
-            var sortedResult = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end);
+            var sortedResult = StaticFunctions<MyAssignmentResponse>.Paging(list, start, end);
 
-            return Ok(new ViewListPageResult<ViewListAssignmentResponse> { Data = sortedResult, Total = list.Count() });
+            return Ok(new ViewListPageResult<MyAssignmentResponse> { Data = sortedResult, Total = list.Count() });
         }
     }
 }
