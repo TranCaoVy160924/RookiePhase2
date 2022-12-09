@@ -23,7 +23,7 @@ namespace AssetManagement.Contracts.ReturnRequest.Response
         
         public string AcceptedBy { get; set; }
 
-        public DateTime ReturnedDate { get; set; }
+        public DateTime? ReturnedDate { get; set; }
 
         public State State { get; set; }
 

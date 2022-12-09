@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssetManagement.Domain.Enums.Assignment
+namespace AssetManagement.Domain.Enums.ReturnRequest
 {
     public enum State
     {
-        Accepted,
-        WaitingForAcceptance,
-        Completed,
-        Returned,
         WaitingForReturning,
-        Assigned
+        Completed
     }
 }
