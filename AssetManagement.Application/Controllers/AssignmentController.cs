@@ -228,13 +228,16 @@ namespace AssetManagement.Application.Controllers
             if (!string.IsNullOrEmpty(createdId))
             {
                 ViewListAssignmentResponse recentlyCreatedItem = list.Where(item => item.Id == int.Parse(createdId)).AsNoTracking().FirstOrDefault();
-                list = list.Where(item => item.Id != int.Parse(createdId));
+                if (recentlyCreatedItem != null)
+                {
+                    list = list.Where(item => item.Id != int.Parse(createdId));
 
-                var sortedResultWithCreatedIdParam = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end - 1);
+                    var sortedResultWithCreatedIdParam = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end - 1);
 
-                sortedResultWithCreatedIdParam.Insert(0, recentlyCreatedItem);
+                    sortedResultWithCreatedIdParam.Insert(0, recentlyCreatedItem);
 
-                return Ok(new ViewListPageResult<ViewListAssignmentResponse> { Data = sortedResultWithCreatedIdParam, Total = list.Count() + 1 });
+                    return Ok(new ViewListPageResult<ViewListAssignmentResponse> { Data = sortedResultWithCreatedIdParam, Total = list.Count() + 1 });
+                }
             }
 
             var sortedResult = StaticFunctions<ViewListAssignmentResponse>.Paging(list, start, end);
@@ -293,7 +296,7 @@ namespace AssetManagement.Application.Controllers
                 x.AssignedTo == staffId) == null;
             if (!isUnique)
             {
-                return BadRequest(new ErrorResponseResult<string>("Try again."));
+                return BadRequest(new ErrorResponseResult<string>("Create Assignment unsuccessfully. Existed an assignment with selected User and Asset"));
             }
             try
             {
