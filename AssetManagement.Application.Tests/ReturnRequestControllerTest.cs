@@ -35,7 +35,7 @@ namespace AssetManagement.Application.Tests
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
                 .UseInMemoryDatabase(databaseName: "AssignmentTestDb").Options;
 
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new AssignmentProfile())).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new ReturnRequestProfile())).CreateMapper();
 
             // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
@@ -353,16 +353,17 @@ namespace AssetManagement.Application.Tests
             // Arrange 
             ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
             var canceledRequest = _mapper
-                .Map<AssignmentResponse>(await _context.Assignments
-                    .Where(a => a.Id == 1 && !a.IsDeleted &&
-                        a.State == Domain.Enums.Assignment.State.WaitingForReturning)
-                    .FirstOrDefaultAsync());
+                .Map<CancelReturnRequestResponse>(await _context.ReturnRequests
+                .Include(a => a.Assignment)
+                .Where(a => a.Id == 1 && !a.IsDeleted &&
+                    a.State == Domain.Enums.ReturnRequest.State.WaitingForReturning)
+                .FirstOrDefaultAsync());
             //canceledRequest = Domain.Enums.Assignment.State.Accepted;
 
             // Act 
             var result = await returnRequestController.CancelReturnRequest(1);
 
-            string resultObject = ConvertOkObject<AssignmentResponse>(result);
+            string resultObject = ConvertOkObject<CancelReturnRequestResponse>(result);
             string expectedObject = JsonConvert.SerializeObject(canceledRequest);
 
             // Assert

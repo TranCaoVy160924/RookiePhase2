@@ -27,6 +27,7 @@ builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(AssignmentProfile)));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(AssetProfile)));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(CategoryProfile)));
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(ReturnRequestProfile)));
 
 //password policy configuration
 builder.Services.Configure<IdentityOptions>(options =>
