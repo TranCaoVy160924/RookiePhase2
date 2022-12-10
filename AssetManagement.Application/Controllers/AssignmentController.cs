@@ -136,7 +136,7 @@ namespace AssetManagement.Application.Controllers
             [FromQuery] string? createdId = "")
         {
             var list = _dbContext.Assignments
-                .Where(x => !x.IsDeleted)
+                .Where(x => !x.IsDeleted && x.State != State.Returned)
                 .Select(x => new ViewListAssignmentResponse
                 {
                     Id = x.Id,
@@ -322,15 +322,15 @@ namespace AssetManagement.Application.Controllers
         public async Task<ActionResult<ViewListPageResult<MyAssignmentResponse>>> GetHome(
             [FromQuery] int start,
             [FromQuery] int end,
-            [FromQuery] string? sort = "assetCode",
+            [FromQuery] string? sort = "id",
             [FromQuery] string? order = "ASC")
         {
-            // var username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
-            var userName = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
+            var userName = User.Identity.Name;
             var list = _dbContext.Assignments
                 .Include(x => x.AssignedToAppUser)
                 .Where(x => !x.IsDeleted && x.AssignedToAppUser.UserName.Equals(userName) &&
-                    x.AssignedDate.Date <= DateTime.Today.Date)
+                    x.AssignedDate.Date <= DateTime.Today.Date &&
+                    x.State != State.Declined && x.State != State.Returned)
                 .Select(x => new MyAssignmentResponse
                 {
                     Id = x.Id,

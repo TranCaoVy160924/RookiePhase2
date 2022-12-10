@@ -82,12 +82,22 @@ const AssignmentShow = ({ isOpened, toggle, assignment }) => {
                         <DataText><DateField source="assignedDate" locales="en-GB" /></DataText>
                         <DataLabel label="State" />
                         <DataText>
-                            <FunctionField  render={record =>  record ? (record.state == 0
-                                ? "Accepted"
-                                : record.state == 1
-                                ? "Waiting for acceptance"
-                                : "") : ""
-                            }/>
+                            <FunctionField render={record => {
+                                switch (record.state) {
+                                    case 0: {
+                                        return "Accepted";
+                                    }
+                                    case 1: {
+                                        return "Waiting For Acceptance";
+                                    }
+                                    case 2: {
+                                        return "Returned";
+                                    }
+                                    case 3: {
+                                        return "Waiting For Returning";
+                                    }
+                                }
+                            }} />
                         </DataText>
                         <DataLabel label="Note" />
                         <DataText><TextField source="note" /></DataText>
