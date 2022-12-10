@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { assetProvider } from "../../providers/assetProvider/assetProvider";
 import { listStyle } from "../../styles/listStyle";
 import AssignmentShow from "../assignments/AssignmentShow";
+import CustomDisableWithConfirm from '../../components/modal/confirmReturnModal/CustomDisableWithConfirm'
 
 export default () => {
     const [isOpened, setIsOpened] = useState(false);
@@ -108,6 +109,16 @@ export default () => {
                                             confirmTitle="Are you sure?"
                                             confirmContent="Do you want to delete this asset?"
                                             mutationOptions={{ onSuccess: () => refresh() }} isOpen={deleting} setDeleting={setDeleting} />
+                                        <CustomDisableWithConfirm
+                                            icon={<ReplayIcon />}
+                                            confirmTitle="Are you sure?"
+                                            confirmContent="Do you want to create a returning request for this asset?"
+                                            mutationOptions={{ onSuccess: () => refresh() }}
+                                            disabled={true}
+                                            isOpen={false}
+                                            setDeleting={setDeleting}
+                                            record={record}
+                                        />
                                     </ButtonGroup>
 
                                 )
@@ -119,15 +130,20 @@ export default () => {
                                             sx={listStyle.buttonToolbar} />
                                         <DeleteButton icon={<HighlightOffIcon />} disabled variant="text" size="small" label=""
                                             sx={listStyle.buttonToolbar} />
+                                        <CustomDisableWithConfirm
+                                            icon={<ReplayIcon />}
+                                            confirmTitle="Are you sure?"
+                                            confirmContent="Do you want to create a returning request for this asset?"
+                                            mutationOptions={{ onSuccess: () => refresh() }}
+                                            disabled={!(record.state === 0)}
+                                            isOpen={false}
+                                            setDeleting={setDeleting}
+                                            record={record}
+                                        />
                                     </ButtonGroup>
                                 )
                             }
                         }} />
-
-                        <Button variant="text" size="small"
-                            sx={listStyle.returningButtonToolbar}>
-                            <ReplayIcon />
-                        </Button>
                     </ButtonGroup>
                 </Datagrid>
                 <AssetsPagination />

@@ -27,7 +27,7 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("api/home/{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> CreateReturnRequest(int id)
         {
             string userName = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
