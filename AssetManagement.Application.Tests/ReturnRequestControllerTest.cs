@@ -18,6 +18,8 @@ using AssetManagement.Contracts.Assignment.Request;
 using AssetManagement.Application.Tests.TestHelper;
 using Microsoft.AspNetCore.Identity;
 using AssetManagement.Contracts.ReturnRequest.Response;
+using Microsoft.AspNetCore.Http;
+using System.Security.Principal;
 
 namespace AssetManagement.Application.Tests
 {
@@ -343,6 +345,102 @@ namespace AssetManagement.Application.Tests
             // Assert
             Assert.True(isSorted);
             Assert.Equal(assignmentsList.Count(), expected.Count());
+        }
+        #endregion
+
+        #region Create Returning Request
+        [Fact]
+        public async Task CreateReturnRequest_InvalidUser()
+        {
+            // Arrange
+            int Id = 1;
+
+            ReturnRequestController returnRequest = new ReturnRequestController(_context, _mapper);
+            List<AppUser> listUsers = _context.AppUsers.ToList();
+            AppUser currentUser = listUsers.ElementAt(1);
+            currentUser.UserName = "Invalid User";
+            returnRequest.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new GenericPrincipal(new GenericIdentity(currentUser.UserName), null)
+                }
+            };
+
+            Assignment expectedAssignment = _context.Assignments.FirstOrDefault(x => x.Id == Id);
+
+            // Act
+            var objectResult = await returnRequest.CreateReturnRequest(Id);
+            var okObjectResult = objectResult as BadRequestObjectResult;
+            ErrorResponseResult<string> ok_data = okObjectResult.Value as ErrorResponseResult<string>;
+
+            // Assert
+            Assert.NotNull(ok_data);
+            Assert.Equal(ok_data.Message, "Invalid User");
+            //Assert.Equal((int)expectedAssignment.State, (int)Domain.Enums.Assignment.State.WaitingForReturning);
+            //Assert.Equal(_context.ReturnRequests.LastOrDefault().State, Domain.Enums.ReturnRequest.State.WaitingForReturning);
+        }
+
+        [Fact]
+        public async Task CreateReturnRequest_InvalidAssignment()
+        {
+            // Arrange
+            int Id = 999;
+
+            ReturnRequestController returnRequest = new ReturnRequestController(_context, _mapper);
+            List<AppUser> listUsers = _context.AppUsers.ToList();
+            AppUser currentUser = listUsers.ElementAt(1);
+            returnRequest.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new GenericPrincipal(new GenericIdentity(currentUser.UserName), null)
+                }
+            };
+
+            Assignment expectedAssignment = _context.Assignments.FirstOrDefault(x => x.Id == Id);
+
+            // Act
+            var objectResult = await returnRequest.CreateReturnRequest(Id);
+            var okObjectResult = objectResult as BadRequestObjectResult;
+            ErrorResponseResult<string> ok_data = okObjectResult.Value as ErrorResponseResult<string>;
+
+            // Assert
+            Assert.NotNull(ok_data);
+            Assert.Equal(ok_data.Message, "Invalid Assignment");
+            //Assert.Equal((int)expectedAssignment.State, (int)Domain.Enums.Assignment.State.WaitingForReturning);
+            //Assert.Equal(_context.ReturnRequests.LastOrDefault().State, Domain.Enums.ReturnRequest.State.WaitingForReturning);
+        }
+
+        [Fact]
+        public async Task CreateReturnRequest_Success()
+        {
+            // Arrange
+            int Id = 1;
+
+            ReturnRequestController returnRequest = new ReturnRequestController(_context, _mapper);
+            List<AppUser> listUsers = _context.AppUsers.ToList();
+            AppUser currentUser = listUsers.ElementAt(1);
+            returnRequest.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new GenericPrincipal(new GenericIdentity(currentUser.UserName), null)
+                }
+            };
+
+            Assignment expectedAssignment = _context.Assignments.FirstOrDefault(x => x.Id == Id);
+
+            // Act
+            var objectResult = await returnRequest.CreateReturnRequest(Id);
+            var okObjectResult = objectResult as OkObjectResult;
+            SuccessResponseResult<string> ok_data = okObjectResult.Value as SuccessResponseResult<string>;
+
+            // Assert
+            Assert.NotNull(ok_data);
+            Assert.Equal(ok_data.Result, "Create ReturningRequest successfully");
+            Assert.Equal((int)expectedAssignment.State, (int)Domain.Enums.Assignment.State.WaitingForReturning);
+            Assert.Equal(_context.ReturnRequests.LastOrDefault().State, Domain.Enums.ReturnRequest.State.WaitingForReturning);
         }
         #endregion
     }

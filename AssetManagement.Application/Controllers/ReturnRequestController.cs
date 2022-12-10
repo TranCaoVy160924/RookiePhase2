@@ -41,13 +41,18 @@ namespace AssetManagement.Application.Controllers
             {
                 return BadRequest(new ErrorResponseResult<string>("Invalid Assignment"));
             }
-            ReturnRequest returnRequest = _mapper.Map<ReturnRequest>(assignment);
-            returnRequest.AssignedBy = currentUser.Id;
-            returnRequest.AcceptedBy = null;
-            returnRequest.ReturnedDate = null;
-            returnRequest.State = Domain.Enums.ReturnRequest.State.WaitingForReturning;
+            ReturnRequest returnRequest = new ReturnRequest
+            {
+                AssignmentId = assignment.Id,
+                AssignedBy = currentUser.Id,
+                AcceptedBy = null,
+                ReturnedDate = null,
+                AssignedDate = assignment.AssignedDate,
+                State = Domain.Enums.ReturnRequest.State.WaitingForReturning
+            };
 
             assignment.State = Domain.Enums.Assignment.State.WaitingForReturning;
+            await _dbContext.ReturnRequests.AddAsync(returnRequest);
             await _dbContext.SaveChangesAsync();
 
             return Ok(new SuccessResponseResult<string>("Create ReturningRequest successfully"));
