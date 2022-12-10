@@ -115,14 +115,14 @@ function CustomDisableWithConfirm(props) {
                                 refresh();
                             }} 
                             sx={returnButtonStyle} 
-                        >Disable</MUIButton>
+                        >Yes</MUIButton>
                         <MUIButton 
                             sx={confirmButtonStyle} 
                             onClick={(e) => {
                                 setDeleting(false);
                                 setOpen(false);
                             }}
-                        >Cancel</MUIButton>
+                        >No</MUIButton>
                         <div style={{ flex: '1 0 0' }} />
                     </DialogActions>
                 </DialogContent>

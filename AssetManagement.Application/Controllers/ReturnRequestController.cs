@@ -59,19 +59,21 @@ namespace AssetManagement.Application.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReturnRequest(int id)
+        public async Task<IActionResult> CancelReturnRequest(int id)
         {
-            Assignment? assignment = await _dbContext.Assignments
+            ReturnRequest? returnRequest = await _dbContext.ReturnRequests
+                .Include(a => a.Assignment)
                 .Where(a => a.Id == id && !a.IsDeleted &&
-                    a.State == Domain.Enums.Assignment.State.WaitingForReturning)
+                    a.State == Domain.Enums.ReturnRequest.State.WaitingForReturning)
                 .FirstOrDefaultAsync();
-            if (assignment != null)
+            if (returnRequest != null)
             {
                 try
                 {
-                    assignment.State = Domain.Enums.Assignment.State.Accepted;
+                    returnRequest.IsDeleted = true;
+                    returnRequest.Assignment.State = Domain.Enums.Assignment.State.Accepted;
                     await _dbContext.SaveChangesAsync();
-                    return Ok(_mapper.Map<AssignmentResponse>(assignment));
+                    return Ok(_mapper.Map<CancelReturnRequestResponse>(returnRequest));
                 }
                 catch (Exception e) { return BadRequest(e.Message); }
             }

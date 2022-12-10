@@ -148,7 +148,7 @@ export default () => {
                                         <CustomDeleteWithConfirmButton
                                             icon={<HighlightOffIcon />}
                                             confirmTitle="Are you sure?"
-                                            confirmContent="Do you want to delete this asset?"
+                                            confirmContent="Do you want to delete this assignment?"
                                             mutationOptions={{ onSuccess: () => refresh() }} isOpen={deleting} setDeleting={setDeleting} />
                                     </ButtonGroup>
 
