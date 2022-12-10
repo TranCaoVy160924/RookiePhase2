@@ -145,7 +145,9 @@ export default () => {
                                 mutationOptions={{ onSuccess: (data) => refresh() }}
                                 isOpen={deleting}
                                 setDeleting={setDeleting}
-                                disabled={record.state == 4? false: true}
+                                disabled={record.state == 0? false: true}
+                                acceptButtonLabel="Yes"
+                                cancelButtonLabel="No"
                             />
                         )} />
                     </ButtonGroup>
