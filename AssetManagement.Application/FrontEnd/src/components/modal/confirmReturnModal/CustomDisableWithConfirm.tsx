@@ -5,9 +5,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { styled } from '@mui/material/styles';
-import { Button as MUIButton, ButtonGroup } from '@mui/material';
-import { Button, useRefresh } from 'react-admin';
-import { CreateReturnRequest } from '../../../services/returningRequest'
+import { Button as MUIButton } from '@mui/material';
+import { Button, useRefresh, useNotify } from 'react-admin';
+import * as ReturnRequestService from '../../../services/returningRequest'
 
 const titleStype = {
     bgcolor: '#F0EBEB',
@@ -60,6 +60,7 @@ function CustomDisableWithConfirm(props) {
 
     const [open, setOpen] = useState(isOpen)
     const refresh = useRefresh()
+    const notify = useNotify();
 
     return (
         <Fragment>
@@ -105,11 +106,11 @@ function CustomDisableWithConfirm(props) {
                     </DialogContentText>
                     <DialogActions>
                         <MUIButton 
-                            onClick={(e) => {
-                                setDeleting(false);
-                                // handleDelete(e);
-                                console.log(record);
+                            onClick={async (e) => {
                                 e.stopPropagation();
+                                await ReturnRequestService.CreateReturnRequest(record.id);
+                                notify("Create Returning request successfully!");
+                                setDeleting(false);
                                 setOpen(false);
                                 refresh();
                             }} 
