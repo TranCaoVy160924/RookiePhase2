@@ -37,8 +37,8 @@ namespace AssetManagement.Application.Controllers
             {
                 case "total":
                     {
-                        if (order == "ASC") categories = categories.OrderBy(c => c.Assets.Count());
-                        else categories = categories.OrderByDescending(c => c.Assets.Count());
+                        if (order == "ASC") categories = categories.OrderBy(c => c.Assets.Count(a => !a.IsDeleted));
+                        else categories = categories.OrderByDescending(c => c.Assets.Count(a => !a.IsDeleted));
                     }
                     break;
                 case "available":
