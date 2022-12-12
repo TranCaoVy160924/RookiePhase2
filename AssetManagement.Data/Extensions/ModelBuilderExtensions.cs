@@ -225,6 +225,18 @@ namespace AssetManagement.Data.Extensions
                 });
             }
 
+            modelBuilder.Entity<Assignment>().HasData(new Assignment
+                {
+                    Id = 11,
+                    Note = $"Note for assignment {11}",
+                    AssignedDate = DateTime.Today,
+                    ReturnedDate = DateTime.Today.AddDays(11),
+                    AssetId = 4,
+                    State = Domain.Enums.Assignment.State.WaitingForAcceptance,
+                    AssignedTo = staffAbleId1,
+                    AssignedBy = adminHcmId,
+                });
+
             for (int i = 1; i <= 10; i++)
             {
                 modelBuilder.Entity<ReturnRequest>().HasData(new ReturnRequest

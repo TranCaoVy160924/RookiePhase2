@@ -743,7 +743,70 @@ namespace AssetManagement.Application.Tests
         //}
 
         #endregion
+        #region AcceptAssignment
+        [Theory]
+        [InlineData(11)]
+        public async Task AcceptAssignment_Success_ReturnAcceptAssignmentResponse(int id)
+        {
+            // Arrange 
+            AssignmentsController assignmentController = new AssignmentsController(_context, _userManager, _mapper);
 
+            // Act 
+            var response = await assignmentController.AcceptAssignment(id);
+            // string result = ConvertOkObject<AcceptAssignmentResponse>(response);
+            // string expected = JsonConvert.SerializeObject(updatedAssignment);
+
+            //Assert
+            response.Should().BeOfType<OkObjectResult>();
+        }
+        [Theory]
+        [InlineData(2)]
+        public async Task AcceptAssignment_AssignmentStateNotAccepted_ReturnBadRequest(int id)
+        {
+            // Arrange 
+            AssignmentsController assignmentController = new AssignmentsController(_context, _userManager, _mapper);
+
+            // Act 
+            var response = await assignmentController.AcceptAssignment(id);
+            // string result = ConvertOkObject<AcceptAssignmentResponse>(response);
+            // string expected = JsonConvert.SerializeObject(updatedAssignment);
+
+            //Assert
+            response.Should().BeOfType<BadRequestObjectResult>();
+        }
+        #endregion
+        #region DeclineAssignment
+        [Theory]
+        [InlineData(11)]
+        public async Task DeclineAssignment_Success_ReturnAcceptAssignmentResponse(int id)
+        {
+            // Arrange 
+            AssignmentsController assignmentController = new AssignmentsController(_context, _userManager, _mapper);
+
+            // Act 
+            var response = await assignmentController.AcceptAssignment(id);
+            // string result = ConvertOkObject<AcceptAssignmentResponse>(response);
+            // string expected = JsonConvert.SerializeObject(updatedAssignment);
+
+            //Assert
+            response.Should().BeOfType<OkObjectResult>();
+        }
+        [Theory]
+        [InlineData(2)]
+        public async Task DeclineAssignment_AssignmentStateNotAccepted_ReturnBadRequest(int id)
+        {
+            // Arrange 
+            AssignmentsController assignmentController = new AssignmentsController(_context, _userManager, _mapper);
+
+            // Act 
+            var response = await assignmentController.DeclineAssignment(id);
+            // string result = ConvertOkObject<AcceptAssignmentResponse>(response);
+            // string expected = JsonConvert.SerializeObject(updatedAssignment);
+
+            //Assert
+            response.Should().BeOfType<BadRequestObjectResult>();
+        }
+        #endregion
         #region DeleteAssignment
 #nullable disable
         #region DeleteSuccess
@@ -796,7 +859,6 @@ namespace AssetManagement.Application.Tests
         [Theory]
         [InlineData(-1)]
         [InlineData(0)]
-        [InlineData(11)]
         [InlineData(999)]
         public async Task Delete_NotFoundAsync(int id)
         {
