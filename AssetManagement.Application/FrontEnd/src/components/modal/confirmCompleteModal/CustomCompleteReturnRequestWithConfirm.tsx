@@ -1,7 +1,6 @@
 import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
 import ActionDelete from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -21,12 +20,23 @@ import {
     RedirectionSideEffect,
 } from 'ra-core';
 import { Button as MUIButton, ButtonGroup } from '@mui/material';
-import { Confirm, DeleteButton } from 'react-admin';
-import { Button, ButtonProps } from 'react-admin';
-import { Padding } from '@mui/icons-material';
+import { Button, ButtonProps, useNotify } from 'react-admin';
+import { PutComplete } from '../../../services/returningRequest';
 
-export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>(
-  props: DeleteWithConfirmButtonProps<RecordType>
+const StyledDialogContent = styled(DialogContent)`
+  &.MuiDialogContent-root {
+    background-color: #fafcfc;
+  }
+`;
+
+const StyledDialog = styled(Dialog)`
+  .MuiBackdrop-root {
+    background-color: transparent;
+  }
+`;
+
+export const CustomCompleteReturnRequestWithConfirm = <RecordType extends RaRecord = any>(
+    props: DeleteWithConfirmButtonProps<RecordType>
 ) => {
     const {
         className,
@@ -41,33 +51,33 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
         translateOptions = {},
         mutationOptions,
         isOpen,
-        setDeleting,
-        acceptButtonLabel = "Delete",
-        cancelButtonLabel = "Cancel",
+        setComplete,
+        onSuccess,
         ...rest
     } = props;
     const translate = useTranslate();
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
+    const notify = useNotify();
 
     const {
-      open,
-      isLoading,
-      handleDialogOpen,
-      handleDialogClose,
-      handleDelete,
-  } = useDeleteWithConfirmController({
-      record,
-      redirect,
-      mutationMode,
-      onClick,
-      mutationOptions,
-      resource,
+        open,
+        isLoading,
+        handleDialogOpen,
+        handleDialogClose,
+    } = useDeleteWithConfirmController({
+        record,
+        redirect,
+        mutationMode,
+        onClick,
+        mutationOptions,
+        resource,
     });
 
     const titleStype = {
         bgcolor: '#F0EBEB',
         color: "#E80E0E",
+        border: "1px solid #000",
         // borderRadius: "1px 1px 0px 0px"
         borderTopLeftRadius: "4px",
         borderTopRightRadius: "4px",
@@ -75,6 +85,7 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
     }
 
     const contentStyle = {
+        border: "1px solid #000",
         borderBottomLeftRadius: '4px',
         borderBottomRightRadius: '4px',
         color: "#000"
@@ -83,42 +94,41 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
     const deleteButtonStyle = {
         bgcolor: "#E80E0E",
         color: "#FFFFFF",
-        border: "1px solid #E80E0E",
+        border: "1px solid #000",
         borderRadius: 1,
 
         "&:hover": {
-            color: "#fff",
-            bgcolor: "#424242",
-            border: "1px solid #424242",
+            color: "#000"
         },
     }
 
     const confirmButtonStyle = {
         bgcolor: "#F0EBEB",
         color: "#000",
-        border: "1px solid #424242",
+        border: "1px solid #000",
         borderRadius: 1,
-        "&:hover": {
-            color: "#fff",
-            bgcolor: "#424242",
-            border: "1px solid #424242",
-        },
     }
 
-  const handleOpen = (e) => {
-    setDeleting(true);
-    handleDialogOpen(e);
-  }
+    const handleOpen = (e) => {
+        setComplete(true);
+        handleDialogOpen(e);
+    } 
 
-  const handleClose = (e) => {
-    setDeleting(false);
-    handleDialogClose(e);
-  }
+    const handleClose = (e) => {
+        setComplete(false);
+        handleDialogClose(e);
+    }
 
-  const customHandleDelete = (e) => {
-    setDeleting(false);
-    handleDelete(e);
-  }
+    const handleComplete = (e) => {
+        setComplete(false);
+        handleDialogClose(e);
+        PutComplete(record.id)
+        .then((response) => {
+            onSuccess();
+        }).catch((error) => {
+            notify(error.response.data.message);
+        });
+    }
 
     return (
         <Fragment>
@@ -136,7 +146,7 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
             >
                 {icon}
             </StyledButton>
-            <Dialog
+            <StyledDialog
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
@@ -145,22 +155,21 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
                 <DialogTitle id="alert-dialog-title" sx={titleStype}>
                     {confirmTitle}
                 </DialogTitle>
-                <DialogContent sx={contentStyle}>
+                <StyledDialogContent sx={contentStyle}>
                     <DialogContentText component={"div"} id="alert-dialog-description">
                         <DialogContentText sx={{
                             padding: 3,
-                            paddingRight: 20
                         }}>
                             {confirmContent}
                         </DialogContentText>
                     </DialogContentText>
                     <DialogActions>
-                        <MUIButton onClick={customHandleDelete} sx={deleteButtonStyle}>{acceptButtonLabel}</MUIButton>
-                        <MUIButton sx={confirmButtonStyle} onClick={handleClose}>{cancelButtonLabel}</MUIButton>
+                        <MUIButton onClick={handleComplete} sx={deleteButtonStyle} >Yes</MUIButton>
+                        <MUIButton sx={confirmButtonStyle} onClick={handleClose}>No</MUIButton>
                         <div style={{ flex: '1 0 0' }} />
                     </DialogActions>
-                </DialogContent>
-            </Dialog>
+                </StyledDialogContent>
+            </StyledDialog>
         </Fragment>
     );
 };
@@ -168,8 +177,8 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
 const defaultIcon = <ActionDelete />;
 
 export interface DeleteWithConfirmButtonProps<
-  RecordType extends RaRecord = any,
-  MutationOptionsError = unknown
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
 > extends ButtonProps {
     confirmTitle?: string;
     confirmContent?: React.ReactNode;
@@ -187,40 +196,39 @@ export interface DeleteWithConfirmButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     isOpen: boolean;
-    setDeleting: Function;
-    acceptButtonLabel?: string;
-    cancelButtonLabel?: string;
+    setComplete: Function;
+    onSuccess: Function;
 }
 
-CustomDeleteWithConfirmButton.propTypes = {
-  className: PropTypes.string,
-  confirmTitle: PropTypes.string,
-  confirmContent: PropTypes.string,
-  label: PropTypes.string,
-  mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-  record: PropTypes.any,
-  redirect: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-    PropTypes.func,
-  ]),
-  resource: PropTypes.string,
-  icon: PropTypes.element,
-  translateOptions: PropTypes.object,
+CustomCompleteReturnRequestWithConfirm.propTypes = {
+    className: PropTypes.string,
+    confirmTitle: PropTypes.string,
+    confirmContent: PropTypes.string,
+    label: PropTypes.string,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
+    record: PropTypes.any,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    resource: PropTypes.string,
+    icon: PropTypes.element,
+    translateOptions: PropTypes.object,
 };
 
 const PREFIX = 'RaDeleteWithConfirmButton';
 
 const StyledButton = styled(Button, {
-  name: PREFIX,
-  overridesResolver: (props, styles) => styles.root,
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-  color: theme.palette.error.main,
-  // '&:hover': {
-  //     backgroundColor: alpha(theme.palette.error.main, 0.12),
-  //     // Reset on mouse devices
-  //     '@media (hover: none)': {
-  //         backgroundColor: 'transparent',
-  //     },
-  // },
+    color: theme.palette.error.main,
+    // '&:hover': {
+    //     backgroundColor: alpha(theme.palette.error.main, 0.12),
+    //     // Reset on mouse devices
+    //     '@media (hover: none)': {
+    //         backgroundColor: 'transparent',
+    //     },
+    // },
 }));

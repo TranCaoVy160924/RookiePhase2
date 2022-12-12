@@ -210,5 +210,64 @@ namespace AssetManagement.Application.Controllers
 
             return Ok(new ViewListPageResult<ViewListReturnRequestResponse> { Data = sortedResult, Total = list.Count() });
         }
+
+        [HttpPut("complete/{id}")]
+        [Authorize]
+        public async Task<IActionResult> Complete(int id)
+        {
+            var returnRequest = await _dbContext.ReturnRequests.FindAsync(id);
+
+            if (returnRequest == null)
+            {
+                return NotFound(new ErrorResponseResult<string>("Return request does not exists!"));
+            }
+
+            var assignment = await _dbContext.Assignments.FindAsync(returnRequest.AssignmentId);
+
+            if (assignment == null)
+            {
+                return NotFound(new ErrorResponseResult<string>("Assigment does not exists!"));
+            }
+
+            var asset = await _dbContext.Assets.FindAsync(assignment.AssetId);
+
+            if (asset == null)
+            {
+                return NotFound(new ErrorResponseResult<string>("Asset does not exists!"));
+            }
+
+            var currentUserLogin = await _dbContext.Users.SingleOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
+            
+            returnRequest.State = Domain.Enums.ReturnRequest.State.Completed;
+            returnRequest.ReturnedDate = DateTime.Now;
+            returnRequest.AcceptedBy = currentUserLogin.Id;
+
+            if (assignment.State == Domain.Enums.Assignment.State.WaitingForReturning)
+            {
+                assignment.State = Domain.Enums.Assignment.State.Returned;
+            }
+            else
+            {
+                return BadRequest(new ErrorResponseResult<string>("Assignment's state of this return request is invalid"));
+            }
+
+            if (asset.State == Domain.Enums.Asset.State.Assigned)
+            {
+                asset.State = Domain.Enums.Asset.State.Available;
+            }
+            else
+            {
+                return BadRequest(new ErrorResponseResult<string>("Asset's state of this assignment is invalid"));
+            }
+
+            var result = await _dbContext.SaveChangesAsync();
+
+            if (result > 0)
+            {
+                return Ok(new SuccessResponseResult<string>("Return request successfully!"));
+            }
+
+            return BadRequest("Return asset unsuccessfully!");
+        }
     }
 }
