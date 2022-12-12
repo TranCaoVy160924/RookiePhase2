@@ -878,9 +878,7 @@ namespace AssetManagement.Application.Tests
         #nullable disable
         [Theory]
         [InlineData(0)]
-        [InlineData(1)]
         [InlineData(2)]
-        [InlineData(3)]
         public async Task EditUser_SuccessAsync(int index)
         {
             //ARRANGE
