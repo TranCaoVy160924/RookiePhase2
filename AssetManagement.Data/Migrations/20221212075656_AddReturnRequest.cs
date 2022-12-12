@@ -58,119 +58,131 @@ namespace AssetManagement.Data.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("12147fe0-4571-4ad2-b8f7-d2c863eb78a5"),
                 column: "ConcurrencyStamp",
-                value: "6cd67b1d-aa17-4d23-ac1c-34756e0a4929");
+                value: "dfc42204-9b72-4ac8-a08a-0d4930896e17");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                 column: "ConcurrencyStamp",
-                value: "2f0b21a6-30ad-43e6-8c5a-448798229823");
+                value: "f7238206-c225-4499-aa72-4922ab40268e");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00bf"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "d29d03bc-8419-4835-b1bf-cdfd295a89f2", new DateTime(2022, 12, 12, 12, 37, 38, 479, DateTimeKind.Local).AddTicks(883), "AQAAAAEAACcQAAAAEE9+nJrI35rPMq2BGgEdujOY8kbSjMVfLl2qO4whTzf1ZcagzOe5abfErq0fgb2Uxw==" });
+                values: new object[] { "ce506485-a76a-435f-a1bf-bec7ec38af85", new DateTime(2022, 12, 12, 14, 56, 56, 103, DateTimeKind.Local).AddTicks(727), "AQAAAAEAACcQAAAAEIQ59TNALkLADF2paA5pzdctM7veVfvrEjGFcH3xUAAQQmhE/iQqGn/5jhXPQhU3Vg==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "6760fb6c-462a-4d11-a0bb-cf0c426c9a68", new DateTime(2022, 12, 12, 12, 37, 38, 472, DateTimeKind.Local).AddTicks(4626), "AQAAAAEAACcQAAAAEJLeTgC6dt2j7r2nUCiDxdFvrIJjTtoI6IwIJE0OKw9hJ0W2O/dHtlsYjrqpZjsKRg==" });
+                values: new object[] { "db4bfe25-3ef9-4770-824b-c48448811652", new DateTime(2022, 12, 12, 14, 56, 56, 96, DateTimeKind.Local).AddTicks(7051), "AQAAAAEAACcQAAAAEIsMw5/bxy927fUXHr66aRLtn5v6wHUWF5EnaMP+ynKiTu1QhlENy+if94znixHkfA==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "fe093e5a-c00a-404f-b04b-56a504bc5c7c", new DateTime(2022, 12, 12, 12, 37, 38, 485, DateTimeKind.Local).AddTicks(1207), "AQAAAAEAACcQAAAAELttXFpMoQUwpi7Vsx2gWBn01ojYHU78NFVjgdVe0O4ZJqz02BZj77Q3dyK8xU16Gw==" });
+                values: new object[] { "3ad20ac2-3783-40fe-8876-eae08719e020", new DateTime(2022, 12, 12, 14, 56, 56, 109, DateTimeKind.Local).AddTicks(6042), "AQAAAAEAACcQAAAAENBmgdZdxCCpA5Da9643w+QEcx1+mQhnZyiDNoAb0xRE6wA1C4lPaN6QsgMiE6BYRg==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("70bd814f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "ed4d19f2-9d89-4b80-95d0-26cc1a9a2f50", new DateTime(2022, 12, 12, 12, 37, 38, 491, DateTimeKind.Local).AddTicks(4864), "AQAAAAEAACcQAAAAEJ4etQ5CukgSuZObZWFA0M120+eWSr2qj8wIVXXCDozjMAn3IxlCi/TimfcW/zxazg==" });
+                values: new object[] { "7a35a2c9-f280-4e56-9130-4d4a6337d7d4", new DateTime(2022, 12, 12, 14, 56, 56, 115, DateTimeKind.Local).AddTicks(9408), "AQAAAAEAACcQAAAAENgmsNptiMMbWCqs+Epqx8pgGTuFLv5xXX1xyt8ZbbRNqD0IdTFg66ItpDtuhIGfCA==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("73bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash" },
-                values: new object[] { "8784e8a2-d718-4dac-be7b-a23578bd5ef2", new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(2903), "AQAAAAEAACcQAAAAEKXkw528DB53PPyvDmn8yImER7z6H5l5AP1ZIKTF5Dh8V55H4Xk7g9P0jXKHIywnLw==" });
+                values: new object[] { "ad3f4d69-0690-412a-a264-bad9471d3a78", new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5031), "AQAAAAEAACcQAAAAEAndSbMRHxBDh51SePd1C+rmy8VnJD4v1z28MCmP+Dpi5RV7icG1xqVYZpB5OYsf9w==" });
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3368));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5392));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3384));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5409));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3394));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5418));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3404));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5427));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3413));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5436));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 6,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3424));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5446));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 7,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3433));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5455));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 8,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3443));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5464));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 9,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3477));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5472));
 
             migrationBuilder.UpdateData(
                 table: "Assets",
                 keyColumn: "Id",
                 keyValue: 10,
                 column: "InstalledDate",
-                value: new DateTime(2022, 12, 12, 12, 37, 38, 498, DateTimeKind.Local).AddTicks(3489));
+                value: new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5484));
+
+            migrationBuilder.InsertData(
+                table: "Assets",
+                columns: new[] { "Id", "AssetCode", "CategoryId", "InstalledDate", "IsDeleted", "Location", "Name", "Specification", "State" },
+                values: new object[,]
+                {
+                    { 11, "LA1000011", 2, new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5495), false, 0, "Laptop 11", "Core i11, 11GB RAM, 1150 GB HDD, Window 11", 1 },
+                    { 12, "LA1000012", 1, new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5504), true, 0, "Laptop 12", "Core i12, 12GB RAM, 1250 GB HDD, Window 12", 4 },
+                    { 13, "LA1000013", 2, new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5545), false, 0, "Laptop 13", "Core i13, 13GB RAM, 1350 GB HDD, Window 13", 1 },
+                    { 14, "LA1000014", 1, new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5555), true, 0, "Laptop 14", "Core i14, 14GB RAM, 1450 GB HDD, Window 14", 4 },
+                    { 15, "LA1000015", 2, new DateTime(2022, 12, 12, 14, 56, 56, 122, DateTimeKind.Local).AddTicks(5564), false, 0, "Laptop 15", "Core i15, 15GB RAM, 1550 GB HDD, Window 15", 1 }
+                });
 
             migrationBuilder.UpdateData(
                 table: "Assignments",
@@ -260,8 +272,39 @@ namespace AssetManagement.Data.Migrations
                     { 6, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 6, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 },
                     { 7, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 7, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 },
                     { 8, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 8, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 9, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 9, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 },
-                    { 10, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 10, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 }
+                    { 9, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 9, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ReturnRequests",
+                columns: new[] { "Id", "AcceptedBy", "AssignedBy", "AssignedDate", "AssignmentId", "IsDeleted", "ReturnedDate", "State" },
+                values: new object[] { 10, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 10, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 });
+
+            migrationBuilder.InsertData(
+                table: "Assignments",
+                columns: new[] { "Id", "AssetId", "AssignedBy", "AssignedDate", "AssignedTo", "IsDeleted", "Note", "ReturnedDate", "State" },
+                values: new object[,]
+                {
+                    { 12, 12, new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), false, "Note for assignment 12", new DateTime(2022, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), 3 },
+                    { 13, 13, new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), false, "Note for assignment 13", new DateTime(2022, 12, 25, 0, 0, 0, 0, DateTimeKind.Local), 2 },
+                    { 14, 14, new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), false, "Note for assignment 14", new DateTime(2022, 12, 26, 0, 0, 0, 0, DateTimeKind.Local), 3 },
+                    { 15, 15, new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), false, "Note for assignment 15", new DateTime(2022, 12, 27, 0, 0, 0, 0, DateTimeKind.Local), 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ReturnRequests",
+                columns: new[] { "Id", "AcceptedBy", "AssignedBy", "AssignedDate", "AssignmentId", "IsDeleted", "ReturnedDate", "State" },
+                values: new object[] { 11, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 11, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 });
+
+            migrationBuilder.InsertData(
+                table: "ReturnRequests",
+                columns: new[] { "Id", "AcceptedBy", "AssignedBy", "AssignedDate", "AssignmentId", "IsDeleted", "ReturnedDate", "State" },
+                values: new object[,]
+                {
+                    { 12, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 12, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 13, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 13, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 14, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 14, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 },
+                    { 15, null, new Guid("70bd714f-9576-45ba-b5b7-f00649be00de"), new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 15, false, new DateTime(2022, 12, 12, 0, 0, 0, 0, DateTimeKind.Local), 0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -286,9 +329,54 @@ namespace AssetManagement.Data.Migrations
                 name: "ReturnRequests");
 
             migrationBuilder.DeleteData(
+                table: "Assets",
+                keyColumn: "Id",
+                keyValue: 11);
+
+            migrationBuilder.DeleteData(
                 table: "Assignments",
                 keyColumn: "Id",
                 keyValue: 11);
+
+            migrationBuilder.DeleteData(
+                table: "Assignments",
+                keyColumn: "Id",
+                keyValue: 12);
+
+            migrationBuilder.DeleteData(
+                table: "Assignments",
+                keyColumn: "Id",
+                keyValue: 13);
+
+            migrationBuilder.DeleteData(
+                table: "Assignments",
+                keyColumn: "Id",
+                keyValue: 14);
+
+            migrationBuilder.DeleteData(
+                table: "Assignments",
+                keyColumn: "Id",
+                keyValue: 15);
+
+            migrationBuilder.DeleteData(
+                table: "Assets",
+                keyColumn: "Id",
+                keyValue: 12);
+
+            migrationBuilder.DeleteData(
+                table: "Assets",
+                keyColumn: "Id",
+                keyValue: 13);
+
+            migrationBuilder.DeleteData(
+                table: "Assets",
+                keyColumn: "Id",
+                keyValue: 14);
+
+            migrationBuilder.DeleteData(
+                table: "Assets",
+                keyColumn: "Id",
+                keyValue: 15);
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "ReturnedDate",
