@@ -30,18 +30,23 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 }
 
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
-    error.message = "Your role has been changed";
-    localStorage.removeItem("auth");
-    window.location.href = ".";
-    // if (error.response) {
-    //     if (!error.response.request.responseURL.includes("/validate-token")) {
-    //         var status = error.response.status;
-    //         if (status === 401) {
-    //             localStorage.removeItem("auth");
-    //             window.location.href = ".";
-    //         }
-    //     }
-    // }
+    if (error.response) {
+        if (!error.response.request.responseURL.includes("/validate-token")) {
+            var status = error.response.status;
+            if (status === 401) {
+                localStorage.removeItem("auth");
+                // window.location.href = ".";
+            }
+        } else {
+            console.log("Invalid")
+            var status = error.response.status;
+            if (status === 401) {
+                error.message = "Your role has been changed";
+                localStorage.removeItem("auth");
+                // window.location.href = ".";
+            }
+        }
+    }
     return Promise.reject(error);
 }
 

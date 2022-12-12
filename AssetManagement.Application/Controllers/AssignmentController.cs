@@ -12,11 +12,13 @@ using AssetManagement.Contracts.Assignment.Request;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using System;
+using AssetManagement.Application.Filters;
 
 namespace AssetManagement.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [FilterCheckIsChangeRole]
     public class AssignmentsController : ControllerBase
     {
         private readonly AssetManagementDbContext _dbContext;
