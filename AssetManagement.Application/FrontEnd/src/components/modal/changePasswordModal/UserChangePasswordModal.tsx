@@ -7,11 +7,7 @@ import {
   Button,
   DialogContentText,
 } from "@mui/material";
-import {
-  Form,
-  PasswordInput,
-  SaveButton,
-} from "react-admin";
+import { Form, PasswordInput, SaveButton } from "react-admin";
 import userService from "../../../services/users";
 
 const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
@@ -117,10 +113,7 @@ const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
                           <p style={{ color: "#d32f2f", margin: "0" }}>
                             {error}
                           </p>
-                        ) : (
-                          ""
-                        )
-                      }
+                        ) : ("")}
                     />
                   </Grid>
                 </Grid>
