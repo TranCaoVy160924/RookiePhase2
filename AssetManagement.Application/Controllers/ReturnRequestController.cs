@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AssetManagement.Application.Controllers
 {
@@ -26,7 +27,39 @@ namespace AssetManagement.Application.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost("{id}")]
+        public async Task<IActionResult> CreateReturnRequest(int id)
+        {
+            string userName = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            AppUser currentUser = _dbContext.AppUsers.FirstOrDefault(x => x.UserName == userName);
+            if (currentUser == null)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Invalid User"));
+            }
+            Assignment assignment = _dbContext.Assignments.Where(x => x.Id == id).FirstOrDefault();
+            if (assignment == null)
+            {
+                return BadRequest(new ErrorResponseResult<string>("Invalid Assignment"));
+            }
+            ReturnRequest returnRequest = new ReturnRequest
+            {
+                AssignmentId = assignment.Id,
+                AssignedBy = currentUser.Id,
+                AcceptedBy = null,
+                ReturnedDate = null,
+                AssignedDate = assignment.AssignedDate,
+                State = Domain.Enums.ReturnRequest.State.WaitingForReturning
+            };
+
+            assignment.State = Domain.Enums.Assignment.State.WaitingForReturning;
+            await _dbContext.ReturnRequests.AddAsync(returnRequest);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new SuccessResponseResult<string>("Create ReturningRequest successfully"));
+        }
+
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CancelReturnRequest(int id)
         {
             ReturnRequest? returnRequest = await _dbContext.ReturnRequests
