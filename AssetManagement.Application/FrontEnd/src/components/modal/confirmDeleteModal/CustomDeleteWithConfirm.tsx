@@ -42,6 +42,8 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
         mutationOptions,
         isOpen,
         setDeleting,
+        acceptButtonLabel = "Delete",
+        cancelButtonLabel = "Cancel",
         ...rest
     } = props;
     const translate = useTranslate();
@@ -148,8 +150,8 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
                         </DialogContentText>
                     </DialogContentText>
                     <DialogActions>
-                        <MUIButton onClick={customHandleDelete} sx={deleteButtonStyle} >Delete</MUIButton>
-                        <MUIButton sx={confirmButtonStyle} onClick={handleClose}>Cancel</MUIButton>
+                        <MUIButton onClick={customHandleDelete} sx={deleteButtonStyle}>{acceptButtonLabel}</MUIButton>
+                        <MUIButton sx={confirmButtonStyle} onClick={handleClose}>{cancelButtonLabel}</MUIButton>
                         <div style={{ flex: '1 0 0' }} />
                     </DialogActions>
                 </DialogContent>
@@ -181,6 +183,8 @@ export interface DeleteWithConfirmButtonProps<
     resource?: string;
     isOpen: boolean;
     setDeleting: Function;
+    acceptButtonLabel?: string;
+    cancelButtonLabel?: string;
 }
 
 CustomDeleteWithConfirmButton.propTypes = {

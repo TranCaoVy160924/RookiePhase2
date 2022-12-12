@@ -35,7 +35,7 @@ namespace AssetManagement.Application.Tests
             _options = new DbContextOptionsBuilder<AssetManagementDbContext>()
                 .UseInMemoryDatabase(databaseName: "AssignmentTestDb").Options;
 
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new AssignmentProfile())).CreateMapper();
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new ReturnRequestProfile())).CreateMapper();
 
             // Create InMemory dbcontext with options
             _context = new AssetManagementDbContext(_options);
@@ -343,6 +343,45 @@ namespace AssetManagement.Application.Tests
             // Assert
             Assert.True(isSorted);
             Assert.Equal(assignmentsList.Count(), expected.Count());
+        }
+        #endregion
+
+        #region CancelReturnRequest
+        [Fact]
+        public async Task CancelReturnRequest_Success_ReturnDeletedAsset()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            var canceledRequest = _mapper
+                .Map<CancelReturnRequestResponse>(await _context.ReturnRequests
+                .Include(a => a.Assignment)
+                .Where(a => a.Id == 1 && !a.IsDeleted &&
+                    a.State == Domain.Enums.ReturnRequest.State.WaitingForReturning)
+                .FirstOrDefaultAsync());
+            //canceledRequest = Domain.Enums.Assignment.State.Accepted;
+
+            // Act 
+            var result = await returnRequestController.CancelReturnRequest(1);
+
+            string resultObject = ConvertOkObject<CancelReturnRequestResponse>(result);
+            string expectedObject = JsonConvert.SerializeObject(canceledRequest);
+
+            // Assert
+            Assert.Equal(resultObject, expectedObject);
+        }
+
+        [Fact]
+        public async Task CancelReturnRequest_Invalid_ReturnBadRequest()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+
+            // Act 
+            var result = await returnRequestController.CancelReturnRequest(0);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+
         }
         #endregion
     }
