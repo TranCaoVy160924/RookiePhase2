@@ -73,11 +73,12 @@ namespace AssetManagement.Application.Tests
             var response = await controller.CreateAssetAsync(request);
             var result = response as OkObjectResult;
             CreateAssetResponse expected = result.Value as CreateAssetResponse;
-            Asset newAsset = await _context.Assets.LastOrDefaultAsync();
+
 
             //ASSERT
             Assert.NotNull(response);
             Assert.IsType<OkObjectResult>(response);
+            Asset newAsset = await _context.Assets.LastOrDefaultAsync();
             Assert.Equal(expected.Name, newAsset.Name);
             Assert.Equal(user.Location, newAsset.Location);
         }
