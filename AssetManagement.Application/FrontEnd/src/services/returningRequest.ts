@@ -8,6 +8,14 @@ const CreateReturnRequest = async (id) => {
     return response.data;
 };
 
+const PutComplete = async (id) => {
+    let url = `${baseUrl}/complete/${id}`
+    const response = await axiosInstance.put(url)
+
+    return response.data;
+};
+
 export {
-    CreateReturnRequest
+    CreateReturnRequest,
+    PutComplete
 };

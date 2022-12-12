@@ -23,7 +23,7 @@ using System.Security.Principal;
 
 namespace AssetManagement.Application.Tests
 {
-    public class ReturnRequestControllerTest
+    public class ReturnRequestControllerTest: IAsyncDisposable
     {
         private readonly DbContextOptions _options;
         private readonly AssetManagementDbContext _context;
@@ -482,5 +482,56 @@ namespace AssetManagement.Application.Tests
 
         }
         #endregion
+
+        #region ReturnRequest
+        [Fact]
+        public async Task ReturnRequest_SuccessAsync()
+        {
+            // Arrange 
+            AppUser currentUser = _context.Users.FirstOrDefault();
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+            returnRequestController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new GenericPrincipal(new GenericIdentity(currentUser.UserName), null)
+                }
+            };
+            // Act 
+            var result = await returnRequestController.Complete(12);
+            var okobjectResult = (OkObjectResult)result;
+            var resultValue = okobjectResult.Value as SuccessResponseResult<string>;
+
+            // Assert
+            Assert.True(resultValue.IsSuccessed);
+            Assert.NotEmpty(resultValue.Result);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal("Return request successfully!", resultValue.Result);
+        }
+
+        [Fact]
+        public async Task ReturnRequest_FailAsync()
+        {
+            // Arrange 
+            ReturnRequestController returnRequestController = new ReturnRequestController(_context, _mapper);
+
+            // Act 
+            var result = await returnRequestController.Complete(3000);
+            var notFoundResult = (NotFoundObjectResult)result;
+            var resultValue = notFoundResult.Value as ErrorResponseResult<string>;
+
+            // Assert
+            Assert.False(resultValue.IsSuccessed);
+            Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal("Return request does not exists!", resultValue.Message);
+        }
+
+        #endregion
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            await _context.Database.EnsureDeletedAsync();
+            await _context.DisposeAsync();
+        }
     }
 }
