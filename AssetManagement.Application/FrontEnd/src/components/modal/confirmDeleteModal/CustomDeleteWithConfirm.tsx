@@ -26,7 +26,7 @@ import { Button, ButtonProps } from 'react-admin';
 import { Padding } from '@mui/icons-material';
 
 export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>(
-    props: DeleteWithConfirmButtonProps<RecordType>
+  props: DeleteWithConfirmButtonProps<RecordType>
 ) => {
     const {
         className,
@@ -51,18 +51,18 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
     const resource = useResourceContext(props);
 
     const {
-        open,
-        isLoading,
-        handleDialogOpen,
-        handleDialogClose,
-        handleDelete,
-    } = useDeleteWithConfirmController({
-        record,
-        redirect,
-        mutationMode,
-        onClick,
-        mutationOptions,
-        resource,
+      open,
+      isLoading,
+      handleDialogOpen,
+      handleDialogClose,
+      handleDelete,
+  } = useDeleteWithConfirmController({
+      record,
+      redirect,
+      mutationMode,
+      onClick,
+      mutationOptions,
+      resource,
     });
 
     const titleStype = {
@@ -105,20 +105,20 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
         },
     }
 
-    const handleOpen = (e) => {
-        setDeleting(true);
-        handleDialogOpen(e);
-    } 
+  const handleOpen = (e) => {
+    setDeleting(true);
+    handleDialogOpen(e);
+  }
 
-    const handleClose = (e) => {
-        setDeleting(false);
-        handleDialogClose(e);
-    }
+  const handleClose = (e) => {
+    setDeleting(false);
+    handleDialogClose(e);
+  }
 
-    const customHandleDelete = (e) => {
-        setDeleting(false);
-        handleDelete(e);
-    }
+  const customHandleDelete = (e) => {
+    setDeleting(false);
+    handleDelete(e);
+  }
 
     return (
         <Fragment>
@@ -168,8 +168,8 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
 const defaultIcon = <ActionDelete />;
 
 export interface DeleteWithConfirmButtonProps<
-    RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+  RecordType extends RaRecord = any,
+  MutationOptionsError = unknown
 > extends ButtonProps {
     confirmTitle?: string;
     confirmContent?: React.ReactNode;
@@ -193,34 +193,34 @@ export interface DeleteWithConfirmButtonProps<
 }
 
 CustomDeleteWithConfirmButton.propTypes = {
-    className: PropTypes.string,
-    confirmTitle: PropTypes.string,
-    confirmContent: PropTypes.string,
-    label: PropTypes.string,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    record: PropTypes.any,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    icon: PropTypes.element,
-    translateOptions: PropTypes.object,
+  className: PropTypes.string,
+  confirmTitle: PropTypes.string,
+  confirmContent: PropTypes.string,
+  label: PropTypes.string,
+  mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
+  record: PropTypes.any,
+  redirect: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+    PropTypes.func,
+  ]),
+  resource: PropTypes.string,
+  icon: PropTypes.element,
+  translateOptions: PropTypes.object,
 };
 
 const PREFIX = 'RaDeleteWithConfirmButton';
 
 const StyledButton = styled(Button, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+  name: PREFIX,
+  overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.error.main,
-    // '&:hover': {
-    //     backgroundColor: alpha(theme.palette.error.main, 0.12),
-    //     // Reset on mouse devices
-    //     '@media (hover: none)': {
-    //         backgroundColor: 'transparent',
-    //     },
-    // },
+  color: theme.palette.error.main,
+  // '&:hover': {
+  //     backgroundColor: alpha(theme.palette.error.main, 0.12),
+  //     // Reset on mouse devices
+  //     '@media (hover: none)': {
+  //         backgroundColor: 'transparent',
+  //     },
+  // },
 }));
