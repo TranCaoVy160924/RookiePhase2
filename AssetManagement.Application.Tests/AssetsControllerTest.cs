@@ -73,7 +73,7 @@ namespace AssetManagement.Application.Tests
             var response = await controller.CreateAssetAsync(request);
             var result = response as OkObjectResult;
             CreateAssetResponse expected = result.Value as CreateAssetResponse;
-            Asset newAsset = _context.Assets.LastOrDefault();
+            Asset newAsset = await _context.Assets.LastOrDefaultAsync();
 
             //ASSERT
             Assert.NotNull(response);

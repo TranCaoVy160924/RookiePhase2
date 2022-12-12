@@ -15,7 +15,7 @@ namespace AssetManagement.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController : ControllerBase, IAsyncDisposable
     {
         private readonly IMapper _mapper;
         private readonly AssetManagementDbContext _dbContext;
@@ -71,5 +71,10 @@ namespace AssetManagement.Application.Controllers
             return BadRequest(ModelState);
         }
 
+        public async ValueTask DisposeAsync()
+        {
+            await _dbContext.Database.EnsureDeletedAsync();
+            await _dbContext.DisposeAsync();
+        }
     }
 }
