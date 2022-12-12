@@ -89,6 +89,14 @@ function CustomDisableWithConfirm(props) {
                     setDeleting(false);
                     setOpen(false);
                 }}
+                sx={{
+                    "& .MuiBackdrop-root": {
+                        backgroundColor: "transparent"
+                    },
+                    "& .css-1t1j96h-MuiPaper-root-MuiDialog-paper": {
+                        boxShadow: "none"
+                    }
+                }}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >

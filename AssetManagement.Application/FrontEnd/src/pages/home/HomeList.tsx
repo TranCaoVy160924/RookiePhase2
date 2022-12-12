@@ -118,7 +118,7 @@ export default () => {
                                             confirmContent="Do you want to decline this assignment?"
                                             mutationOptions={{ onSuccess: () => refresh() }} isOpen={deleting} setDeleting={setDeleting} />
                                         <CustomDisableWithConfirm
-                                            icon={<ReplayIcon />}
+                                            icon={<ReplayIcon style={{ color:"#bdbdbd" }} />}
                                             confirmTitle="Are you sure?"
                                             confirmContent="Do you want to create a returning request for this asset?"
                                             mutationOptions={{ onSuccess: () => refresh() }}
@@ -139,7 +139,7 @@ export default () => {
                                         <DeleteButton icon={<ClearIcon />} disabled variant="text" size="small" label=""
                                             sx={listStyle.buttonToolbar} />
                                         <CustomDisableWithConfirm
-                                            icon={<ReplayIcon />}
+                                            icon={<ReplayIcon style={{ color: !(record.state === 0) ? "#bdbdbd" : "#5f73e4" }} />}
                                             confirmTitle="Are you sure?"
                                             confirmContent="Do you want to create a returning request for this asset?"
                                             mutationOptions={{ onSuccess: () => refresh() }}
