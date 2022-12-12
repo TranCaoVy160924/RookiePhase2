@@ -77,6 +77,7 @@ namespace AssetManagement.Application.Tests
 
             //ASSERT
             Assert.NotNull(response);
+            Assert.IsType<OkObjectResult>(response);
             Assert.Equal(expected.Name, newAsset.Name);
             Assert.Equal(user.Location, newAsset.Location);
         }

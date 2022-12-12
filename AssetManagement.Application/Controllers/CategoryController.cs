@@ -73,7 +73,6 @@ namespace AssetManagement.Application.Controllers
 
         public async ValueTask DisposeAsync()
         {
-            await _dbContext.Database.EnsureDeletedAsync();
             await _dbContext.DisposeAsync();
         }
     }
