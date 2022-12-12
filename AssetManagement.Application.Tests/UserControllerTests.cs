@@ -1083,6 +1083,7 @@ namespace AssetManagement.Application.Tests
 
         async ValueTask IAsyncDisposable.DisposeAsync()
         {
+            await _context.Database.CloseConnectionAsync();
             await _context.Database.EnsureDeletedAsync();
             await _context.DisposeAsync();
         }
