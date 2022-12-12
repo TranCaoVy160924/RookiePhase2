@@ -3,7 +3,6 @@ using AssetManagement.Contracts.Common;
 using AssetManagement.Contracts.Report.Response;
 using AssetManagement.Data.EF;
 using AssetManagement.Domain.Models;
-using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -243,6 +242,7 @@ namespace AssetManagement.Application.Tests
 
         async ValueTask IAsyncDisposable.DisposeAsync()
         {
+            await _context.Database.CloseConnectionAsync();
             await _context.Database.EnsureDeletedAsync();
             await _context.DisposeAsync();
         }
