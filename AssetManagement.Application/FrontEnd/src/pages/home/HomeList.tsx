@@ -18,8 +18,10 @@ import {
     useRecordContext,
     DeleteButton
 } from "react-admin";
-import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { AcceptAssignment } from "./AcceptAssignment";
+import { DeclineAssignment } from "./DeclineAssignment";
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
 import ReplayIcon from '@mui/icons-material/Replay';
 import AssetsPagination from "../../components/pagination/AssetsPagination";
 import StateFilterSelect from "../../components/select/StateFilterSelect";
@@ -103,11 +105,17 @@ export default () => {
                             if (record.state === 1) {
                                 return (
                                     <ButtonGroup>
-                                        <EditButton variant="text" size="small" label="" sx={listStyle.buttonToolbar} />
-                                        <CustomDeleteWithConfirmButton
-                                            icon={<HighlightOffIcon />}
+                                        <AcceptAssignment 
+                                            icon={<CheckIcon/>}
                                             confirmTitle="Are you sure?"
-                                            confirmContent="Do you want to delete this asset?"
+                                            confirmContent="Do you want to accept this assignment?"
+                                            mutationOptions={{ onSuccess: () => refresh() }} isOpen={deleting} 
+                                            setDeleting={setDeleting} 
+                                        />
+                                        <DeclineAssignment
+                                            icon={<ClearIcon />}
+                                            confirmTitle="Are you sure?"
+                                            confirmContent="Do you want to decline this assignment?"
                                             mutationOptions={{ onSuccess: () => refresh() }} isOpen={deleting} setDeleting={setDeleting} />
                                         <CustomDisableWithConfirm
                                             icon={<ReplayIcon />}
@@ -126,9 +134,9 @@ export default () => {
                             else {
                                 return (
                                     <ButtonGroup>
-                                        <EditButton disabled variant="text" size="small" label=""
+                                        <EditButton icon={<CheckIcon/>} disabled variant="text" size="small" label=""
                                             sx={listStyle.buttonToolbar} />
-                                        <DeleteButton icon={<HighlightOffIcon />} disabled variant="text" size="small" label=""
+                                        <DeleteButton icon={<ClearIcon />} disabled variant="text" size="small" label=""
                                             sx={listStyle.buttonToolbar} />
                                         <CustomDisableWithConfirm
                                             icon={<ReplayIcon />}

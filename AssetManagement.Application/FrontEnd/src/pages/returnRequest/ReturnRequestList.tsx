@@ -18,8 +18,8 @@ import {
     useRecordContext
 } from "react-admin";
 import { CustomDeleteWithConfirmButton } from "../../components/modal/confirmDeleteModal/CustomDeleteWithConfirm";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import ReplayIcon from '@mui/icons-material/Replay';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
 import AssetsPagination from "../../components/pagination/AssetsPagination";
 import StateFilterSelect from "../../components/select/StateFilterSelect";
 import { ButtonGroup, Stack, Container, Typography } from "@mui/material";
@@ -74,7 +74,7 @@ export default () => {
                 perPage={5}
                 sort={{ field: "noNumber", order: "ASC" }}
             >
-                <h2 style={{ color: "#cf2338" }}>Assignment List</h2>
+                <h2 style={{ color: "#cf2338" }}>Request List</h2>
                 <Stack direction="row" justifyContent="end" alignContent="center">
                     <Typography
                         sx={{
@@ -124,22 +124,18 @@ export default () => {
                         }
                     }} />
                     <ButtonGroup sx={{ border: null }}>
-                        <FunctionField render={(record) => {
-                            if (record.state === 1) {
-                                return (
-                                    <EditButton variant="text" size="small" label="" sx={listStyle.buttonToolbar} />
-                                )
-                            }
-                            else {
-                                return (
-                                    <EditButton disabled variant="text" size="small" label=""
-                                        sx={listStyle.buttonToolbar} />
-                                )
-                            }
-                        }} />
+                        <FunctionField render={(record) => (
+                            <EditButton 
+                                icon={<CheckIcon/>} 
+                                variant="text" 
+                                size="small" 
+                                label="" 
+                                sx={listStyle.buttonToolbar} 
+                            />
+                        )} />
                         <FunctionField render={record => (
                             <CustomDeleteWithConfirmButton
-                                icon={<HighlightOffIcon />}
+                                icon={<ClearIcon />}
                                 confirmTitle="Are you sure?"
                                 confirmContent="Do you want to cancel this returning request?"
                                 mutationOptions={{ onSuccess: (data) => refresh() }}

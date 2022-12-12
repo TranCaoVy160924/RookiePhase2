@@ -96,6 +96,9 @@ const AssignmentShow = ({ isOpened, toggle, assignment }) => {
                                     case 3: {
                                         return "Waiting For Returning";
                                     }
+                                    case 4: {
+                                        return "Declined";
+                                    }
                                 }
                             }} />
                         </DataText>
