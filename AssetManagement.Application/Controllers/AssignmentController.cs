@@ -5,16 +5,13 @@ using AssetManagement.Data.EF;
 using AssetManagement.Domain.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-// using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.AspNetCore.Http;
 using AssetManagement.Domain.Enums.Assignment;
 using AssetManagement.Contracts.Assignment.Request;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using System;
-// using System.Globalization;
 
 namespace AssetManagement.Application.Controllers
 {
@@ -122,6 +119,150 @@ namespace AssetManagement.Application.Controllers
 
             return Ok(_mapper.Map<UpdateAssignmentResponse>(updatingAssignment));
         }
+
+        [HttpPut("{id}/accept")]
+        [Authorize]
+        public async Task<IActionResult> AcceptAssignment(int id) {
+            Assignment updatingAssignment = await _dbContext.Assignments
+                .Include(a => a.Asset)
+                .Where(a => a.Id == id && a.IsDeleted == false && a.State == State.WaitingForAcceptance)
+                .FirstOrDefaultAsync();
+
+            try
+            {
+                if (updatingAssignment != null )
+                {
+                    Asset asset = await _dbContext.Assets
+                        .Where(a => a.Id == updatingAssignment.AssetId)
+                        .FirstOrDefaultAsync();
+
+                    if (asset != null)
+                    {
+                        switch (asset.State)
+                        { 
+                            case AssetManagement.Domain.Enums.Asset.State.Available: 
+                            {
+                                updatingAssignment.State = State.Accepted;
+                                asset.State = AssetManagement.Domain.Enums.Asset.State.Assigned;
+                                await _dbContext.SaveChangesAsync();
+                                break;
+                            } 
+                            case AssetManagement.Domain.Enums.Asset.State.NotAvailable:
+                            {
+                                throw new Exception("This asset is not available");
+                                break;
+                            }
+                            case AssetManagement.Domain.Enums.Asset.State.WaitingForRecycling:
+                            {
+                                throw new Exception("This asset is waiting for recycling");
+                                break;
+                            }
+                            case AssetManagement.Domain.Enums.Asset.State.Recycled:
+                            {
+                                throw new Exception("This asset is recycled");
+                                break;
+                            }
+                            case AssetManagement.Domain.Enums.Asset.State.Assigned: 
+                            {
+                                throw new Exception("This asset is already assigned to another assignment");
+                                break;
+                            }
+                            default:
+                            {
+                                throw new Exception("Asset of this assignment is invalid");
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Asset of this assignment is invalid");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Cannot find a Waiting For Acceptance assignment with id: {id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponseResult<string>(ex.Message));
+            }
+
+            return Ok(_mapper.Map<AcceptAssignmentResponse>(updatingAssignment));
+        }
+
+        [HttpPut("{id}/decline")]
+        [Authorize]
+        public async Task<IActionResult> DeclineAssignment(int id) {
+            Assignment updatingAssignment = await _dbContext.Assignments
+                .Include(a => a.Asset)
+                .Where(a => a.Id == id && a.IsDeleted == false && a.State == State.WaitingForAcceptance)
+                .FirstOrDefaultAsync();
+
+            try
+            {
+                if (updatingAssignment != null )
+                {
+                    Asset asset = await _dbContext.Assets
+                        .Where(a => a.Id == updatingAssignment.AssetId)
+                        .FirstOrDefaultAsync();
+
+                    if (asset != null)
+                    {
+                        switch (asset.State)
+                        { 
+                            case AssetManagement.Domain.Enums.Asset.State.Available: 
+                            {
+                                updatingAssignment.State = State.Declined;
+                                await _dbContext.SaveChangesAsync();
+                                break;
+                            } 
+                            case AssetManagement.Domain.Enums.Asset.State.NotAvailable:
+                            {
+                                throw new Exception("This asset is not available");
+                                break;
+                            }
+                            case AssetManagement.Domain.Enums.Asset.State.WaitingForRecycling:
+                            {
+                                throw new Exception("This asset is waiting for recycling");
+                                break;
+                            }
+                            case AssetManagement.Domain.Enums.Asset.State.Recycled:
+                            {
+                                throw new Exception("This asset is recycled");
+                                break;
+                            }
+                            case AssetManagement.Domain.Enums.Asset.State.Assigned: 
+                            {
+                                throw new Exception("This asset is already assigned to another assignment");
+                                break;
+                            }
+                            default:
+                            {
+                                throw new Exception("Asset of this assignment is invalid");
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Asset of this assignment is invalid");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Cannot find a Waiting For Acceptance assignment with id: {id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponseResult<string>(ex.Message));
+            }
+
+            return Ok(_mapper.Map<DeclineAssignmentResponse>(updatingAssignment));
+        }
+
 
         [HttpGet]
         [Authorize]
@@ -256,6 +397,8 @@ namespace AssetManagement.Application.Controllers
             }
             return true;
         }
+
+        
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]

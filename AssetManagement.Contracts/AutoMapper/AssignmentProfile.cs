@@ -61,6 +61,11 @@ namespace AssetManagement.Contracts.AutoMapper
                 .ForMember(dest => dest.AssetCode, opt => opt.MapFrom(src => src.Asset.AssetCode))
                 .ForMember(dest => dest.AssetName, opt => opt.MapFrom(src => src.Asset.Name))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Asset.Category.Name));
+            
+            CreateMap<Domain.Models.Assignment, AcceptAssignmentResponse>()
+                .ForMember(dest => dest.AssetState, opt => opt.MapFrom(src => src.Asset.State));
+            CreateMap<Domain.Models.Assignment, DeclineAssignmentResponse>()
+                .ForMember(dest => dest.AssetState, opt => opt.MapFrom(src => src.Asset.State));
         }
     }
 }

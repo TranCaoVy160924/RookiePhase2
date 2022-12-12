@@ -68,7 +68,6 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
     const titleStype = {
         bgcolor: '#F0EBEB',
         color: "#E80E0E",
-        border: "1px solid #000",
         // borderRadius: "1px 1px 0px 0px"
         borderTopLeftRadius: "4px",
         borderTopRightRadius: "4px",
@@ -76,7 +75,6 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
     }
 
     const contentStyle = {
-        border: "1px solid #000",
         borderBottomLeftRadius: '4px',
         borderBottomRightRadius: '4px',
         color: "#000"
@@ -85,19 +83,26 @@ export const CustomDeleteWithConfirmButton = <RecordType extends RaRecord = any>
     const deleteButtonStyle = {
         bgcolor: "#E80E0E",
         color: "#FFFFFF",
-        border: "1px solid #000",
+        border: "1px solid #E80E0E",
         borderRadius: 1,
 
         "&:hover": {
-            color: "#000"
+            color: "#fff",
+            bgcolor: "#424242",
+            border: "1px solid #424242",
         },
     }
 
     const confirmButtonStyle = {
         bgcolor: "#F0EBEB",
         color: "#000",
-        border: "1px solid #000",
+        border: "1px solid #424242",
         borderRadius: 1,
+        "&:hover": {
+            color: "#fff",
+            bgcolor: "#424242",
+            border: "1px solid #424242",
+        },
     }
 
     const handleOpen = (e) => {
