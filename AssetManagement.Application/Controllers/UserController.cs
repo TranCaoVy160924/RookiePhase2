@@ -1,7 +1,7 @@
 using AssetManagement.Contracts.Common;
 using AssetManagement.Contracts.User.Request;
-﻿using AssetManagement.Contracts.Asset.Response;
-﻿using AssetManagement.Contracts.Authority.Request;
+using AssetManagement.Contracts.Asset.Response;
+using AssetManagement.Contracts.Authority.Request;
 using AssetManagement.Contracts.Common;
 using AssetManagement.Contracts.User.Response;
 using AssetManagement.Data.EF;
@@ -16,11 +16,13 @@ using System.Security.Claims;
 using AssetManagement.Domain.Enums.AppUser;
 using System.Collections.Generic;
 using Diacritics.Extensions;
+using AssetManagement.Application.Filters;
 
 namespace AssetManagement.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [FilterCheckIsChangeRole]
     public class UserController : ControllerBase
     {
         private readonly AssetManagementDbContext _dbContext;
@@ -59,7 +61,7 @@ namespace AssetManagement.Application.Controllers
                 return BadRequest(new ErrorResponseResult<bool>("User is under 18. Please select a different date"));
             }
 
-            if (userRequest.JoinedDate.DayOfWeek == DayOfWeek.Saturday || 
+            if (userRequest.JoinedDate.DayOfWeek == DayOfWeek.Saturday ||
                 userRequest.JoinedDate.DayOfWeek == DayOfWeek.Sunday)
             {
                 return BadRequest(new ErrorResponseResult<bool>("Joined date is Saturday or Sunday. Please select a different date"));
@@ -155,7 +157,7 @@ namespace AssetManagement.Application.Controllers
 
             if (result.Succeeded && resultRole.Succeeded)
             {
-                return Ok(new CreateUserResponse { Id = user.Id, UserName = user.UserName, FirstName = user.FirstName, LastName = user.LastName, Dob = user.Dob, CreatedDate = user.CreatedDate });
+                return Ok(new CreateUserResponse { Id = user.Id, StaffCode = user.StaffCode, UserName = user.UserName, FirstName = user.FirstName, LastName = user.LastName, Dob = user.Dob, CreatedDate = user.CreatedDate });
             }
 
             return BadRequest(new ErrorResponseResult<bool>("Create user unsuccessfully!"));
@@ -274,7 +276,7 @@ namespace AssetManagement.Application.Controllers
 
                     return Ok(new ViewListPageResult<ViewListUser_UserResponse> { Data = mapResultWithCreatedIdParam, Total = users.Count() + 1 });
                 }
-                
+
             }
 
             List<AppUser> sortedUsers = StaticFunctions<AppUser>.Paging(users, start, end);
@@ -330,24 +332,24 @@ namespace AssetManagement.Application.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(request.Dob > DateTime.Now.AddYears(-18))
+                if (request.Dob > DateTime.Now.AddYears(-18))
                 {
                     return BadRequest("User is under 18. Please select a different date");
                 }
 
-                if(request.JoinedDate < request.Dob.AddYears(18))
+                if (request.JoinedDate < request.Dob.AddYears(18))
                 {
                     return BadRequest("User under the age 18 may not join the company. Please select a different date");
                 }
 
-                if(request.JoinedDate.DayOfWeek == DayOfWeek.Saturday || request.JoinedDate.DayOfWeek == DayOfWeek.Sunday)
+                if (request.JoinedDate.DayOfWeek == DayOfWeek.Saturday || request.JoinedDate.DayOfWeek == DayOfWeek.Sunday)
                 {
                     return BadRequest("Joined date is Saturday or Sunday. Please select a different date");
                 }
 
                 AppUser? user = _dbContext.AppUsers.FirstOrDefault(u => u.StaffCode == staffCode && !u.IsDeleted);
                 AppRole? role = _dbContext.AppRoles.FirstOrDefault(r => r.Name == request.Type);
-                
+
                 if (user != null && role != null)
                 {
                     try
@@ -359,12 +361,14 @@ namespace AssetManagement.Application.Controllers
                         user.Gender = (Domain.Enums.AppUser.UserGender)request.Gender;
                         user.ModifiedDate = DateTime.Now;
 
-                        if(roleKey.RoleId != role.Id)
+                        if (roleKey.RoleId != role.Id)
                         {
                             _dbContext.UserRoles.Remove(roleKey);
                             IdentityUserRole<Guid> newRoleKey = new() { UserId = user.Id, RoleId = role.Id };
                             await _dbContext.UserRoles.AddAsync(newRoleKey);
                         }
+                        //remove username from static list
+                        StaticValues.Usernames.Remove(user.UserName);
 
                         await _dbContext.SaveChangesAsync();
                         UpdateUserResponse response = _mapper.Map<UpdateUserResponse>(user);
@@ -424,7 +428,7 @@ namespace AssetManagement.Application.Controllers
             {
                 return BadRequest(new ErrorResponseResult<string>("Password is incorrect"));
             }
-            
+
             var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
             if (!result.Succeeded)

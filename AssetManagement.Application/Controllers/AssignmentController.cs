@@ -37,7 +37,7 @@ namespace AssetManagement.Application.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult GetAssignmentsByAssetCodeId(int assetCodeId)
         {
-            var result = _dbContext.Assignments.Where(x => x.AssetId == assetCodeId).ToList();
+            var result = _dbContext.Assignments.Where(x => x.AssetId == assetCodeId && !x.IsDeleted).ToList();
             var assignmentResponse = _mapper.Map<List<AssignmentResponse>>(result);
 
             foreach (var item in assignmentResponse)
@@ -436,7 +436,8 @@ namespace AssetManagement.Application.Controllers
             var isUnique = _dbContext.Assignments
                 .FirstOrDefault(x =>
                 x.AssetId == assetId &&
-                x.AssignedTo == staffId) == null;
+                x.AssignedTo == staffId &&
+                x.IsDeleted == false) == null;
             if (!isUnique)
             {
                 return BadRequest(new ErrorResponseResult<string>("Create Assignment unsuccessfully. Existed an assignment with selected User and Asset"));
