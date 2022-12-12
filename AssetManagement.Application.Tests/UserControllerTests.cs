@@ -878,9 +878,7 @@ namespace AssetManagement.Application.Tests
         #nullable disable
         [Theory]
         [InlineData(0)]
-        [InlineData(1)]
         [InlineData(2)]
-        [InlineData(3)]
         public async Task EditUser_SuccessAsync(int index)
         {
             //ARRANGE
@@ -1062,10 +1060,30 @@ namespace AssetManagement.Application.Tests
 
             Assert.Equal(((ErrorResponseResult<string>)expected.Value).Message, ((ErrorResponseResult<string>)result).Message);
         }
+
+        [Fact]
+        public async Task DeleteUser_Failed_AvailableAssignment()
+        {
+            var controller = new UserController(_context, _userManager.Object, _mapper);
+            string staffCode = "SD0003";
+
+            var claimsIdentity = new ClaimsIdentity(authenticationType: "test");
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, "adminhcm"));
+            var user = new ClaimsPrincipal(claimsIdentity);
+            controller.ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
+
+            IActionResult response = await controller.Delete(staffCode);
+            ErrorResponseResult<string> result = (ErrorResponseResult<string>)((ObjectResult) response).Value;
+            Assert.IsType<BadRequestObjectResult>(response);
+            Assert.False(result.IsSuccessed);
+            Assert.Equal("There are valid assignments belonging to this user. Please close all assignments before disabling user.", result.Message);
+        }
         #endregion
 
         async ValueTask IAsyncDisposable.DisposeAsync()
         {
+            await _context.Database.CloseConnectionAsync();
             await _context.Database.EnsureDeletedAsync();
             await _context.DisposeAsync();
         }
