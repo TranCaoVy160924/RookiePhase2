@@ -1,9 +1,7 @@
 ﻿using AssetManagement.Application.Controllers;
-using AssetManagement.Contracts.Assignment.Response;
 using AssetManagement.Contracts.Common;
 using AssetManagement.Contracts.AutoMapper;
 using AssetManagement.Data.EF;
-using AssetManagement.Domain.Enums.Asset;
 using AssetManagement.Domain.Models;
 using AutoMapper;
 using Castle.Core.Configuration;
@@ -11,11 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Xunit;
-using Newtonsoft.Json;
 using static AssetManagement.Application.Tests.TestHelper.ConverterFromIActionResult;
 using FluentAssertions;
-using AssetManagement.Contracts.Assignment.Request;
-using AssetManagement.Application.Tests.TestHelper;
 using Microsoft.AspNetCore.Identity;
 using AssetManagement.Contracts.ReturnRequest.Response;
 using Microsoft.AspNetCore.Http;
@@ -530,6 +525,7 @@ namespace AssetManagement.Application.Tests
 
         async ValueTask IAsyncDisposable.DisposeAsync()
         {
+            await _context.Database.CloseConnectionAsync();
             await _context.Database.EnsureDeletedAsync();
             await _context.DisposeAsync();
         }
