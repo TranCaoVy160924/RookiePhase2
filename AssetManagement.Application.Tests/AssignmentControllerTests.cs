@@ -20,6 +20,7 @@ using AssetManagement.Application.Tests.TestHelper;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace AssetManagement.Application.Tests
 {
@@ -895,6 +896,28 @@ namespace AssetManagement.Application.Tests
             Assert.Equal("\"Object reference not set to an instance of an object.\"", data);
         }
         #endregion
+        #endregion
+
+        #region CreateAssignment
+        [Fact]
+        public async Task CreateAssignment_Success()
+        {
+            var controller = new AssignmentsController(_context, _userManager, _mapper);
+            var claimsIdentity = new ClaimsIdentity(authenticationType: "test");
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, "adminhn"));
+            var user = new ClaimsPrincipal(claimsIdentity);
+            controller.ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
+
+            var result = await controller.Create(new CreateAssignmentRequest
+            {
+                AssetCode = "LA1000012",
+                Note = "Test",
+                AssignedDate = DateTime.Now,
+                AssignToAppUserStaffCode = "SD0002"
+            });
+        }
+
         #endregion
 
         async ValueTask IAsyncDisposable.DisposeAsync()
