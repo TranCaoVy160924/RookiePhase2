@@ -9,10 +9,7 @@ import {
 } from "@mui/material";
 import {
   Form,
-  maxLength,
-  minLength,
   PasswordInput,
-  required,
   SaveButton,
 } from "react-admin";
 import userService from "../../../services/users";
@@ -20,8 +17,7 @@ import userService from "../../../services/users";
 const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [isValid, setIsValid] = useState(true);
 
   const handleChangePassword = (data) => {
     const newPassword = data.newPassword;
@@ -50,11 +46,29 @@ const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
       });
   };
 
-  const validateChangePassword = [
-    required("This is required"),
-    minLength(6, "Must be more than 6 leters"),
-    maxLength(50, "Must be less than 50 letters"),
-  ];
+  const requiredInput = (values) => {
+    const errors: Record<string, any> = {};
+    if (!values.currentPassword) {
+      errors.currentPassword = "This is required";
+    } else if (values.currentPassword.length < 6) {
+      errors.currentPassword = "Must be more than 6 characters";
+    } else if (values.currentPassword.length > 50) {
+      errors.currentPassword = "Must be less than 50 characters";
+    }
+    if (!values.newPassword) {
+      errors.newPassword = "This is required";
+    } else if (values.newPassword.length < 6) {
+      errors.newPassword = "Must be more than 6 characters";
+    } else if (values.newPassword.length > 50) {
+      errors.newPassword = "Must be less than 50 characters";
+    }
+    if (Object.keys(errors).length === 0) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+    return errors;
+  };
 
   const style = {
     bgcolor: "#EFF0F4",
@@ -67,7 +81,6 @@ const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
   const buttonSaveStyle = {
     bgcolor: "#cf2338",
     color: "#fff",
-    // marginRight: 3,
   };
   if (!success)
     return (
@@ -82,7 +95,12 @@ const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
             sx={{ maxWidth: "410px" }}
           >
             <br />
-            <Form onSubmit={handleChangePassword} mode="onBlur" reValidateMode="onBlur">
+            <Form
+              onSubmit={handleChangePassword}
+              mode="onBlur"
+              reValidateMode="onBlur"
+              validate={requiredInput}
+            >
               <Grid container alignItems="center">
                 <Grid container>
                   <Grid item sm={4} xs={12}>
@@ -94,11 +112,15 @@ const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
                       label={false}
                       source="currentPassword"
                       InputLabelProps={{ shrink: false }}
-                      validate={validateChangePassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
                       helperText={
                         error ? (
-                          <p style={{ color: "#d32f2f", margin: "0" }}>{error}</p>) : ("")}
+                          <p style={{ color: "#d32f2f", margin: "0" }}>
+                            {error}
+                          </p>
+                        ) : (
+                          ""
+                        )
+                      }
                     />
                   </Grid>
                 </Grid>
@@ -112,8 +134,6 @@ const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
                       label={false}
                       InputLabelProps={{ shrink: false }}
                       source="newPassword"
-                      validate={validateChangePassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
                     />
                   </Grid>
                 </Grid>
@@ -124,7 +144,7 @@ const UserChangePasswordModal = ({ stateChanger, ...rest }) => {
                       sx={buttonSaveStyle}
                       type="submit"
                       icon={<></>}
-                      disabled={oldPassword.length > 0 && newPassword.length > 0 ? false : true}
+                      disabled={isValid}
                     />
                   </Grid>
                   <Grid item sm={2.5} xs={6}>
