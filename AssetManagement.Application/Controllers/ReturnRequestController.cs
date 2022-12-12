@@ -59,6 +59,7 @@ namespace AssetManagement.Application.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CancelReturnRequest(int id)
         {
             ReturnRequest? returnRequest = await _dbContext.ReturnRequests
