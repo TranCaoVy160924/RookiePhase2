@@ -1,5 +1,4 @@
-﻿using AssetManagement.Contracts.Asset.Response;
-using AssetManagement.Contracts.Category.Request;
+﻿using AssetManagement.Contracts.Category.Request;
 using AssetManagement.Contracts.Category.Response;
 using AssetManagement.Contracts.Common;
 using AssetManagement.Data.EF;
@@ -15,7 +14,7 @@ namespace AssetManagement.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase, IAsyncDisposable
+    public class CategoryController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly AssetManagementDbContext _dbContext;
@@ -69,11 +68,6 @@ namespace AssetManagement.Application.Controllers
             }
 
             return BadRequest(ModelState);
-        }
-
-        public async ValueTask DisposeAsync()
-        {
-            await _dbContext.DisposeAsync();
         }
     }
 }
