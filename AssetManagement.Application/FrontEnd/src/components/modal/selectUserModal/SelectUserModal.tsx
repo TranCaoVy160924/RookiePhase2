@@ -46,7 +46,7 @@ const SelectUserModal = ({ isOpened, toggle, pos, selectedUser, setSelectedUser,
         console.log("user change", user);
         setTempChoice({
             staffCode: user.staffCode,
-            username: user.fullName
+            fullname: user.fullName
         });
     };
 
