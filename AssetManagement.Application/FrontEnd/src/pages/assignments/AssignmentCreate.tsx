@@ -181,7 +181,7 @@ const AssignmentCreate = () => {
                                             variant="h6"
                                             sx={formStyle.typographyStyle}
                                         >
-                                            User *
+                                            User <span className="red">*</span>
                                         </Typography>
                                     </Grid>
 
@@ -204,7 +204,7 @@ const AssignmentCreate = () => {
                                         variant="h6"
                                         sx={formStyle.typographyStyle}
                                     >
-                                        Asset *
+                                        Asset <span className="red">*</span>
                                     </Typography>
                                     <InputWithSelectModal
                                         handleClick={toggleAssetChoice}
@@ -226,7 +226,7 @@ const AssignmentCreate = () => {
                                         variant="h6"
                                         sx={formStyle.typographyStyle}
                                     >
-                                        Assigned Date *
+                                        Assigned Date <span className="red">*</span>
                                     </Typography>
                                     <DateInput
                                         fullWidth
@@ -246,7 +246,7 @@ const AssignmentCreate = () => {
                                         variant="h6"
                                         sx={formStyle.typographyStyle}
                                     >
-                                        Note *
+                                        Note <span className="red">*</span>
                                     </Typography>
                                     <TextInput
                                         fullWidth

@@ -161,7 +161,7 @@ const AssignmentEdit = () => {
                                             variant="h6"
                                             sx={formStyle.typographyStyle}
                                         >
-                                            User *
+                                            User <span className="red">*</span>
                                         </Typography>
                                     </Grid>
 
@@ -186,7 +186,7 @@ const AssignmentEdit = () => {
                                             variant="h6"
                                             sx={formStyle.typographyStyle}
                                         >
-                                            Asset *
+                                            Asset <span className="red">*</span>
                                         </Typography>
                                     </Grid>
 
@@ -211,7 +211,7 @@ const AssignmentEdit = () => {
                                             variant="h6"
                                             sx={formStyle.typographyStyle}
                                         >
-                                            Assigned Date *
+                                            Assigned Date <span className="red">*</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={8}>
@@ -235,7 +235,7 @@ const AssignmentEdit = () => {
                                             variant="h6"
                                             sx={formStyle.typographyStyle}
                                         >
-                                            Note *
+                                            Note <span className="red">*</span>
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={8}>
