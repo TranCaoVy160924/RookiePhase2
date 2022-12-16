@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Datagrid,
     Title,
     TextField,
     ListBase,
     ExportButton,
+    FunctionField,
     downloadCSV
 } from "react-admin";
-import { Stack, Container } from "@mui/material";
+import { Stack, Container, Checkbox } from "@mui/material";
 import AssetsPagination from "../../components/pagination/AssetsPagination";
 // import jsonExport from 'jsonexport/dist';
 import * as XLSX from 'xlsx-js-style';
 
-const exporter = posts => {
+const exporter = (posts, selectedID) => {
+    posts = posts.filter(item => selectedID.includes(item.id))
     const worksheet = XLSX.utils.json_to_sheet(posts);
     // Create new Worksheet (Formating worksheet)
     const newWorksheet:XLSX.WorkSheet = {};
@@ -134,6 +136,7 @@ const exporter = posts => {
 
 export default () => {
 
+    const [selectedID, setSelectedID] = useState([] as any[])
     return (
         <Container component="main" sx={{ padding: "20px 10px" }}>
             <Title title="Report" />
@@ -144,7 +147,7 @@ export default () => {
                 <Stack direction="row" justifyContent="end" alignContent="center">
                     <div style={{ display: "flex", alignItems: "end" }}>
                         <ExportButton
-                            exporter={exporter}
+                            exporter={(posts)=>exporter(posts, selectedID)}
                             size="large"
                             variant="contained"
                             color="secondary"
@@ -157,7 +160,29 @@ export default () => {
                 <Datagrid
                     empty={<h2>No Category found</h2>}
                     bulkActionButtons={false}
+                    rowClick={(id, data, source) => {
+                        if (!selectedID.includes(id)) {
+                            setSelectedID([...selectedID, id])
+                        }
+                        else {
+                            setSelectedID(selectedID.filter(item => item!=id))
+                        }
+                        return ""
+                    }}
+                    
                 >
+                    <FunctionField 
+                        label=""
+                        source="id" 
+                        render={data => {
+                            if (selectedID.includes(data.id)){
+                                return <Checkbox checked />
+                            }
+                            else {
+                                return <Checkbox checked={false} />
+                            }
+                        }}
+                    />
                     <TextField label="Category" source="category" />
                     <TextField label="Total" source="total" />
                     <TextField label="Assigned" source="assigned" />
