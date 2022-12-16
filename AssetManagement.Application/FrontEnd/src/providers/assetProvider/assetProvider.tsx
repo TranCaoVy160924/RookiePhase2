@@ -6,7 +6,6 @@ import config from "../../connectionConfigs/config.json";
 
 export const assetProvider: DataProvider = {
     // getList: (resource, params) => {
-
     // },
     getOne: function <RecordType extends RaRecord = any>(resource: string, params: GetOneParams<any>): Promise<GetOneResult<RecordType>> {
         return axiosInstance.get(`/api/${resource}/${params.id}`).then(res => {
@@ -17,8 +16,12 @@ export const assetProvider: DataProvider = {
     //     httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
     //         data: json,
     //     })),
-    getMany: function <RecordType extends RaRecord = any>(resource: string, params: GetManyParams): Promise<GetManyResult<RecordType>> {
-        throw new Error("Function not implemented.");
+    getMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids }),
+        };
+        const url = `/api/${resource}?${stringify(query)}`;
+        return axiosInstance(url).then((res) => (res));
     },
     getManyReference: function <RecordType extends RaRecord = any>(resource: string, params: GetManyReferenceParams): Promise<GetManyReferenceResult<RecordType>> {
         throw new Error("Function not implemented.");
@@ -45,9 +48,16 @@ export const assetProvider: DataProvider = {
         var response = await axiosInstance.delete(url);
         return response.data;
     },
-    deleteMany: function <RecordType extends RaRecord = any>(resource: string, params: DeleteManyParams<RecordType>): Promise<DeleteManyResult<RecordType>> {
-        throw new Error("Function not implemented.");
-    },
+    deleteMany: (resource, params) =>
+        Promise.all(
+            params.ids.map(id =>
+                axiosInstance.delete(`/api/${resource}/${id}`)
+            )
+        ).then(res => ({
+            data: res.map(record => record.data)
+        }), err => Promise.reject(err.response.data.message))
+
+    ,
     getList: function <RecordType extends RaRecord = any>(resource: string, params: GetListParams): Promise<GetListResult<RecordType>> {
         const { page, perPage } = params.pagination;
         const { states, searchString, categories, assignedDateFilter, returnedDateFilter, noNumber } = params.filter;
